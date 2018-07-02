@@ -1,16 +1,18 @@
 ﻿using System;
-using OfferLinkScraper.Crawlers;
 
 namespace OfferLinkScraper.Crawlers
 {
     public class WebCrawlersList
     {
-        public WebCrawlersList(OlxServiceCrawler olxServiceCrawler)
+        public WebCrawlersList(params ServiceCrawler[] webServiceCrawlers)
         {
-            if (olxServiceCrawler == null)
-                throw new ArgumentNullException(nameof(olxServiceCrawler));
+            foreach (var webServiceCrawler in webServiceCrawlers)
+            {
+                if (webServiceCrawler == null)
+                    throw new ArgumentNullException(nameof(webServiceCrawler));
+            }
 
-            AllWebCrawlers = new IWebServiceCrawler[] {olxServiceCrawler};
+            AllWebCrawlers = webServiceCrawlers;
         }
 
         public IWebServiceCrawler[] AllWebCrawlers { get; }

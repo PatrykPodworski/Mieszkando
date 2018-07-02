@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using OfferLinkScraper.Crawlers;
+﻿using OfferLinkScraper.Crawlers;
 
 namespace OfferLinkScraper
 {
@@ -11,7 +9,7 @@ namespace OfferLinkScraper
 
         public WebScrapper()
         {
-            _webCrawlersList = new WebCrawlersList(new OlxServiceCrawler());
+            _webCrawlersList = new WebCrawlersList(new OlxServiceCrawler(), new OtodomServiceCrawler());
             _databaseConnectionSettings = new DatabaseConnectionSettings("mieszkando-db");
         }
 

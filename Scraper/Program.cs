@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OfferLinkScraper
+﻿namespace OfferLinkScraper
 {
     class Program
     {
