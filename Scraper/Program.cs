@@ -6,7 +6,8 @@ namespace OfferLinkScraper
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var webScrapper = new WebScrapper();
+            webScrapper.Run();
         }
     }
 }
