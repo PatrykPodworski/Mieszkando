@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace OfferLinkScraper
+namespace OfferLinkScraper.DatabaseConnectors
 {
     public class DatabaseConnectionSettings : IDatabaseConnectionSettings
     {

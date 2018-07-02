@@ -10,10 +10,12 @@ namespace OfferLinkScraper.Crawlers
     {
         public int PageCounter { get; set; }
 
+        public static int LinkCounter = 1; // probably bad practice - need to think of a better way to count globally
+
         protected abstract string BaseUri { get; }
         protected abstract string AdvertisementClassName { get; }
 
-        public abstract List<string> GetLinks();
+        public abstract IEnumerable<Link> GetLinks();
 
         protected HtmlDocument GetHtmlDocFromUri()
         {

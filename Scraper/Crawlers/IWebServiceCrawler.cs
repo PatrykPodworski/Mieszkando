@@ -4,7 +4,7 @@ namespace OfferLinkScraper.Crawlers
 {
     public interface IWebServiceCrawler
     {
-        List<string> GetLinks();
+        IEnumerable<Link> GetLinks();
         int PageCounter { get; set; }
     }
 }

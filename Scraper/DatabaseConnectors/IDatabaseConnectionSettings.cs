@@ -1,4 +1,4 @@
-﻿namespace OfferLinkScraper
+﻿namespace OfferLinkScraper.DatabaseConnectors
 {
     public interface IDatabaseConnectionSettings
     {
