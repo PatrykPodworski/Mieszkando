@@ -6,8 +6,8 @@ namespace OfferLinkScraper
 {
     public class WebScrapper
     {
-        private IDatabaseConnectionSettings _databaseConnectionSettings;
-        private WebCrawlersList _webCrawlersList;
+        private readonly IDatabaseConnectionSettings _databaseConnectionSettings;
+        private readonly WebCrawlersList _webCrawlersList;
 
         public WebScrapper()
         {
@@ -17,7 +17,10 @@ namespace OfferLinkScraper
 
         public void Run()
         {
-            throw new NotImplementedException();
+            foreach (var webCrawler in _webCrawlersList.AllWebCrawlers)
+            {
+                webCrawler.GetLinks();
+            }
         }
     }
 }
