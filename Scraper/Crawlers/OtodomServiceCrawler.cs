@@ -8,14 +8,12 @@ namespace OfferLinkScraper.Crawlers
 {
     public class OtodomServiceCrawler : ServiceCrawler
     {
-        public int PageCounter { get; set; }
-
         private static string BaseUri => "https://www.otodom.pl/wynajem/mieszkanie/gdansk/?search%5Bdist%5D=0&search%5Bsubregion_id%5D=439&search%5Bcity_id%5D=40";
         private static string AdvertisementClassName => "listing_no_promo";
 
         public override IEnumerable<Link> GetLinks()
         {
-            LinkCounter = LinkLocalFileRepository.GetMaxId();
+            LinkCounter = LinkCounter == 1 ? LinkLocalFileRepository.GetMaxId() : LinkCounter;
             var browser = new ScrapingBrowser();
             var page = browser.NavigateToPage(new Uri(BaseUri));
             var aTags = page.Html.Descendants().Where(x =>
