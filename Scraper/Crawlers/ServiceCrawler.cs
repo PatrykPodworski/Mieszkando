@@ -12,23 +12,6 @@ namespace OfferLinkScraper.Crawlers
 
         public static int LinkCounter = 1; // probably bad practice - need to think of a better way to count globally
 
-        protected abstract string BaseUri { get; }
-        protected abstract string AdvertisementClassName { get; }
-
         public abstract IEnumerable<Link> GetLinks();
-
-        protected HtmlDocument GetHtmlDocFromUri()
-        {
-            var request = WebRequest.Create(BaseUri);
-            var response = request.GetResponse();
-            var data = response.GetResponseStream();
-            var htmlDocument = new HtmlDocument();
-            using (var sr = new StreamReader(data ?? throw new InvalidOperationException()))
-            {
-                htmlDocument.LoadHtml(sr.ReadToEnd());
-            }
-
-            return htmlDocument;
-        }
     }
 }
