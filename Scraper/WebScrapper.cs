@@ -9,12 +9,16 @@ namespace OfferLinkScraper
     public class WebScrapper
     {
         private readonly IDatabaseConnectionSettings _databaseConnectionSettings;
-        private readonly IWebServiceCrawler[] _webCrawlersArray;
+        private readonly List<(IWebServiceCrawler WebServiceCrawler, IAdvertisementCrawler AdCrawler)> _webCrawlersTupleList;
         private readonly IDataRepository<Link> _dataRepository;
 
         public WebScrapper()
         {
-            _webCrawlersArray = new IWebServiceCrawler[] { new OlxServiceCrawler(), new OtodomServiceCrawler() };
+            _webCrawlersTupleList = new List<(IWebServiceCrawler WebServiceCrawler, IAdvertisementCrawler AdCrawler)>
+            {
+                (new OlxServiceCrawler(), new OlxAdvertisementCrawler()),
+                (new OtodomServiceCrawler(), new OtodomAdvertisementCrawler()),
+            };
             _databaseConnectionSettings = new DatabaseConnectionSettings("mieszkando-db");
             _dataRepository = new LinkLocalFileRepository();
         }
@@ -22,9 +26,13 @@ namespace OfferLinkScraper
         public void Run()
         {
             var links = new List<Link>();
-            foreach (var webCrawler in _webCrawlersArray)
+            foreach (var webCrawlerTuple in _webCrawlersTupleList)
             {
-                links.AddRange(webCrawler.GetLinks());
+                var scrappedLinks = webCrawlerTuple.WebServiceCrawler.GetLinks();
+
+                webCrawlerTuple.AdCrawler.GetAds(scrappedLinks);
+
+                links.AddRange(scrappedLinks);
             }
 
             links.ForEach(x => _dataRepository.Insert(x));
