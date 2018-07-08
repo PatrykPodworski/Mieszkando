@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace OfferLinkScraper
+﻿namespace OfferLinkScraper
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var webScrapper = new WebScrapper();
+            webScrapper.Run();
         }
     }
 }
