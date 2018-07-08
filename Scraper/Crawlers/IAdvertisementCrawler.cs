@@ -5,6 +5,6 @@ namespace OfferLinkScraper.Crawlers
 {
     public interface IAdvertisementCrawler
     {
-        List<Advertisement> GetAds(IEnumerable<Link> scrappedLinks);
+        List<Advertisement> GetAds(IEnumerable<Link> links);
     }
 }

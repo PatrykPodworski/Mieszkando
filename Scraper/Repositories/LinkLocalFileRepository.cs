@@ -47,7 +47,8 @@ namespace OfferLinkScraper.Repositories
                 while ((line = reader.ReadLine()) != null)
                 {
                     var linkElements = line.Split('|');
-                    var link = new Link(linkElements[0], linkElements[1]);
+                    var linkKind = linkElements[2] == "Olx" ? LinkKind.Olx : LinkKind.OtoDom;
+                    var link = new Link(linkElements[0], linkElements[1], linkKind);
                     EntityCollection.Append(link);
                 }
             }

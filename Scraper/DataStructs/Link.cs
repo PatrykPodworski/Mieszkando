@@ -1,4 +1,6 @@
-﻿namespace OfferLinkScraper.DataStructs
+﻿using System;
+
+namespace OfferLinkScraper.DataStructs
 {
     public class Link
     {
@@ -13,9 +15,6 @@
             LinkSourceKind = linkKind;
         }
 
-        public override string ToString()
-        {
-            return $"{Id}|{Uri}";
-        }
+        public override string ToString() => $"{Id}|{Uri}|{Enum.GetName(typeof(LinkKind), LinkSourceKind)}";
     }
 }

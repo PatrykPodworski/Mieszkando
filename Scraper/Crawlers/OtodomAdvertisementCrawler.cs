@@ -5,9 +5,14 @@ namespace OfferLinkScraper.Crawlers
 {
     public class OtodomAdvertisementCrawler : IAdvertisementCrawler
     {
-        public List<Advertisement> GetAds(IEnumerable<Link> scrappedLinks)
+        public List<Advertisement> GetAds(IEnumerable<Link> links)
         {
-            throw new System.NotImplementedException();
+            var result = new List<Advertisement>();
+            foreach (var link in links)
+            {
+
+            }
+            return result;
         }
     }
 }
