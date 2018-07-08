@@ -19,7 +19,12 @@ namespace OfferLinkScraper.Crawlers
             var links = new List<Link>();
             LinkCounter = LinkCounter == 1 ? LinkLocalFileRepository.GetMaxId() : LinkCounter;
             var browser = new ScrapingBrowser();
+
+#if DEBUG
+            var pagesCount = 1;
+#else
             var pagesCount = GetPagesCount(browser);
+#endif
 
             for (var i = 1; i <= pagesCount; i++)
             {
