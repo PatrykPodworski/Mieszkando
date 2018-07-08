@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OfferLinkScraper.Repositories;
-using ScrapySharp.Extensions;
 using ScrapySharp.Network;
+using OfferLinkScraper.DataStructs;
 
 namespace OfferLinkScraper.Crawlers
 {
@@ -27,7 +27,7 @@ namespace OfferLinkScraper.Crawlers
                 var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
                 var aTags = page.Html.Descendants().Where(x =>
                     x.GetAttributeValue("data-featured-tracking", "").Contains(AdvertisementClassName)).ToList();
-                links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link((++LinkCounter).ToString(), x)));
+                links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link((++LinkCounter).ToString(), x, LinkKind.OtoDom)));
             }
 
             return links;

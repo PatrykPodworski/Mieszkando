@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using HtmlAgilityPack;
+using OfferLinkScraper.DataStructs;
 
 namespace OfferLinkScraper.Crawlers
 {

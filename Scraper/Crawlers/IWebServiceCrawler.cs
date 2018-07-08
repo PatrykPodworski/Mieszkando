@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OfferLinkScraper.DataStructs;
+using System.Collections.Generic;
 
 namespace OfferLinkScraper.Crawlers
 {
