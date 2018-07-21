@@ -1,4 +1,4 @@
-﻿using OfferScrapper.DataStructs;
+﻿using MarklogicDataLayer.DataStructs;
 using System.Collections.Generic;
 
 namespace OfferScrapper.Crawlers

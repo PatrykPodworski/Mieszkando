@@ -1,4 +1,4 @@
-﻿namespace OfferScrapper.DataStructs
+﻿namespace MarklogicDataLayer.DataStructs
 {
     public enum LinkKind
     {
