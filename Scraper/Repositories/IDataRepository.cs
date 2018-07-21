@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace OfferLinkScraper.Repositories
+namespace OfferScrapper.Repositories
 {
     public interface IDataRepository<T> where T : class
     {

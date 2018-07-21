@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using OfferLinkScraper.Repositories;
+using OfferScrapper.Repositories;
 using ScrapySharp.Network;
 using System;
 using ScrapySharp.Extensions;
-using OfferLinkScraper.DataStructs;
+using OfferScrapper.DataStructs;
 
-namespace OfferLinkScraper.Crawlers
+namespace OfferScrapper.Crawlers
 {
     public class OlxServiceCrawler : ServiceCrawler
     {

@@ -1,11 +1,11 @@
-﻿using OfferLinkScraper.DataStructs;
+﻿using OfferScrapper.DataStructs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace OfferLinkScraper.Repositories
+namespace OfferScrapper.Repositories
 {
     public class LinkLocalFileRepository : IDataRepository<Link>
     {
