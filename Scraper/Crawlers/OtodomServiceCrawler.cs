@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OfferScrapper.Repositories;
 using ScrapySharp.Network;
-using OfferScrapper.DataStructs;
+using MarklogicDataLayer.DataStructs;
 
 namespace OfferScrapper.Crawlers
 {

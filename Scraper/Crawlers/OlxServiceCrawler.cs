@@ -4,7 +4,7 @@ using OfferScrapper.Repositories;
 using ScrapySharp.Network;
 using System;
 using ScrapySharp.Extensions;
-using OfferScrapper.DataStructs;
+using MarklogicDataLayer.DataStructs;
 
 namespace OfferScrapper.Crawlers
 {

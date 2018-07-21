@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace OfferScrapper.DataStructs
+namespace MarklogicDataLayer.DataStructs
 {
-    public class Advertisement
+    public class Offer
     {
         [XmlElement("title")]
         public string Title { get; set; }
@@ -18,12 +18,12 @@ namespace OfferScrapper.DataStructs
         [XmlElement("rooms")]
         public string Rooms { get; set; }
 
-        public Advertisement()
+        public Offer()
         {
 
         }
 
-        public Advertisement(string title, string description, string district, string cost, string rooms)
+        public Offer(string title, string description, string district, string cost, string rooms)
         {
             Title = title;
             Description = description;
