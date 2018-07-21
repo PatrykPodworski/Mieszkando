@@ -1,8 +1,8 @@
 ﻿using MarklogicDataLayer;
-using OfferLinkScraper.Crawlers;
 using OfferLinkScraper.DatabaseConnectors;
-using OfferLinkScraper.DataStructs;
-using OfferLinkScraper.Repositories;
+using OfferScrapper.Crawlers;
+using OfferScrapper.DataStructs;
+using OfferScrapper.Repositories;
 using System.Collections.Generic;
 
 namespace OfferLinkScraper

@@ -1,4 +1,4 @@
-﻿namespace OfferLinkScraper.DataStructs
+﻿namespace OfferScrapper.DataStructs
 {
     public class Link
     {

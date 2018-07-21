@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using HtmlAgilityPack;
-using OfferLinkScraper.DataStructs;
+using OfferScrapper.DataStructs;
 
-namespace OfferLinkScraper.Crawlers
+namespace OfferScrapper.Crawlers
 {
     public abstract class ServiceCrawler : IWebServiceCrawler
     {

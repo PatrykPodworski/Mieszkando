@@ -1,7 +1,7 @@
-﻿using OfferLinkScraper.DataStructs;
+﻿using OfferScrapper.DataStructs;
 using System.Collections.Generic;
 
-namespace OfferLinkScraper.Crawlers
+namespace OfferScrapper.Crawlers
 {
     public interface IWebServiceCrawler
     {
