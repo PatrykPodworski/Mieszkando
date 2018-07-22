@@ -1,6 +1,6 @@
 ﻿namespace MarklogicDataLayer.DataStructs
 {
-    public enum LinkKind
+    public enum OfferType
     {
         Olx,
         OtoDom,

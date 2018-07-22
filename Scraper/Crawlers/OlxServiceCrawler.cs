@@ -32,7 +32,7 @@ namespace OfferScraper.Crawlers
                 var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
                 var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
                 var aTags = page.Html.CssSelect(AdvertisementClassName);
-                links.AddRange(aTags.Select(x => new Link((++LinkCounter).ToString(), x.Attributes["href"].Value, LinkKind.Olx)));
+                links.AddRange(aTags.Select(x => new Link((++LinkCounter).ToString(), x.Attributes["href"].Value, OfferType.Olx)));
             }
 
             return links;

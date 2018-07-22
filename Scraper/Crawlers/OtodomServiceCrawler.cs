@@ -32,7 +32,7 @@ namespace OfferScraper.Crawlers
                 var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
                 var aTags = page.Html.Descendants().Where(x =>
                     x.GetAttributeValue("data-featured-tracking", "").Contains(AdvertisementClassName)).ToList();
-                links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link((++LinkCounter).ToString(), x, LinkKind.OtoDom)));
+                links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link((++LinkCounter).ToString(), x, OfferType.OtoDom)));
             }
 
             return links;

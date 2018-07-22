@@ -4,9 +4,9 @@
     {
         public string Id { get; }
         public string Uri { get; }
-        public LinkKind LinkSourceKind { get; }
+        public OfferType LinkSourceKind { get; }
 
-        public Link(string id, string uri, LinkKind linkKind)
+        public Link(string id, string uri, OfferType linkKind)
         {
             Id = id;
             Uri = uri;
