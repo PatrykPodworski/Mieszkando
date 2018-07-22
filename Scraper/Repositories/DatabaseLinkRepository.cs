@@ -1,11 +1,9 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace OfferScrapper.Repositories
+namespace OfferScraper.Repositories
 {
     public class DatabaseLinkRepository : IDataRepository<Link>
     {

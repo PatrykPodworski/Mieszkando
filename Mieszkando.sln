@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfferScrapper", "Scraper\OfferScrapper.csproj", "{0B82D519-EC8E-49DD-BDF7-56E2AA5CF8E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfferScraper", "Scraper\OfferScraper.csproj", "{0B82D519-EC8E-49DD-BDF7-56E2AA5CF8E4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{FF64CD38-5516-4087-858F-1700A7A1947F}"
 EndProject

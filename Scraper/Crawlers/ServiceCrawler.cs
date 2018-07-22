@@ -1,11 +1,7 @@
-﻿using System;
+﻿using MarklogicDataLayer.DataStructs;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using HtmlAgilityPack;
-using MarklogicDataLayer.DataStructs;
 
-namespace OfferScrapper.Crawlers
+namespace OfferScraper.Crawlers
 {
     public abstract class ServiceCrawler : IWebServiceCrawler
     {

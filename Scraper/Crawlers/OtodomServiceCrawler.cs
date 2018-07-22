@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MarklogicDataLayer.DataStructs;
+using OfferScraper.Repositories;
+using ScrapySharp.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using OfferScrapper.Repositories;
-using ScrapySharp.Network;
-using MarklogicDataLayer.DataStructs;
 
-namespace OfferScrapper.Crawlers
+namespace OfferScraper.Crawlers
 {
     public class OtodomServiceCrawler : ServiceCrawler
     {
