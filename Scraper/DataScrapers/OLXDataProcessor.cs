@@ -19,9 +19,29 @@ namespace OfferScraper.DataScrapers
 
         private Offer GetData(HtmlNode data)
         {
-            var title = data.CssSelect(".offer-titlebox > h1").First().InnerHtml.Trim();
+            var title = data.CssSelect(".offer-titlebox > h1")
+                .FirstOrDefault()
+                .InnerHtml
+                .Trim();
 
-            return new Offer { Title = title };
+            var cost = new string(data.CssSelect(".price-label > strong")
+                .FirstOrDefault()
+                .InnerHtml
+                .Where(char.IsDigit)
+                .ToArray());
+
+            var rooms = data.CssSelect(".details .value a")
+                .FirstOrDefault(x => x.Attributes["href"].Value.Contains("filter_enum_rooms"))
+                .Attributes["href"].Value
+                .Split('=')
+                .Last();
+
+            return new Offer
+            {
+                Title = title,
+                Cost = cost,
+                Rooms = rooms
+            };
         }
     }
 }
