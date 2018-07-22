@@ -1,7 +1,7 @@
 using MarklogicDataLayer;
+using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OfferLinkScraper.DatabaseConnectors;
 using System.Net.Http;
 
 namespace UnitTests
