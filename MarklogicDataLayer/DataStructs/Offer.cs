@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace MarklogicDataLayer.DataStructs
 {
@@ -9,18 +6,24 @@ namespace MarklogicDataLayer.DataStructs
     {
         [XmlElement("title")]
         public string Title { get; set; }
+
         [XmlElement("description")]
         public string Description { get; set; }
+
         [XmlElement("district")]
         public string District { get; set; }
+
         [XmlElement("cost")]
         public string Cost { get; set; }
+
         [XmlElement("rooms")]
         public string Rooms { get; set; }
 
+        [XmlElement("area")]
+        public string Area { get; set; }
+
         public Offer()
         {
-
         }
 
         public Offer(string title, string description, string district, string cost, string rooms)

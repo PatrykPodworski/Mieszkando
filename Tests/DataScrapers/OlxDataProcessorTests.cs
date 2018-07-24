@@ -11,7 +11,9 @@ namespace Tests.DataScrapers
         private string _expectedTitle;
         private string _expectedCost;
         private string _expectedRooms;
+        private string _expectedArea;
         private HTMLData _data;
+        private string _expectedDistrict;
 
         [TestInitialize]
         public void Initialize()
@@ -22,9 +24,11 @@ namespace Tests.DataScrapers
                 IsProcessed = false,
                 Content = File.ReadAllText("SampleContent.txt")
             };
-            _expectedTitle = "Mieszkanie Gdansk Wrzeszcz 1pok , Kilinskiego -super lokalizacja AKTUA";
-            _expectedCost = "1300";
-            _expectedRooms = "one";
+            _expectedTitle = "Nowoczesne mieszkanie 3 pokoje dla studentów";
+            _expectedCost = "3000";
+            _expectedRooms = "three";
+            _expectedArea = "67";
+            _expectedDistrict = "Przymorze Małe";
         }
 
         [TestMethod]
@@ -37,6 +41,8 @@ namespace Tests.DataScrapers
             Assert.AreEqual(_expectedTitle, result.Title);
             Assert.AreEqual(_expectedCost, result.Cost);
             Assert.AreEqual(_expectedRooms, result.Rooms);
+            Assert.AreEqual(_expectedArea, result.Area);
+            Assert.AreEqual(_expectedDistrict, result.District);
         }
     }
 }

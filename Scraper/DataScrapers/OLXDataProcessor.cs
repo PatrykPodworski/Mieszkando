@@ -36,11 +36,26 @@ namespace OfferScraper.DataScrapers
                 .Split('=')
                 .Last();
 
+            var area = new string(data.CssSelect(".details .value > strong")
+                .FirstOrDefault(x => x.InnerHtml.Contains("m²"))
+                .InnerHtml
+                .Where(char.IsDigit)
+                .ToArray());
+
+            var district = data.CssSelect(".show-map-link > strong")
+                .FirstOrDefault()
+                .InnerHtml
+                .Split(',')
+                .Last()
+                .Trim();
+
             return new Offer
             {
                 Title = title,
                 Cost = cost,
-                Rooms = rooms
+                Rooms = rooms,
+                Area = area,
+                District = district
             };
         }
     }
