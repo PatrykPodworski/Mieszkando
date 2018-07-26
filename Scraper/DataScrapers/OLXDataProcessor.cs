@@ -25,7 +25,7 @@ namespace OfferScraper.DataScrapers
                 .FirstOrDefault(x => x.InnerHtml.Contains("ID"))
                 .InnerHtml
                 .Split(':')
-                .Last()
+                .LastOrDefault()
                 .Trim();
 
             var title = data.CssSelect(".offer-titlebox > h1")
@@ -36,33 +36,29 @@ namespace OfferScraper.DataScrapers
             var cost = data.CssSelect(".price-label > strong")
                 .FirstOrDefault()
                 .InnerHtml
-                .Where(char.IsDigit)
-                .ParseToString();
+                .GetNumber();
 
             var bonusCost = data.CssSelect(".details .value > strong")
                 .FirstOrDefault(x => x.InnerHtml.Contains("zł"))
                 .InnerHtml
-                .Where(char.IsDigit)
-                .ParseToString();
+                .GetNumber();
 
             var rooms = data.CssSelect(".details .value a")
                 .FirstOrDefault(x => x.Attributes["href"].Value.Contains("filter_enum_rooms"))
                 .Attributes["href"].Value
                 .Split('=')
-                .Last();
+                .LastOrDefault();
 
             var area = data.CssSelect(".details .value > strong")
                 .FirstOrDefault(x => x.InnerHtml.Contains("m²"))
                 .InnerHtml
-                .Where(char.IsDigit)
-                .ToArray()
-                .ParseToString();
+                .GetNumber();
 
             var district = data.CssSelect(".show-map-link > strong")
                 .FirstOrDefault()
                 .InnerHtml
                 .Split(',')
-                .Last()
+                .LastOrDefault()
                 .Trim();
 
             var dateOfPosting = data.CssSelect(".offer-titlebox__details em")
