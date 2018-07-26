@@ -7,7 +7,7 @@ using System.IO;
 namespace Tests.DataScrapers
 {
     [TestClass]
-    public class OlxDataProcessorTests
+    public class OtoDomDataProcessorTests
     {
         private HTMLData _data;
         private string _expectedTitle;
@@ -26,23 +26,23 @@ namespace Tests.DataScrapers
             {
                 OfferType = OfferType.Olx,
                 IsProcessed = false,
-                Content = File.ReadAllText("OlxSampleContent.txt")
+                Content = File.ReadAllText("OtoDomSampleContent.txt")
             };
 
-            _expectedId = "469945769";
-            _expectedTitle = "Nowoczesne mieszkanie 3 pokoje dla studentów";
-            _expectedCost = "3000";
-            _expectedBonusCost = "1200";
-            _expectedRooms = "three";
-            _expectedArea = "67";
-            _expectedDistrict = "Przymorze Małe";
-            _expectedDateOfPosting = "23.07.2018";
+            _expectedId = "54951004";
+            _expectedTitle = "BEZ PROWIZJI 3-Pokojowe Mieszkanie Browar Gdański";
+            _expectedCost = "2540";
+            _expectedBonusCost = "277,53";
+            _expectedRooms = "3";
+            _expectedArea = "65,29";
+            _expectedDistrict = "Wrzeszcz";
+            _expectedDateOfPosting = "20.07.2018";
         }
 
         [TestMethod]
-        public void OLX_Process_GetCorrectData()
+        public void OtoDom_Process_GetCorrectData()
         {
-            var processor = new OlxDataProcessor();
+            var processor = new OtoDomDataProcessor();
 
             var result = processor.Process(_data);
 
