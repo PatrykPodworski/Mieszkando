@@ -21,5 +21,12 @@ namespace OfferScraper.Extensions
         {
             return new string(chars.ToArray());
         }
+
+        public static string GetNumber(this string text)
+        {
+            return text
+                .Where(x => char.IsDigit(x) || x == ',')
+                .ParseToString();
+        }
     }
 }
