@@ -19,6 +19,9 @@ namespace MarklogicDataLayer.DataStructs
         [XmlElement("cost")]
         public string Cost { get; set; }
 
+        [XmlElement("bonusCost")]
+        public string BonusCost { get; set; }
+
         [XmlElement("rooms")]
         public string Rooms { get; set; }
 

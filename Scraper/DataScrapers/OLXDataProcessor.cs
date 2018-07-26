@@ -37,7 +37,12 @@ namespace OfferScraper.DataScrapers
                 .FirstOrDefault()
                 .InnerHtml
                 .Where(char.IsDigit)
-                .ToArray()
+                .ParseToString();
+
+            var bonusCost = data.CssSelect(".details .value > strong")
+                .FirstOrDefault(x => x.InnerHtml.Contains("zł"))
+                .InnerHtml
+                .Where(char.IsDigit)
                 .ParseToString();
 
             var rooms = data.CssSelect(".details .value a")
@@ -75,6 +80,7 @@ namespace OfferScraper.DataScrapers
                 Id = id,
                 Title = title,
                 Cost = cost,
+                BonusCost = bonusCost,
                 Rooms = rooms,
                 Area = area,
                 District = district,

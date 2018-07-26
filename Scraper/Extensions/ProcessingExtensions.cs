@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OfferScraper.Extensions
 {
-    public static class StringExtensions
+    public static class ProcessingExtensions
     {
         public static string ToShortDateString(this string date)
         {
@@ -15,9 +17,9 @@ namespace OfferScraper.Extensions
             return array[1];
         }
 
-        public static string ParseToString(this char[] array)
+        public static string ParseToString(this IEnumerable<char> chars)
         {
-            return new string(array);
+            return new string(chars.ToArray());
         }
     }
 }
