@@ -3,14 +3,15 @@ using MarklogicDataLayer.DataStructs;
 
 namespace OfferScraper.DataExtractors
 {
-    public class BasicDataExtractor : IDataExtractor
+    public class DataExtractor : IDataExtractor
     {
         private IDataProvider _dataProvider;
         private IDataProcessor _dataProcessor;
 
-        public BasicDataExtractor(IDataProvider dataProvider)
+        public DataExtractor(IDataProvider dataProvider, IDataProcessor dataProcessor)
         {
             _dataProvider = dataProvider;
+            _dataProcessor = dataProcessor;
         }
 
         public void ExtractData(int numberOfSamples)
