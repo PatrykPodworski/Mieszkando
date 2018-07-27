@@ -4,6 +4,6 @@ namespace OfferScraper.DataExtractors
 {
     public interface IDataProcessor
     {
-        Offer Process(HTMLData sample);
+        Offer Process(HtmlData sample);
     }
 }

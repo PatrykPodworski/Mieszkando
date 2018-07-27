@@ -9,7 +9,7 @@ namespace Tests.DataScrapers
     [TestClass]
     public class OlxDataProcessorTests
     {
-        private HTMLData _data;
+        private HtmlData _data;
         private string _expectedTitle;
         private string _expectedCost;
         private string _expectedRooms;
@@ -22,7 +22,7 @@ namespace Tests.DataScrapers
         [TestInitialize]
         public void Initialize()
         {
-            _data = new HTMLData
+            _data = new HtmlData
             {
                 OfferType = OfferType.Olx,
                 IsProcessed = false,

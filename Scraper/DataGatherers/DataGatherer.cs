@@ -1,10 +1,46 @@
-﻿namespace OfferScraper.DataGatherers
+﻿using MarklogicDataLayer.DataProviders;
+using MarklogicDataLayer.DataStructs;
+using ScrapySharp.Network;
+using System;
+
+namespace OfferScraper.DataGatherers
 {
     public class DataGatherer : IDataGatherer
     {
+        private IDataProvider _dataProvider;
+
+        public DataGatherer(IDataProvider dataProvider)
+        {
+            _dataProvider = dataProvider;
+        }
+
         public void Gather(int numberOfLinks)
         {
-            throw new System.NotImplementedException();
+            var links = _dataProvider.GetLinks(numberOfLinks);
+
+            foreach (var link in links)
+            {
+                var data = GetHtml(link);
+
+                _dataProvider.MarkAsGathered(link);
+                _dataProvider.Save(data);
+            }
+
+            _dataProvider.Commit();
+        }
+
+        private HtmlData GetHtml(Link link)
+        {
+            var browser = new ScrapingBrowser();
+            var uri = new Uri(link.Uri);
+            var page = browser.NavigateToPage(uri);
+
+            return new HtmlData
+            {
+                Content = page.Html.InnerHtml,
+                OfferType = link.LinkSourceKind,
+                IsProcessed = false
+            };
         }
     }
 }

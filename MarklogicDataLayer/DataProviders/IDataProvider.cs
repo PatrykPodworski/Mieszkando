@@ -5,12 +5,18 @@ namespace MarklogicDataLayer.DataProviders
 {
     public interface IDataProvider
     {
-        ICollection<HTMLData> GetRawDataSamples(OfferType offerType, int numberOfSamples);
+        ICollection<HtmlData> GetRawDataSamples(OfferType offerType, int numberOfSamples);
 
         void Commit();
 
         void Save(Offer offer);
 
-        void MarkAsProcessed(HTMLData sample);
+        void MarkAsProcessed(HtmlData sample);
+
+        ICollection<Link> GetLinks(int numberOfLinks);
+
+        void MarkAsGathered(Link link);
+
+        void Save(HtmlData data);
     }
 }

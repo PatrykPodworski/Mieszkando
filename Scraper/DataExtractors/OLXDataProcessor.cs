@@ -9,7 +9,7 @@ namespace OfferScraper.DataExtractors
 {
     public class OlxDataProcessor : IDataProcessor
     {
-        public Offer Process(HTMLData sample)
+        public Offer Process(HtmlData sample)
         {
             var data = new HtmlDocument();
             data.LoadHtml(sample.Content);

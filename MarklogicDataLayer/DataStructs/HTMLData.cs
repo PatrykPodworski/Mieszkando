@@ -1,6 +1,6 @@
 ﻿namespace MarklogicDataLayer.DataStructs
 {
-    public class HTMLData
+    public class HtmlData
     {
         public OfferType OfferType { get; set; }
         public bool IsProcessed { get; set; }
