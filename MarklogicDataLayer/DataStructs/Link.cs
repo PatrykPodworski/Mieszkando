@@ -17,5 +17,23 @@
         {
             return $"{Id}|{Uri}";
         }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as Link;
+            if (item == null)
+            {
+                return false;
+            }
+
+            return this.Id == item.Id 
+                && this.LinkSourceKind == item.LinkSourceKind 
+                && this.Uri == item.Uri;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode() ^ this.LinkSourceKind.GetHashCode() ^ this.Uri.GetHashCode();
+        }
     }
 }

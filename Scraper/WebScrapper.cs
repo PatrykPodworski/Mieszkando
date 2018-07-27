@@ -17,7 +17,7 @@ namespace OfferLinkScraper
         {
             _webCrawlersArray = new IWebServiceCrawler[] { new OlxServiceCrawler(), new OtodomServiceCrawler() };
             _databaseConnectionSettings = new DatabaseConnectionSettings("mieszkando-db");
-            _dataRepository = new LinkLocalFileRepository();
+            _dataRepository = new DatabaseLinkRepository(_databaseConnectionSettings);
         }
 
         public void Run()

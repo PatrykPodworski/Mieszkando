@@ -7,7 +7,7 @@ namespace MarklogicDataLayer
     public class MarklogicContent
     {
         public static MarklogicContent Xml(string documentName, string content, string[] collections = null) =>
-            new MarklogicContent($"/{documentName}{(documentName.EndsWith(".xml") ? string.Empty : ".xml")}", content);
+            new MarklogicContent($"/{documentName}{(documentName.EndsWith(".xml") ? string.Empty : ".xml")}", content, collections);
 
         public string DocumentName { get; }
         public string Content { get; }
