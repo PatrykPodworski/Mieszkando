@@ -1,6 +1,6 @@
 ﻿using MarklogicDataLayer.DataProviders;
 using MarklogicDataLayer.DataStructs;
-using ScrapySharp.Network;
+using OfferScraper.Utility;
 using System;
 
 namespace OfferScraper.DataGatherers
@@ -31,7 +31,7 @@ namespace OfferScraper.DataGatherers
 
         private HtmlData GetHtml(Link link)
         {
-            var browser = new ScrapingBrowser();
+            var browser = BrowserFactory.GetBrowser();
             var uri = new Uri(link.Uri);
             var page = browser.NavigateToPage(uri);
 
