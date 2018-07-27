@@ -4,6 +4,9 @@ namespace MarklogicDataLayer.DataStructs
 {
     public class Offer
     {
+        [XmlElement("id")]
+        public string Id { get; set; }
+
         [XmlElement("title")]
         public string Title { get; set; }
 
@@ -21,6 +24,12 @@ namespace MarklogicDataLayer.DataStructs
 
         [XmlElement("area")]
         public string Area { get; set; }
+
+        [XmlElement("dateOfPosting")]
+        public string DateOfPosting { get; set; }
+
+        [XmlElement("dateOfScraping")]
+        public string DateOfScraping { get; set; }
 
         public Offer()
         {

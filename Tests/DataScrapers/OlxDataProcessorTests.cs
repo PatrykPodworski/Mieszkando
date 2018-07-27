@@ -1,6 +1,7 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfferScraper.DataScrapers;
+using System;
 using System.IO;
 
 namespace Tests.DataScrapers
@@ -14,6 +15,8 @@ namespace Tests.DataScrapers
         private string _expectedArea;
         private HTMLData _data;
         private string _expectedDistrict;
+        private string _expectedId;
+        private string _expectedDateOfPosting;
 
         [TestInitialize]
         public void Initialize()
@@ -24,11 +27,14 @@ namespace Tests.DataScrapers
                 IsProcessed = false,
                 Content = File.ReadAllText("SampleContent.txt")
             };
+
+            _expectedId = "469945769";
             _expectedTitle = "Nowoczesne mieszkanie 3 pokoje dla studentów";
             _expectedCost = "3000";
             _expectedRooms = "three";
             _expectedArea = "67";
             _expectedDistrict = "Przymorze Małe";
+            _expectedDateOfPosting = "23.07.2018";
         }
 
         [TestMethod]
@@ -38,11 +44,14 @@ namespace Tests.DataScrapers
 
             var result = processor.Process(_data);
 
+            Assert.AreEqual(_expectedId, result.Id);
             Assert.AreEqual(_expectedTitle, result.Title);
             Assert.AreEqual(_expectedCost, result.Cost);
             Assert.AreEqual(_expectedRooms, result.Rooms);
             Assert.AreEqual(_expectedArea, result.Area);
             Assert.AreEqual(_expectedDistrict, result.District);
+            Assert.AreEqual(_expectedDateOfPosting, result.DateOfPosting);
+            Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
         }
     }
 }
