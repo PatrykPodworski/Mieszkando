@@ -1,14 +1,14 @@
 ﻿using MarklogicDataLayer.DataProviders;
 using MarklogicDataLayer.DataStructs;
 
-namespace OfferScraper.DataScrapers
+namespace OfferScraper.DataExtractors
 {
-    public class BasicDataScraper : IDataScraper
+    public class BasicDataExtractor : IDataExtractor
     {
         private IDataProvider _dataProvider;
         private IDataProcessor _dataProcessor;
 
-        public BasicDataScraper(IDataProvider dataProvider)
+        public BasicDataExtractor(IDataProvider dataProvider)
         {
             _dataProvider = dataProvider;
         }

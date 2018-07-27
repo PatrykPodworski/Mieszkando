@@ -5,7 +5,7 @@ using ScrapySharp.Extensions;
 using System;
 using System.Linq;
 
-namespace OfferScraper.DataScrapers
+namespace OfferScraper.DataExtractors
 {
     public class OtoDomDataProcessor : IDataProcessor
     {

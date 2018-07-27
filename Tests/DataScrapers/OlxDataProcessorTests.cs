@@ -1,6 +1,6 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OfferScraper.DataScrapers;
+using OfferScraper.DataExtractors;
 using System;
 using System.IO;
 
