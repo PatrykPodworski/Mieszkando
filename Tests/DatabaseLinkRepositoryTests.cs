@@ -30,14 +30,55 @@ namespace Tests
         private DatabaseLinkRepository _sut;
 
         [TestMethod]
-        public void Test()
+        public void Insert_uploads_document_without_throwing()
         {
-            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("test1", "test1", MarklogicDataLayer.DataStructs.LinkKind.Olx));
-            var result = _sut.GetAll().ToList();
-            var expected = new MarklogicDataLayer.DataStructs.Link("test1", "test1", MarklogicDataLayer.DataStructs.LinkKind.Olx);
+            try
+            {
+                _sut.Insert(new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.LinkKind.Olx));
+                Assert.IsTrue(true);
+            } 
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+        }
 
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected, result.First());
+        [TestMethod]
+        public void GetAll_returns_all_link_documents()
+        {
+            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.LinkKind.Olx));
+            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("2", "test2", MarklogicDataLayer.DataStructs.LinkKind.OtoDom));
+            var result = _sut.GetAll().ToList();
+            var expected = new[] {
+                new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.LinkKind.Olx),
+                new MarklogicDataLayer.DataStructs.Link("2", "test2", MarklogicDataLayer.DataStructs.LinkKind.OtoDom),
+            };
+
+            Assert.AreEqual(2, result.Count);
+            CollectionAssert.AreEquivalent(expected, result);
+        }
+
+        [TestMethod]
+        public void Delete_removes_link_document()
+        {
+            var link = new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.LinkKind.Olx);
+            _sut.Insert(link);
+            _sut.Delete(link);
+            var result = _sut.GetAll().ToList();
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void GetById_returns_single_link_document()
+        {
+            
+            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.LinkKind.Olx));
+            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("2", "test2", MarklogicDataLayer.DataStructs.LinkKind.OtoDom));
+            var result = _sut.GetById(1);
+            var expected = new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.LinkKind.Olx);
+
+            Assert.AreEqual(expected, result);
         }
     }
 }

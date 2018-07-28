@@ -26,7 +26,8 @@ namespace OfferScrapper.Repositories
 
         public void Delete(Link entity)
         {
-            var query = new XdmpDocumentDelete(new MlUri(entity.Id)).Query;
+            var linkKind = entity.LinkSourceKind == LinkKind.Olx ? "Olx" : "OtoDom";
+            var query = new XdmpDocumentDelete(new MlUri($"{linkKind}_link_{entity.Id}", MlUriDocumentType.Xml)).Query;
             _restConnector.Submit(query);
         }
 
@@ -34,6 +35,9 @@ namespace OfferScrapper.Repositories
         {
             var query = new CtsSearch("/", new CtsCollectionQuery(new[] { "Olx", "OtoDom" })).Query;
             var response = _restConnector.Submit(query);
+
+            if (!response.Content.IsMimeMultipartContent())
+                return new List<Link>().AsQueryable();
 
             var content = response.Content.ReadAsMultipartAsync().Result.Contents;
             var result = new List<Link>();
@@ -51,10 +55,27 @@ namespace OfferScrapper.Repositories
 
         public Link GetById(int id)
         {
-            var query = new FnDoc(new MlUri(id.ToString())).Query;
+            var query = new CtsSearch("/", new CtsElementValueQuery("link_id", id.ToString())).Query;
             var response = _restConnector.Submit(query);
 
-            return new Link("1","1",LinkKind.Olx);
+            if (!response.Content.IsMimeMultipartContent())
+                return null;
+
+            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
+            foreach (var data in content)
+            {
+                var text = ReadAsString(data);
+                var xml = XDocument.Parse(text);
+                var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
+                if (linkId == id.ToString())
+                {
+                    var linkUri = xml.Descendants().Where(x => x.Name == "uri").First().Value;
+                    var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? LinkKind.Olx : LinkKind.OtoDom;
+                    return new Link(linkId, linkUri, linkKind);
+                }
+            }
+
+            return null;
         }
 
         public void Insert(Link entity)
