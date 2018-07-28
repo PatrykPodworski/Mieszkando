@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace OfferLinkScraper.DatabaseConnectors
+namespace MarklogicDataLayer.DatabaseConnectors
 {
     public class DatabaseConnectionSettings : IDatabaseConnectionSettings
     {
