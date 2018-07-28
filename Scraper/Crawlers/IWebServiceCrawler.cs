@@ -1,7 +1,7 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using System.Collections.Generic;
 
-namespace OfferScrapper.Crawlers
+namespace OfferScraper.Crawlers
 {
     public interface IWebServiceCrawler
     {

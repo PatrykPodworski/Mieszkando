@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace OfferScrapper.Repositories
+namespace OfferScraper.Repositories
 {
     public class LinkLocalFileRepository : IDataRepository<Link>
     {
@@ -15,6 +15,7 @@ namespace OfferScrapper.Repositories
         public EnumerableQuery<Link> EntityCollection { get; set; }
 
         #region IDataRepository<Link> members
+
         public void Delete(Link entity)
         {
             if (!File.Exists($"{FileName}{Extension}"))
@@ -47,7 +48,7 @@ namespace OfferScrapper.Repositories
                 while ((line = reader.ReadLine()) != null)
                 {
                     var linkElements = line.Split('|');
-                    var link = new Link(linkElements[0], linkElements[1], linkElements[1].Contains("otodom") ? LinkKind.OtoDom : LinkKind.Olx);
+                    var link = new Link(linkElements[0], linkElements[1], linkElements[1].Contains("otodom") ? OfferType.OtoDom : OfferType.Olx);
                     EntityCollection.Append(link);
                 }
             }
@@ -72,7 +73,8 @@ namespace OfferScrapper.Repositories
         {
             throw new NotImplementedException();
         }
-        #endregion
+
+        #endregion IDataRepository<Link> members
 
         public static int GetMaxId()
         {

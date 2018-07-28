@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MarklogicDataLayer\MarklogicDataLayer.csproj" />
-    <ProjectReference Include="..\Scraper\OfferScrapper.csproj" />
+    <ProjectReference Include="..\Scraper\OfferScraper.csproj" />
   </ItemGroup>
 
 </Project>

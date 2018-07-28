@@ -1,11 +1,12 @@
-﻿using System;
+﻿using MarklogicDataLayer.DataStructs;
+using OfferScraper.Repositories;
+using OfferScraper.Utility;
+using ScrapySharp.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using OfferScrapper.Repositories;
-using ScrapySharp.Network;
-using MarklogicDataLayer.DataStructs;
 
-namespace OfferScrapper.Crawlers
+namespace OfferScraper.Crawlers
 {
     public class OtodomServiceCrawler : ServiceCrawler
     {
@@ -18,7 +19,7 @@ namespace OfferScrapper.Crawlers
         {
             var links = new List<Link>();
             LinkCounter = LinkCounter == 1 ? LinkLocalFileRepository.GetMaxId() : LinkCounter;
-            var browser = new ScrapingBrowser();
+            var browser = BrowserFactory.GetBrowser();
 
 #if DEBUG
             var pagesCount = 1;
@@ -32,7 +33,7 @@ namespace OfferScrapper.Crawlers
                 var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
                 var aTags = page.Html.Descendants().Where(x =>
                     x.GetAttributeValue("data-featured-tracking", "").Contains(AdvertisementClassName)).ToList();
-                links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link((++LinkCounter).ToString(), x, LinkKind.OtoDom)));
+                links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link((++LinkCounter).ToString(), x, OfferType.OtoDom)));
             }
 
             return links;

@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using OfferScrapper.Repositories;
+﻿using MarklogicDataLayer.DataStructs;
+using OfferScraper.Repositories;
+using OfferScraper.Utility;
+using ScrapySharp.Extensions;
 using ScrapySharp.Network;
 using System;
-using ScrapySharp.Extensions;
-using MarklogicDataLayer.DataStructs;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace OfferScrapper.Crawlers
+namespace OfferScraper.Crawlers
 {
     public class OlxServiceCrawler : ServiceCrawler
     {
@@ -19,7 +20,7 @@ namespace OfferScrapper.Crawlers
         {
             var links = new List<Link>();
             LinkCounter = LinkCounter == 1 ? LinkLocalFileRepository.GetMaxId() : LinkCounter;
-            var browser = new ScrapingBrowser();
+            var browser = BrowserFactory.GetBrowser();
 
 #if DEBUG
             var pagesCount = 1;
@@ -32,7 +33,7 @@ namespace OfferScrapper.Crawlers
                 var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
                 var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
                 var aTags = page.Html.CssSelect(AdvertisementClassName);
-                links.AddRange(aTags.Select(x => new Link((++LinkCounter).ToString(), x.Attributes["href"].Value, LinkKind.Olx)));
+                links.AddRange(aTags.Select(x => new Link((++LinkCounter).ToString(), x.Attributes["href"].Value, OfferType.Olx)));
             }
 
             return links;

@@ -1,7 +1,5 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Linq.Expressions;
 using MarklogicDataLayer.DatabaseConnectors;
@@ -10,8 +8,9 @@ using MarklogicDataLayer.XQuery.Functions;
 using MarklogicDataLayer.XQuery;
 using System.Net.Http;
 using System.Xml.Linq;
+using System.Collections.Generic;
 
-namespace OfferScrapper.Repositories
+namespace OfferScraper.Repositories
 {
     public class DatabaseLinkRepository : IDataRepository<Link>
     {
@@ -26,7 +25,7 @@ namespace OfferScrapper.Repositories
 
         public void Delete(Link entity)
         {
-            var linkKind = entity.LinkSourceKind == LinkKind.Olx ? "Olx" : "OtoDom";
+            var linkKind = entity.LinkSourceKind == OfferType.Olx ? "Olx" : "OtoDom";
             var query = new XdmpDocumentDelete(new MlUri($"{linkKind}_link_{entity.Id}", MlUriDocumentType.Xml)).Query;
             _restConnector.Submit(query);
         }
@@ -47,7 +46,7 @@ namespace OfferScrapper.Repositories
                 var xml = XDocument.Parse(text);
                 var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
                 var linkUri = xml.Descendants().Where(x => x.Name == "uri").First().Value;
-                var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? LinkKind.Olx : LinkKind.OtoDom;
+                var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
                 result.Add(new Link(linkId, linkUri, linkKind));
             }
             return result.AsQueryable();
@@ -70,7 +69,7 @@ namespace OfferScrapper.Repositories
                 if (linkId == id.ToString())
                 {
                     var linkUri = xml.Descendants().Where(x => x.Name == "uri").First().Value;
-                    var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? LinkKind.Olx : LinkKind.OtoDom;
+                    var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
                     return new Link(linkId, linkUri, linkKind);
                 }
             }
@@ -80,7 +79,7 @@ namespace OfferScrapper.Repositories
 
         public void Insert(Link entity)
         {
-            var linkKind = entity.LinkSourceKind == LinkKind.Olx ? "Olx" : "OtoDom";
+            var linkKind = entity.LinkSourceKind == OfferType.Olx ? "Olx" : "OtoDom";
             var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", $"<link><link_id>{entity.Id}</link_id><uri>{entity.Uri}</uri><link_kind>{linkKind}</link_kind></link>", new[] { linkKind });
             _restConnector.Insert(content);
         }
