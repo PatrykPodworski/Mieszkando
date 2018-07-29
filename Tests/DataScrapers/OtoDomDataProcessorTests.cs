@@ -7,7 +7,7 @@ using System.IO;
 namespace Tests.DataScrapers
 {
     [TestClass]
-    public class OtoDomDataProcessorTests
+    public class OtodomDataProcessorTests
     {
         private HtmlData _data;
         private string _expectedTitle;
@@ -26,7 +26,7 @@ namespace Tests.DataScrapers
             {
                 OfferType = OfferType.Olx,
                 IsProcessed = false,
-                Content = File.ReadAllText("OtoDomSampleContent.txt")
+                Content = File.ReadAllText("../../../Samples/OtodomSampleHtml.txt")
             };
 
             _expectedId = "54951004";

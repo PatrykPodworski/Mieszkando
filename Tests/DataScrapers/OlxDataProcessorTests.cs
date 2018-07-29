@@ -26,7 +26,7 @@ namespace Tests.DataScrapers
             {
                 OfferType = OfferType.Olx,
                 IsProcessed = false,
-                Content = File.ReadAllText("OlxSampleContent.txt")
+                Content = File.ReadAllText("../../../Samples/OlxSampleHtml.txt")
             };
 
             _expectedId = "469945769";
