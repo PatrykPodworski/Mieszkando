@@ -66,7 +66,7 @@ namespace OfferScraper.Repositories
             {
                 var text = ReadAsString(data);
                 var xml = XDocument.Parse(text);
-                var offerId = xml.Descendants().Where(x => x.Name == "id").First().Value;
+                var offerId = xml.Descendants().Where(x => x.Name == "offer_id").First().Value;
                 if (offerId == id.ToString())
                 {
                     return ExtractOfferInfo(xml, offerId);
