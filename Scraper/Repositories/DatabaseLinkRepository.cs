@@ -9,6 +9,10 @@ using MarklogicDataLayer.XQuery;
 using System.Net.Http;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Text;
+using System.IO;
 
 namespace OfferScraper.Repositories
 {
@@ -45,9 +49,7 @@ namespace OfferScraper.Repositories
                 var text = ReadAsString(data); 
                 var xml = XDocument.Parse(text);
                 var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
-                var linkUri = xml.Descendants().Where(x => x.Name == "uri").First().Value;
-                var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
-                result.Add(new Link(linkId, linkUri, linkKind));
+                result.Add(ExtractLinkInfo(xml, linkId));
             }
             return result.AsQueryable();
         }
@@ -68,9 +70,7 @@ namespace OfferScraper.Repositories
                 var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
                 if (linkId == id.ToString())
                 {
-                    var linkUri = xml.Descendants().Where(x => x.Name == "uri").First().Value;
-                    var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
-                    return new Link(linkId, linkUri, linkKind);
+                    return ExtractLinkInfo(xml, linkId);
                 }
             }
 
@@ -80,8 +80,14 @@ namespace OfferScraper.Repositories
         public void Insert(Link entity)
         {
             var linkKind = entity.LinkSourceKind == OfferType.Olx ? "Olx" : "OtoDom";
-            var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", $"<link><link_id>{entity.Id}</link_id><uri>{entity.Uri}</uri><link_kind>{linkKind}</link_kind></link>", new[] { linkKind });
-            _restConnector.Insert(content);
+            using (var writer = new StringWriter())
+            using (var xmlWriter = XmlWriter.Create(writer))
+            {
+                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
+                var serializedLink = writer.GetStringBuilder().ToString();
+                var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind });
+                _restConnector.Insert(content);
+            }
         }
 
         public IQueryable<Link> SearchFor(Expression<Func<Link, bool>> predicate)
@@ -92,6 +98,37 @@ namespace OfferScraper.Repositories
         private static string ReadAsString(HttpContent content)
         {
             return content.ReadAsStringAsync().Result;
+        }
+
+        private static Link ExtractLinkInfo(XDocument xml, string linkId)
+        {
+            var linkUri = xml.Descendants().Where(x => x.Name == "link_uri").First().Value;
+            var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
+            var linkLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == "last_update").First().Value);
+            var linkStatus = Status.Unprocessed;
+            switch (xml.Descendants().Where(x => x.Name == "status").First().Value)
+            {
+                case "Unprocessed":
+                    linkStatus = Status.Unprocessed;
+                    break;
+                case "Pending":
+                    linkStatus = Status.Pending;
+                    break;
+                case "Success":
+                    linkStatus = Status.Success;
+                    break;
+                case "Fatal":
+                    linkStatus = Status.Fatal;
+                    break;
+            }
+            return new Link()
+            {
+                Id = linkId,
+                Uri = linkUri,
+                LinkSourceKind = linkKind,
+                LastUpdate = linkLastUpdate,
+                LinkStatus = linkStatus,
+            };
         }
     }
 }

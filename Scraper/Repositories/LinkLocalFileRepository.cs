@@ -48,7 +48,14 @@ namespace OfferScraper.Repositories
                 while ((line = reader.ReadLine()) != null)
                 {
                     var linkElements = line.Split('|');
-                    var link = new Link(linkElements[0], linkElements[1], linkElements[1].Contains("otodom") ? OfferType.OtoDom : OfferType.Olx);
+                    var link = new Link
+                    {
+                        Id = linkElements[0],
+                        Uri = linkElements[1],
+                        LinkSourceKind = linkElements[1].Contains("otodom") ? OfferType.OtoDom : OfferType.Olx,
+                        LinkStatus = Status.Unprocessed,
+                        LastUpdate = DateTime.Now,
+                    };
                     EntityCollection.Append(link);
                 }
             }
