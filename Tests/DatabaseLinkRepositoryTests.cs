@@ -34,7 +34,15 @@ namespace Tests
         {
             try
             {
-                _sut.Insert(new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.OfferType.Olx));
+                var link1 = new MarklogicDataLayer.DataStructs.Link
+                {
+                    Id = "1",
+                    Uri = "test1",
+                    LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
+                    LastUpdate = DateTime.Now,
+                    LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+                };
+                _sut.Insert(link1);
                 Assert.IsTrue(true);
             } 
             catch (Exception e)
@@ -46,12 +54,28 @@ namespace Tests
         [TestMethod]
         public void GetAll_returns_all_link_documents()
         {
-            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.OfferType.Olx));
-            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("2", "test2", MarklogicDataLayer.DataStructs.OfferType.OtoDom));
+            var link1 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "1",
+                Uri = "test1",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
+                LastUpdate = DateTime.Now,
+                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+            };
+            var link2 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "2",
+                Uri = "test2",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LastUpdate = DateTime.Now,
+                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+            };
+            _sut.Insert(link1);
+            _sut.Insert(link2);
             var result = _sut.GetAll().ToList();
             var expected = new[] {
-                new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.OfferType.Olx),
-                new MarklogicDataLayer.DataStructs.Link("2", "test2", MarklogicDataLayer.DataStructs.OfferType.OtoDom),
+                link1,
+                link2
             };
 
             Assert.AreEqual(2, result.Count);
@@ -61,7 +85,14 @@ namespace Tests
         [TestMethod]
         public void Delete_removes_link_document()
         {
-            var link = new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.OfferType.Olx);
+            var link = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "1",
+                Uri = "test1",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
+                LastUpdate = DateTime.Now,
+                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+            };
             _sut.Insert(link);
             _sut.Delete(link);
             var result = _sut.GetAll().ToList();
@@ -72,11 +103,26 @@ namespace Tests
         [TestMethod]
         public void GetById_returns_single_link_document()
         {
-            
-            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.OfferType.Olx));
-            _sut.Insert(new MarklogicDataLayer.DataStructs.Link("2", "test2", MarklogicDataLayer.DataStructs.OfferType.OtoDom));
+            var link1 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "1",
+                Uri = "test1",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
+                LastUpdate = DateTime.Now,
+                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+            };
+            var link2 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "2",
+                Uri = "test2",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LastUpdate = DateTime.Now,
+                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+            };
+            _sut.Insert(link1);
+            _sut.Insert(link2);
             var result = _sut.GetById(1);
-            var expected = new MarklogicDataLayer.DataStructs.Link("1", "test1", MarklogicDataLayer.DataStructs.OfferType.Olx);
+            var expected = link1;
 
             Assert.AreEqual(expected, result);
         }

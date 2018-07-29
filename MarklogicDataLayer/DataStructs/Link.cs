@@ -1,16 +1,27 @@
-﻿namespace MarklogicDataLayer.DataStructs
+﻿using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
+namespace MarklogicDataLayer.DataStructs
 {
+    [Serializable, XmlRoot("link")]
     public class Link
     {
-        public string Id { get; }
-        public string Uri { get; }
-        public OfferType LinkSourceKind { get; }
+        [XmlElement("link_id")]
+        public string Id { get; set; }
+        [XmlElement("link_uri")]
+        public string Uri { get; set; }
+        [XmlElement("link_kind")]
+        public OfferType LinkSourceKind { get; set; }
+        [XmlElement("last_update")]
+        public DateTime LastUpdate { get; set; }
+        [XmlElement("status")]
+        public Status LinkStatus { get; set; }
 
-        public Link(string id, string uri, OfferType linkKind)
+        public Link()
         {
-            Id = id;
-            Uri = uri;
-            LinkSourceKind = linkKind;
+
         }
 
         public override string ToString()
@@ -28,12 +39,18 @@
 
             return this.Id == item.Id 
                 && this.LinkSourceKind == item.LinkSourceKind 
-                && this.Uri == item.Uri;
+                && this.Uri == item.Uri
+                && this.LinkStatus == item.LinkStatus
+                && this.LastUpdate == item.LastUpdate;
         }
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode() ^ this.LinkSourceKind.GetHashCode() ^ this.Uri.GetHashCode();
+            return this.Id.GetHashCode() 
+                ^ this.LinkSourceKind.GetHashCode() 
+                ^ this.Uri.GetHashCode() 
+                ^ this.LinkStatus.GetHashCode() 
+                ^ this.LastUpdate.GetHashCode();
         }
     }
 }
