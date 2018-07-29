@@ -6,7 +6,7 @@ namespace MarklogicDataLayer.DataStructs
     [Serializable, XmlRoot("html_data")]
     public class HtmlData
     {
-        [XmlElement("id")]
+        [XmlElement("html_data_id")]
         public string Id { get; set; }
         [XmlElement("offer_type")]
         public OfferType OfferType { get; set; }

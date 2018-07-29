@@ -47,7 +47,7 @@ namespace OfferScraper.Repositories
             {
                 var text = ReadAsString(data);
                 var xml = XDocument.Parse(text);
-                var offerId = xml.Descendants().Where(x => x.Name == "id").First().Value;
+                var offerId = xml.Descendants().Where(x => x.Name == "offer_id").First().Value;
                 result.Add(ExtractOfferInfo(xml, offerId));
             }
             return result.AsQueryable();
@@ -55,7 +55,7 @@ namespace OfferScraper.Repositories
 
         public Offer GetById(int id)
         {
-            var query = new CtsSearch("/", new CtsElementValueQuery("id", id.ToString())).Query;
+            var query = new CtsSearch("/", new CtsElementValueQuery("offer_id", id.ToString())).Query;
             var response = _restConnector.Submit(query);
 
             if (!response.Content.IsMimeMultipartContent())
@@ -82,8 +82,8 @@ namespace OfferScraper.Repositories
             using (var xmlWriter = XmlWriter.Create(writer))
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
-                var serializedLink = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedLink, new[] { "Offers" });
+                var serializedOffer = writer.GetStringBuilder().ToString();
+                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { "Offers" });
                 _restConnector.Insert(content);
             }
         }
