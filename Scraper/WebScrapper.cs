@@ -1,8 +1,9 @@
-﻿using MarklogicDataLayer.DataStructs;
-using OfferLinkScraper.DatabaseConnectors;
+﻿
+using MarklogicDataLayer.DataStructs;
+using System.Collections.Generic;
+using MarklogicDataLayer.DatabaseConnectors;
 using OfferScraper.Crawlers;
 using OfferScraper.Repositories;
-using System.Collections.Generic;
 
 namespace OfferScraper
 {
@@ -16,7 +17,7 @@ namespace OfferScraper
         {
             _webCrawlersArray = new IWebServiceCrawler[] { new OlxServiceCrawler(), new OtodomServiceCrawler() };
             _databaseConnectionSettings = new DatabaseConnectionSettings("mieszkando-db");
-            _dataRepository = new LinkLocalFileRepository();
+            _dataRepository = new DatabaseLinkRepository(_databaseConnectionSettings);
         }
 
         public void Run()

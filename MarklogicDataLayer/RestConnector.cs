@@ -1,6 +1,6 @@
-﻿using MarklogicDataLayer.XQuery;
+﻿using MarklogicDataLayer.DatabaseConnectors;
+using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
-using OfferLinkScraper.DatabaseConnectors;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -63,6 +63,10 @@ namespace MarklogicDataLayer
         {
             foreach (var doc in marklogicContent)
             {
+                var collections = doc.Collections?.Length > 0
+                    ? $", ( {string.Join(", ", doc.Collections.Where(x => !string.IsNullOrEmpty(x)).Select(x => $"'{x}'"))} )"
+                    : string.Empty;
+
                 var content = "";
                 switch (doc.Media)
                 {
@@ -78,7 +82,9 @@ namespace MarklogicDataLayer
 
                 var query = "xdmp:document-insert(" +
                             $"'{doc.DocumentName}'," +
-                            $"{content})";
+                            $"{content}, " +
+                            "xdmp:default-permissions()" +
+                            $"{collections})";
 
                 var resp = transaction == null ? Submit(query) : Submit(query, transaction);
             }

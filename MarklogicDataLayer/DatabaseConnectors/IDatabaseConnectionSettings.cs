@@ -1,4 +1,4 @@
-﻿namespace OfferLinkScraper.DatabaseConnectors
+﻿namespace MarklogicDataLayer.DatabaseConnectors
 {
     public interface IDatabaseConnectionSettings
     {

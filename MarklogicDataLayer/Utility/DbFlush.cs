@@ -1,6 +1,6 @@
-﻿using MarklogicDataLayer.XQuery;
+﻿using MarklogicDataLayer.DatabaseConnectors;
+using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
-using OfferLinkScraper.DatabaseConnectors;
 using System;
 using System.Collections.Generic;
 using System.Text;

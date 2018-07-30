@@ -25,8 +25,9 @@ namespace Tests.DataScrapers
             _data = new HtmlData
             {
                 OfferType = OfferType.Olx,
-                IsProcessed = false,
-                Content = File.ReadAllText("../../../Samples/OlxSampleHtml.txt")
+                Status = Status.Unprocessed,
+                Content = File.ReadAllText("../../../Samples/OlxSampleHtml.txt"),
+                LastUpdate = DateTime.Now,
             };
 
             _expectedId = "469945769";
