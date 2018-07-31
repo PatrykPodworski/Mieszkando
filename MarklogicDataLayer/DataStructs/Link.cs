@@ -39,20 +39,20 @@ namespace MarklogicDataLayer.DataStructs
                 return false;
             }
 
-            return this.Id == item.Id
-                && this.LinkSourceKind == item.LinkSourceKind
-                && this.Uri == item.Uri
-                && this.LinkStatus == item.LinkStatus
-                && this.LastUpdate == item.LastUpdate;
+            return Id == item.Id
+                && LinkSourceKind == item.LinkSourceKind
+                && Uri == item.Uri
+                && Status == item.Status
+                && LastUpdate == item.LastUpdate;
         }
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode()
-                ^ this.LinkSourceKind.GetHashCode()
-                ^ this.Uri.GetHashCode()
-                ^ this.LinkStatus.GetHashCode()
-                ^ this.LastUpdate.GetHashCode();
+            return Id.GetHashCode()
+                ^ LinkSourceKind.GetHashCode()
+                ^ Uri.GetHashCode()
+                ^ Status.GetHashCode()
+                ^ LastUpdate.GetHashCode();
         }
     }
 }
