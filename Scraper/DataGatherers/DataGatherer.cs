@@ -39,7 +39,7 @@ namespace OfferScraper.DataGatherers
             {
                 Content = page.Html.InnerHtml,
                 OfferType = link.LinkSourceKind,
-                Status = Status.Unprocessed,
+                Status = Status.New,
                 LastUpdate = DateTime.Now,
             };
         }

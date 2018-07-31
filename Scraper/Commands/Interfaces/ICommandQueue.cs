@@ -3,5 +3,7 @@
     public interface ICommandQueue
     {
         ICommand GetNext();
+
+        bool HasNext();
     }
 }

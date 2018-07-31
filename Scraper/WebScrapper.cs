@@ -1,34 +1,23 @@
-﻿
-using MarklogicDataLayer.DataStructs;
-using System.Collections.Generic;
-using MarklogicDataLayer.DatabaseConnectors;
-using OfferScraper.Crawlers;
-using OfferScraper.Repositories;
+﻿using OfferScraper.Commands.Interfaces;
 
 namespace OfferScraper
 {
     public class WebScrapper
     {
-        private readonly IDatabaseConnectionSettings _databaseConnectionSettings;
-        private readonly IWebServiceCrawler[] _webCrawlersArray;
-        private readonly IDataRepository<Link> _dataRepository;
+        private readonly ICommandQueue _commandQueue;
+        private readonly ICommandBus _commandBus;
 
         public WebScrapper()
         {
-            _webCrawlersArray = new IWebServiceCrawler[] { new OlxServiceCrawler(), new OtodomServiceCrawler() };
-            _databaseConnectionSettings = new DatabaseConnectionSettings("mieszkando-db");
-            _dataRepository = new DatabaseLinkRepository(_databaseConnectionSettings);
         }
 
         public void Run()
         {
-            var links = new List<Link>();
-            foreach (var webCrawler in _webCrawlersArray)
+            while (_commandQueue.HasNext())
             {
-                links.AddRange(webCrawler.GetLinks());
+                var command = _commandQueue.GetNext();
+                _commandBus.Send(command);
             }
-
-            links.ForEach(x => _dataRepository.Insert(x));
         }
     }
 }

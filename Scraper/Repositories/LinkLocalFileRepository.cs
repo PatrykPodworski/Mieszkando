@@ -50,10 +50,9 @@ namespace OfferScraper.Repositories
                     var linkElements = line.Split('|');
                     var link = new Link
                     {
-                        Id = linkElements[0],
                         Uri = linkElements[1],
                         LinkSourceKind = linkElements[1].Contains("otodom") ? OfferType.OtoDom : OfferType.Olx,
-                        LinkStatus = Status.Unprocessed,
+                        Status = Status.New,
                         LastUpdate = DateTime.Now,
                     };
                     EntityCollection.Append(link);

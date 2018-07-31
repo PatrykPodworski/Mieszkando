@@ -1,18 +1,17 @@
-﻿using MarklogicDataLayer.DataStructs;
+﻿using MarklogicDataLayer;
+using MarklogicDataLayer.DatabaseConnectors;
+using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.XQuery;
+using MarklogicDataLayer.XQuery.Functions;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using MarklogicDataLayer.XQuery.Functions;
-using MarklogicDataLayer.DatabaseConnectors;
-using MarklogicDataLayer;
-using MarklogicDataLayer.XQuery;
-using System.Xml.Linq;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Net.Http;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace OfferScraper.Repositories
 {
@@ -105,18 +104,21 @@ namespace OfferScraper.Repositories
             var htmlDataOfferContent = xml.Descendants().Where(x => x.Name == "offer_content").First().Value;
             var htmlDataOfferType = xml.Descendants().Where(x => x.Name == "offer_type").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
             var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == "last_update").First().Value);
-            var htmlDataStatus = Status.Unprocessed;
+            var htmlDataStatus = Status.New;
             switch (xml.Descendants().Where(x => x.Name == "status").First().Value)
             {
-                case "Unprocessed":
-                    htmlDataStatus = Status.Unprocessed;
+                case "New":
+                    htmlDataStatus = Status.New;
                     break;
-                case "Pending":
-                    htmlDataStatus = Status.Pending;
+
+                case "InProcess":
+                    htmlDataStatus = Status.InProcess;
                     break;
+
                 case "Success":
                     htmlDataStatus = Status.Success;
                     break;
+
                 case "Fatal":
                     htmlDataStatus = Status.Fatal;
                     break;

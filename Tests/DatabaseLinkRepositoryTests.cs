@@ -40,7 +40,7 @@ namespace Tests
                     Uri = "test1",
                     LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
                     LastUpdate = DateTime.Now,
-                    LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+                    Status = MarklogicDataLayer.DataStructs.Status.New
                 };
                 _sut.Insert(link1);
                 Assert.IsTrue(true);
@@ -60,7 +60,7 @@ namespace Tests
                 Uri = "test1",
                 LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
                 LastUpdate = DateTime.Now,
-                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+                Status = MarklogicDataLayer.DataStructs.Status.New
             };
             var link2 = new MarklogicDataLayer.DataStructs.Link
             {
@@ -68,7 +68,7 @@ namespace Tests
                 Uri = "test2",
                 LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
                 LastUpdate = DateTime.Now,
-                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+                Status = MarklogicDataLayer.DataStructs.Status.New
             };
             _sut.Insert(link1);
             _sut.Insert(link2);
@@ -91,7 +91,7 @@ namespace Tests
                 Uri = "test1",
                 LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
                 LastUpdate = DateTime.Now,
-                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+                Status = MarklogicDataLayer.DataStructs.Status.New
             };
             _sut.Insert(link);
             _sut.Delete(link);
@@ -109,7 +109,7 @@ namespace Tests
                 Uri = "test1",
                 LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
                 LastUpdate = DateTime.Now,
-                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+                Status = MarklogicDataLayer.DataStructs.Status.New
             };
             var link2 = new MarklogicDataLayer.DataStructs.Link
             {
@@ -117,7 +117,7 @@ namespace Tests
                 Uri = "test2",
                 LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
                 LastUpdate = DateTime.Now,
-                LinkStatus = MarklogicDataLayer.DataStructs.Status.Unprocessed
+                Status = MarklogicDataLayer.DataStructs.Status.New
             };
             _sut.Insert(link1);
             _sut.Insert(link2);

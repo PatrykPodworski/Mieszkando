@@ -25,7 +25,7 @@ namespace Tests.DataScrapers
             _data = new HtmlData
             {
                 OfferType = OfferType.Olx,
-                Status = Status.Unprocessed,
+                Status = Status.New,
                 Content = File.ReadAllText("../../../Samples/OlxSampleHtml.txt"),
                 LastUpdate = DateTime.Now,
             };

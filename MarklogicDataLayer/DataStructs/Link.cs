@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace MarklogicDataLayer.DataStructs
@@ -10,18 +9,21 @@ namespace MarklogicDataLayer.DataStructs
     {
         [XmlElement("link_id")]
         public string Id { get; set; }
+
         [XmlElement("link_uri")]
         public string Uri { get; set; }
+
         [XmlElement("link_kind")]
         public OfferType LinkSourceKind { get; set; }
+
         [XmlElement("last_update")]
         public DateTime LastUpdate { get; set; }
+
         [XmlElement("status")]
-        public Status LinkStatus { get; set; }
+        public Status Status { get; set; }
 
         public Link()
         {
-
         }
 
         public override string ToString()
@@ -37,8 +39,8 @@ namespace MarklogicDataLayer.DataStructs
                 return false;
             }
 
-            return this.Id == item.Id 
-                && this.LinkSourceKind == item.LinkSourceKind 
+            return this.Id == item.Id
+                && this.LinkSourceKind == item.LinkSourceKind
                 && this.Uri == item.Uri
                 && this.LinkStatus == item.LinkStatus
                 && this.LastUpdate == item.LastUpdate;
@@ -46,10 +48,10 @@ namespace MarklogicDataLayer.DataStructs
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode() 
-                ^ this.LinkSourceKind.GetHashCode() 
-                ^ this.Uri.GetHashCode() 
-                ^ this.LinkStatus.GetHashCode() 
+            return this.Id.GetHashCode()
+                ^ this.LinkSourceKind.GetHashCode()
+                ^ this.Uri.GetHashCode()
+                ^ this.LinkStatus.GetHashCode()
                 ^ this.LastUpdate.GetHashCode();
         }
     }

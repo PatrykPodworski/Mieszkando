@@ -1,18 +1,17 @@
-﻿using MarklogicDataLayer.DataStructs;
+﻿using MarklogicDataLayer;
+using MarklogicDataLayer.DatabaseConnectors;
+using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.XQuery;
+using MarklogicDataLayer.XQuery.Functions;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using MarklogicDataLayer.DatabaseConnectors;
-using MarklogicDataLayer;
-using MarklogicDataLayer.XQuery.Functions;
-using MarklogicDataLayer.XQuery;
 using System.Net.Http;
-using System.Xml.Linq;
-using System.Collections.Generic;
-using System.Xml.Serialization;
 using System.Xml;
-using System.Text;
-using System.IO;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace OfferScraper.Repositories
 {
@@ -46,7 +45,7 @@ namespace OfferScraper.Repositories
             var result = new List<Link>();
             foreach (var data in content)
             {
-                var text = ReadAsString(data); 
+                var text = ReadAsString(data);
                 var xml = XDocument.Parse(text);
                 var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
                 result.Add(ExtractLinkInfo(xml, linkId));
@@ -105,29 +104,31 @@ namespace OfferScraper.Repositories
             var linkUri = xml.Descendants().Where(x => x.Name == "link_uri").First().Value;
             var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
             var linkLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == "last_update").First().Value);
-            var linkStatus = Status.Unprocessed;
+            var linkStatus = Status.New;
             switch (xml.Descendants().Where(x => x.Name == "status").First().Value)
             {
-                case "Unprocessed":
-                    linkStatus = Status.Unprocessed;
+                case "New":
+                    linkStatus = Status.New;
                     break;
-                case "Pending":
-                    linkStatus = Status.Pending;
+
+                case "InProcess":
+                    linkStatus = Status.InProcess;
                     break;
+
                 case "Success":
                     linkStatus = Status.Success;
                     break;
+
                 case "Fatal":
                     linkStatus = Status.Fatal;
                     break;
             }
             return new Link()
             {
-                Id = linkId,
                 Uri = linkUri,
                 LinkSourceKind = linkKind,
                 LastUpdate = linkLastUpdate,
-                LinkStatus = linkStatus,
+                Status = linkStatus,
             };
         }
     }
