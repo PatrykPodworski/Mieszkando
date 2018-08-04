@@ -9,7 +9,7 @@ namespace MarklogicDataLayer.XQuery.Functions
         public static readonly Sequence DefaultOptions = new Sequence(new Literal("unfiltered"));
 
         readonly string _node;
-        readonly Function _query;
+        readonly Expression _query;
         readonly Sequence _options;
 
         public CtsSearch(string node, Function query, Sequence options = null)
@@ -20,6 +20,20 @@ namespace MarklogicDataLayer.XQuery.Functions
         }
 
         public CtsSearch(Function node, Function query, Sequence options = null)
+        {
+            _node = node.Query;
+            _query = query;
+            _options = options ?? new Sequence();
+        }
+
+        public CtsSearch(string node, Expression query, Sequence options = null)
+        {
+            _node = node;
+            _query = query;
+            _options = options ?? new Sequence();
+        }
+
+        public CtsSearch(Function node, Expression query, Sequence options = null)
         {
             _node = node.Query;
             _query = query;

@@ -1,5 +1,6 @@
 ﻿using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.Utility;
+using MarklogicDataLayer.XQuery.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfferScraper.Repositories;
 using System;
@@ -155,6 +156,55 @@ namespace Tests
             var expected = offer1;
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Get_returns_specified_number_of_documents_queried_by_expression()
+        {
+            var offer1 = new MarklogicDataLayer.DataStructs.Offer
+            {
+                Id = "1",
+                Title = "title",
+                Description = "lorem ipsum",
+                Cost = "100.0",
+                BonusCost = "1.0",
+                District = "wealthy",
+                Rooms = "42",
+                Area = "polite",
+                DateOfPosting = "1970-01-01",
+                DateOfScraping = "1970-01-01",
+            };
+            var offer2 = new MarklogicDataLayer.DataStructs.Offer
+            {
+                Id = "2",
+                Title = "title2",
+                Description = "lorem ipsum2",
+                Cost = "101.0",
+                BonusCost = "11.0",
+                District = "wealthy2",
+                Rooms = "422",
+                Area = "polite2",
+                DateOfPosting = "1971-01-01",
+                DateOfScraping = "1972-01-01",
+            };
+            var offer3 = new MarklogicDataLayer.DataStructs.Offer
+            {
+                Id = "3",
+                Title = "title3",
+                Description = "lorem ipsum3",
+                Cost = "101.0",
+                BonusCost = "11.0",
+                District = "wealthy2",
+                Rooms = "422",
+                Area = "polite2",
+                DateOfPosting = "1971-01-01",
+                DateOfScraping = "1972-01-01",
+            };
+            _sut.Insert(new[] { offer1, offer2, offer3 });
+            var result = _sut.Get(new CtsElementValueQuery("district", "wealthy2"), 1).ToList();
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("wealthy2", result.First().District);
         }
     }
 }

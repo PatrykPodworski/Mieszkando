@@ -36,21 +36,7 @@ namespace OfferScraper.Repositories
         public IQueryable<HtmlData> GetAll()
         {
             var query = new CtsSearch("/", new CtsCollectionQuery(new[] { "OlxHtmlData", "OtoDomHtmlData" })).Query;
-            var response = _restConnector.Submit(query);
-
-            if (!response.Content.IsMimeMultipartContent())
-                return new List<HtmlData>().AsQueryable();
-
-            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
-            var result = new List<HtmlData>();
-            foreach (var data in content)
-            {
-                var text = ReadAsString(data);
-                var xml = XDocument.Parse(text);
-                var htmlDataId = xml.Descendants().Where(x => x.Name == "html_data_id").First().Value;
-                result.Add(ExtractHtmlDataInfo(xml, htmlDataId));
-            }
-            return result.AsQueryable();
+            return GetFromQuery(query);
         }
 
         public HtmlData GetById(int id)
@@ -94,6 +80,51 @@ namespace OfferScraper.Repositories
             throw new NotImplementedException();
         }
 
+        public void Insert(HtmlData entity, MlTransactionScope transaction)
+        {
+            var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
+            using (var writer = new StringWriter())
+            using (var xmlWriter = XmlWriter.Create(writer))
+            {
+                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
+                var serializedHtmlData = writer.GetStringBuilder().ToString();
+                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType });
+                _restConnector.Insert(content, transaction);
+            }
+        }
+
+        public void Insert(IEnumerable<HtmlData> entities, MlTransactionScope transaction)
+        {
+            foreach (var entity in entities)
+            {
+                Insert(entity, transaction);
+            }
+        }
+
+        public void Update(HtmlData entity) => Insert(entity);
+
+        public void Update(HtmlData entity, MlTransactionScope transaction) => Insert(entity, transaction);
+
+        public void Update(IEnumerable<HtmlData> entities, MlTransactionScope transaction) => Insert(entities, transaction);
+
+        public void Insert(IEnumerable<HtmlData> entities)
+        {
+            var transaction = _restConnector.BeginTransaction();
+            foreach (var entity in entities)
+            {
+                Insert(entity, transaction);
+            }
+            _restConnector.CommitTransaction(transaction);
+        }
+
+        public void Update(IEnumerable<HtmlData> entities) => Insert(entities);
+
+        public IQueryable<HtmlData> Get(MarklogicDataLayer.XQuery.Expression expression, long numberOfElements)
+        {
+            var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements).Query;
+            return GetFromQuery(query);
+        }
+
         private static string ReadAsString(HttpContent content)
         {
             return content.ReadAsStringAsync().Result;
@@ -133,31 +164,23 @@ namespace OfferScraper.Repositories
             };
         }
 
-        public void Insert(HtmlData entity, MlTransactionScope transaction)
+        private IQueryable<HtmlData> GetFromQuery(string query)
         {
-            var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
-            using (var writer = new StringWriter())
-            using (var xmlWriter = XmlWriter.Create(writer))
+            var response = _restConnector.Submit(query);
+
+            if (!response.Content.IsMimeMultipartContent())
+                return new List<HtmlData>().AsQueryable();
+
+            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
+            var result = new List<HtmlData>();
+            foreach (var data in content)
             {
-                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
-                var serializedHtmlData = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType });
-                _restConnector.Insert(content, transaction);
+                var text = ReadAsString(data);
+                var xml = XDocument.Parse(text);
+                var htmlDataId = xml.Descendants().Where(x => x.Name == "html_data_id").First().Value;
+                result.Add(ExtractHtmlDataInfo(xml, htmlDataId));
             }
+            return result.AsQueryable();
         }
-
-        public void Insert(IEnumerable<HtmlData> entities, MlTransactionScope transaction)
-        {
-            foreach (var entity in entities)
-            {
-                Insert(entity, transaction);
-            }
-        }
-
-        public void Update(HtmlData entity) => Insert(entity);
-
-        public void Update(HtmlData entity, MlTransactionScope transaction) => Insert(entity, transaction);
-
-        public void Update(IEnumerable<HtmlData> entities, MlTransactionScope transaction) => Insert(entities, transaction);
     }
 }

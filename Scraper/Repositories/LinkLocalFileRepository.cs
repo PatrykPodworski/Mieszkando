@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using MarklogicDataLayer;
+using MarklogicDataLayer.XQuery;
 
 namespace OfferScraper.Repositories
 {
@@ -76,11 +77,6 @@ namespace OfferScraper.Repositories
             }
         }
 
-        public IQueryable<Link> SearchFor(Expression<Func<Link, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion IDataRepository<Link> members
 
         public static int GetMaxId()
@@ -120,6 +116,21 @@ namespace OfferScraper.Repositories
         }
 
         public void Update(IEnumerable<Link> entities, MlTransactionScope transaction)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(IEnumerable<Link> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Link> Get(MarklogicDataLayer.XQuery.Expression expression, long numberOfElements)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(IEnumerable<Link> entities)
         {
             throw new NotImplementedException();
         }

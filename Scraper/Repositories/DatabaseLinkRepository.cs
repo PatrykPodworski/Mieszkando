@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Xml;
 using System.Xml.Linq;
@@ -36,21 +35,7 @@ namespace OfferScraper.Repositories
         public IQueryable<Link> GetAll()
         {
             var query = new CtsSearch("/", new CtsCollectionQuery(new[] { "Olx", "OtoDom" })).Query;
-            var response = _restConnector.Submit(query);
-
-            if (!response.Content.IsMimeMultipartContent())
-                return new List<Link>().AsQueryable();
-
-            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
-            var result = new List<Link>();
-            foreach (var data in content)
-            {
-                var text = ReadAsString(data);
-                var xml = XDocument.Parse(text);
-                var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
-                result.Add(ExtractLinkInfo(xml, linkId));
-            }
-            return result.AsQueryable();
+            return GetFromQuery(query);
         }
 
         public Link GetById(int id)
@@ -78,6 +63,11 @@ namespace OfferScraper.Repositories
 
         public void Insert(Link entity)
         {
+            Insert(entity, null);
+        }
+
+        public void Insert(Link entity, MlTransactionScope transaction)
+        {
             var linkKind = entity.LinkSourceKind == OfferType.Olx ? "Olx" : "OtoDom";
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
@@ -85,13 +75,40 @@ namespace OfferScraper.Repositories
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedLink = writer.GetStringBuilder().ToString();
                 var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind });
-                _restConnector.Insert(content);
+                _restConnector.Insert(content, transaction);
             }
         }
 
-        public IQueryable<Link> SearchFor(Expression<Func<Link, bool>> predicate)
+        public void Insert(IEnumerable<Link> entities, MlTransactionScope transaction)
         {
-            throw new NotImplementedException();
+            foreach (var entity in entities)
+            {
+                Insert(entity, transaction);
+            }
+        }
+
+        public void Insert(IEnumerable<Link> entities)
+        {
+            var transaction = _restConnector.BeginTransaction();
+            foreach (var entity in entities)
+            {
+                Insert(entity, transaction);
+            }
+            _restConnector.CommitTransaction(transaction);
+        }
+
+        public void Update(Link entity) => Insert(entity);
+
+        public void Update(Link entity, MlTransactionScope transaction) => Insert(entity, transaction);
+
+        public void Update(IEnumerable<Link> entities, MlTransactionScope transaction) => Insert(entities, transaction);
+
+        public void Update(IEnumerable<Link> entities) => Update(entities);
+
+        public IQueryable<Link> Get(Expression expression, long numberOfElements)
+        {
+            var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements).Query;
+            return GetFromQuery(query);
         }
 
         private static string ReadAsString(HttpContent content)
@@ -133,31 +150,23 @@ namespace OfferScraper.Repositories
             };
         }
 
-        public void Insert(Link entity, MlTransactionScope transaction)
+        private IQueryable<Link> GetFromQuery(string query)
         {
-            var linkKind = entity.LinkSourceKind == OfferType.Olx ? "Olx" : "OtoDom";
-            using (var writer = new StringWriter())
-            using (var xmlWriter = XmlWriter.Create(writer))
+            var response = _restConnector.Submit(query);
+
+            if (!response.Content.IsMimeMultipartContent())
+                return new List<Link>().AsQueryable();
+
+            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
+            var result = new List<Link>();
+            foreach (var data in content)
             {
-                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
-                var serializedLink = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind });
-                _restConnector.Insert(content, transaction);
+                var text = ReadAsString(data);
+                var xml = XDocument.Parse(text);
+                var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
+                result.Add(ExtractLinkInfo(xml, linkId));
             }
+            return result.AsQueryable();
         }
-
-        public void Insert(IEnumerable<Link> entities, MlTransactionScope transaction)
-        {
-            foreach (var entity in entities)
-            {
-                Insert(entity, transaction);
-            }
-        }
-
-        public void Update(Link entity) => Insert(entity);
-
-        public void Update(Link entity, MlTransactionScope transaction) => Insert(entity, transaction);
-
-        public void Update(IEnumerable<Link> entities, MlTransactionScope transaction) => Insert(entities, transaction);
     }
 }
