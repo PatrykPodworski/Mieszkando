@@ -124,5 +124,31 @@ namespace OfferScraper.Repositories
                 DateOfScraping = offerDateOfScraping,
             };
         }
+
+        public void Insert(Offer entity, MlTransactionScope transaction)
+        {
+            using (var writer = new StringWriter())
+            using (var xmlWriter = XmlWriter.Create(writer))
+            {
+                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
+                var serializedOffer = writer.GetStringBuilder().ToString();
+                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { "Offers" });
+                _restConnector.Insert(content, transaction);
+            }
+        }
+
+        public void Insert(IEnumerable<Offer> entities, MlTransactionScope transaction)
+        {
+            foreach (var entity in entities)
+            {
+                Insert(entity, transaction);
+            }
+        }
+
+        public void Update(Offer entity) => Insert(entity);
+
+        public void Update(Offer entity, MlTransactionScope transaction) => Insert(entity, transaction);
+
+        public void Update(IEnumerable<Offer> entities, MlTransactionScope transaction) => Insert(entities, transaction);
     }
 }

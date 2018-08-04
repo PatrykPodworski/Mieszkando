@@ -131,5 +131,32 @@ namespace OfferScraper.Repositories
                 Status = linkStatus,
             };
         }
+
+        public void Insert(Link entity, MlTransactionScope transaction)
+        {
+            var linkKind = entity.LinkSourceKind == OfferType.Olx ? "Olx" : "OtoDom";
+            using (var writer = new StringWriter())
+            using (var xmlWriter = XmlWriter.Create(writer))
+            {
+                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
+                var serializedLink = writer.GetStringBuilder().ToString();
+                var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind });
+                _restConnector.Insert(content, transaction);
+            }
+        }
+
+        public void Insert(IEnumerable<Link> entities, MlTransactionScope transaction)
+        {
+            foreach (var entity in entities)
+            {
+                Insert(entity, transaction);
+            }
+        }
+
+        public void Update(Link entity) => Insert(entity);
+
+        public void Update(Link entity, MlTransactionScope transaction) => Insert(entity, transaction);
+
+        public void Update(IEnumerable<Link> entities, MlTransactionScope transaction) => Insert(entities, transaction);
     }
 }
