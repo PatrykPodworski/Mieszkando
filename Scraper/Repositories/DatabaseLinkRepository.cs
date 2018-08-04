@@ -125,6 +125,7 @@ namespace OfferScraper.Repositories
             }
             return new Link()
             {
+                Id = linkId,
                 Uri = linkUri,
                 LinkSourceKind = linkKind,
                 LastUpdate = linkLastUpdate,
