@@ -112,7 +112,7 @@ namespace OfferScraper.Repositories
 
         public void Update(IEnumerable<Offer> entities) => Insert(entities);
 
-        public IQueryable<Offer> Get(MarklogicDataLayer.XQuery.Expression expression, long numberOfElements)
+        public IQueryable<Offer> Get(MarklogicDataLayer.XQuery.Expression expression, long numberOfElements = long.MinValue)
         {
             var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements).Query;
             return GetFromQuery(query);

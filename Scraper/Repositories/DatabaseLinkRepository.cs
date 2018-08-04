@@ -105,7 +105,7 @@ namespace OfferScraper.Repositories
 
         public void Update(IEnumerable<Link> entities) => Update(entities);
 
-        public IQueryable<Link> Get(Expression expression, long numberOfElements)
+        public IQueryable<Link> Get(Expression expression, long numberOfElements = long.MinValue)
         {
             var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements).Query;
             return GetFromQuery(query);
