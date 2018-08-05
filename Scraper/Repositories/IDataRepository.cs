@@ -28,7 +28,7 @@ namespace OfferScraper.Repositories
 
         void Delete(T entity);
 
-        IQueryable<T> Get(Expression expression, long numberOfElements);
+        IQueryable<T> Get(string elementName, string elementValue, long numberOfElements);
 
         T GetById(int id);
 

@@ -139,5 +139,10 @@ namespace OfferScraper.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<Link> Get(string elementName, string elementValue, long numberOfElements)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
