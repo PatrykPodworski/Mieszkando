@@ -1,15 +1,23 @@
-﻿using OfferScraper.Commands.Interfaces;
+﻿using MarklogicDataLayer.XQuery;
+using OfferScraper.Commands.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OfferScraper.Repositories
 {
-    internal class DatabaseCommandRepository : IDataRepository<ICommand>
+    public class DatabaseCommandRepository : IDataRepository<ICommand>
     {
         public void Delete(ICommand entity)
         {
             throw new System.NotImplementedException();
         }
 
-        public System.Linq.IQueryable<ICommand> GetAll()
+        public IQueryable<ICommand> Get(Expression expression, long numberOfElements)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IQueryable<ICommand> GetAll()
         {
             throw new System.NotImplementedException();
         }
@@ -34,12 +42,12 @@ namespace OfferScraper.Repositories
             throw new System.NotImplementedException();
         }
 
-        public void Insert(System.Collections.Generic.IEnumerable<ICommand> entities, ITransaction transaction)
+        public void Insert(IEnumerable<ICommand> entities, ITransaction transaction)
         {
             throw new System.NotImplementedException();
         }
 
-        public System.Linq.IQueryable<ICommand> SearchFor(System.Linq.Expressions.Expression<System.Func<ICommand, bool>> predicate)
+        public void Insert(IEnumerable<ICommand> entities)
         {
             throw new System.NotImplementedException();
         }
@@ -54,7 +62,12 @@ namespace OfferScraper.Repositories
             throw new System.NotImplementedException();
         }
 
-        public void Update(System.Collections.Generic.IEnumerable<ICommand> entities, ITransaction transaction)
+        public void Update(IEnumerable<ICommand> entities, ITransaction transaction)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Update(IEnumerable<ICommand> entities)
         {
             throw new System.NotImplementedException();
         }

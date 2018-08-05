@@ -66,7 +66,7 @@ namespace OfferScraper.Repositories
             Insert(entity, null);
         }
 
-        public void Insert(Link entity, MlTransactionScope transaction)
+        public void Insert(Link entity, ITransaction transaction)
         {
             var linkKind = entity.LinkSourceKind == OfferType.Olx ? "Olx" : "OtoDom";
             using (var writer = new StringWriter())
@@ -75,11 +75,11 @@ namespace OfferScraper.Repositories
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedLink = writer.GetStringBuilder().ToString();
                 var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind });
-                _restConnector.Insert(content, transaction);
+                _restConnector.Insert(content, transaction.GetScope());
             }
         }
 
-        public void Insert(IEnumerable<Link> entities, MlTransactionScope transaction)
+        public void Insert(IEnumerable<Link> entities, ITransaction transaction)
         {
             foreach (var entity in entities)
             {
@@ -89,19 +89,20 @@ namespace OfferScraper.Repositories
 
         public void Insert(IEnumerable<Link> entities)
         {
-            var transaction = _restConnector.BeginTransaction();
-            foreach (var entity in entities)
+            using (var transaction = GetTransaction())
             {
-                Insert(entity, transaction);
+                foreach (var entity in entities)
+                {
+                    Insert(entity, transaction);
+                }
             }
-            _restConnector.CommitTransaction(transaction);
         }
 
         public void Update(Link entity) => Insert(entity);
 
-        public void Update(Link entity, MlTransactionScope transaction) => Insert(entity, transaction);
+        public void Update(Link entity, ITransaction transaction) => Insert(entity, transaction);
 
-        public void Update(IEnumerable<Link> entities, MlTransactionScope transaction) => Insert(entities, transaction);
+        public void Update(IEnumerable<Link> entities, ITransaction transaction) => Insert(entities, transaction);
 
         public void Update(IEnumerable<Link> entities) => Update(entities);
 
@@ -128,7 +129,7 @@ namespace OfferScraper.Repositories
                     linkStatus = Status.New;
                     break;
 
-                case "InProcess":
+                case "InProgress":
                     linkStatus = Status.InProgress;
                     break;
 
@@ -168,6 +169,7 @@ namespace OfferScraper.Repositories
             }
             return result.AsQueryable();
         }
+
         public ITransaction GetTransaction()
         {
             return new DatabaseTransaction(_restConnector);

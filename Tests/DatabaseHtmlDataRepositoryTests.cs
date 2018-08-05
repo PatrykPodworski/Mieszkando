@@ -4,9 +4,7 @@ using MarklogicDataLayer.XQuery.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfferScraper.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Tests
 {
@@ -153,7 +151,7 @@ namespace Tests
                 Content = "test3",
                 OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
                 LastUpdate = DateTime.Now,
-                Status = MarklogicDataLayer.DataStructs.Status.InProcess
+                Status = MarklogicDataLayer.DataStructs.Status.InProgress
             };
             _sut.Insert(new[] { htmlData1, htmlData2, htmlData3 });
             var result = _sut.Get(new CtsElementValueQuery("status", "New"), 1).ToList();

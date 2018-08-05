@@ -75,12 +75,7 @@ namespace OfferScraper.Repositories
             }
         }
 
-        public IQueryable<HtmlData> SearchFor(Expression<Func<HtmlData, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(HtmlData entity, MlTransactionScope transaction)
+        public void Insert(HtmlData entity, ITransaction transaction)
         {
             var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
             using (var writer = new StringWriter())
@@ -89,11 +84,11 @@ namespace OfferScraper.Repositories
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedHtmlData = writer.GetStringBuilder().ToString();
                 var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType });
-                _restConnector.Insert(content, transaction);
+                _restConnector.Insert(content, transaction.GetScope());
             }
         }
 
-        public void Insert(IEnumerable<HtmlData> entities, MlTransactionScope transaction)
+        public void Insert(IEnumerable<HtmlData> entities, ITransaction transaction)
         {
             foreach (var entity in entities)
             {
@@ -103,18 +98,19 @@ namespace OfferScraper.Repositories
 
         public void Update(HtmlData entity) => Insert(entity);
 
-        public void Update(HtmlData entity, MlTransactionScope transaction) => Insert(entity, transaction);
+        public void Update(HtmlData entity, ITransaction transaction) => Insert(entity, transaction);
 
-        public void Update(IEnumerable<HtmlData> entities, MlTransactionScope transaction) => Insert(entities, transaction);
+        public void Update(IEnumerable<HtmlData> entities, ITransaction transaction) => Insert(entities, transaction);
 
         public void Insert(IEnumerable<HtmlData> entities)
         {
-            var transaction = _restConnector.BeginTransaction();
-            foreach (var entity in entities)
+            using (var transaction = GetTransaction())
             {
-                Insert(entity, transaction);
+                foreach (var entity in entities)
+                {
+                    Insert(entity, transaction);
+                }
             }
-            _restConnector.CommitTransaction(transaction);
         }
 
         public void Update(IEnumerable<HtmlData> entities) => Insert(entities);
@@ -142,7 +138,7 @@ namespace OfferScraper.Repositories
                     htmlDataStatus = Status.New;
                     break;
 
-                case "InProcess":
+                case "InProgress":
                     htmlDataStatus = Status.InProgress;
                     break;
 
@@ -182,6 +178,7 @@ namespace OfferScraper.Repositories
             }
             return result.AsQueryable();
         }
+
         public ITransaction GetTransaction()
         {
             return new DatabaseTransaction(_restConnector);

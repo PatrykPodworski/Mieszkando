@@ -25,7 +25,8 @@ namespace OfferScraper.Commands.Implementation
         private IEnumerable<HtmlData> GetSamples(int numberOfSamples)
         {
             return _htmlDataRepository
-                 .SearchFor(x => x.Status == Status.New)
+                 .GetAll()
+                 .Where(x => x.Status == Status.New)
                  .Take(numberOfSamples);
         }
 

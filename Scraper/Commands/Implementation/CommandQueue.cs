@@ -24,8 +24,8 @@ namespace OfferScraper.Commands.Implementation
         public ICommand GetNext()
         {
             return _repository
-                    .SearchFor(x => x.IsNew())
-                    .FirstOrDefault();
+                    .GetAll()
+                    .FirstOrDefault(x => x.IsNew());
         }
 
         public bool HasNext()

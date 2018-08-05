@@ -32,7 +32,8 @@ namespace OfferScraper.Commands.Implementation
         private IQueryable<Link> GetLinks(int numberOfLinks)
         {
             return _linkRepository
-                    .SearchFor(x => x.Status == Status.New)
+                    .GetAll()
+                    .Where(x => x.Status == Status.New)
                     .Take(numberOfLinks);
         }
 
