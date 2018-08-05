@@ -26,25 +26,19 @@ namespace OfferScraper.Repositories
             _extractionMethod = extractionMethod;
         }
 
-        public virtual void Delete(T entity)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Delete(T entity);
 
         public IQueryable<T> Get(string elementName, string elementValue, long numberOfElements)
         {
             return GetWithExpression(new CtsElementValueQuery(elementName, elementValue), numberOfElements);
         }
 
-        public virtual IQueryable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
             return GetWithExpression(new EmptyExpression(), long.MinValue);
         }
 
-        public virtual T GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract T GetById(int id);
 
         public ITransaction GetTransaction()
         {
@@ -59,10 +53,7 @@ namespace OfferScraper.Repositories
             }
         }
 
-        public virtual void Insert(T entity, ITransaction transaction)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Insert(T entity, ITransaction transaction);
 
         public void Insert(IEnumerable<T> entities, ITransaction transaction)
         {
