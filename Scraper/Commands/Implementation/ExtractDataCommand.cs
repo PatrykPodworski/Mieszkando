@@ -1,9 +1,12 @@
-﻿using OfferScraper.Commands.Interfaces;
-
-namespace OfferScraper.Commands.Implementation
+﻿namespace OfferScraper.Commands.Implementation
 {
-    public class ExtractDataCommand : ICommand
+    public class ExtractDataCommand : BaseCommand
     {
         public int NumberOfSamples { get; set; }
+
+        public ExtractDataCommand()
+        {
+            NumberOfSamples = 1;
+        }
     }
 }

@@ -112,7 +112,7 @@ namespace OfferScraper.Repositories
                     break;
 
                 case "InProcess":
-                    htmlDataStatus = Status.InProcess;
+                    htmlDataStatus = Status.InProgress;
                     break;
 
                 case "Success":
@@ -120,7 +120,7 @@ namespace OfferScraper.Repositories
                     break;
 
                 case "Fatal":
-                    htmlDataStatus = Status.Fatal;
+                    htmlDataStatus = Status.Failed;
                     break;
             }
             return new HtmlData()
@@ -133,7 +133,7 @@ namespace OfferScraper.Repositories
             };
         }
 
-        public void Insert(HtmlData entity, MlTransactionScope transaction)
+        public void Insert(HtmlData entity, ITransaction transaction)
         {
             var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
             using (var writer = new StringWriter())
@@ -142,11 +142,11 @@ namespace OfferScraper.Repositories
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedHtmlData = writer.GetStringBuilder().ToString();
                 var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType });
-                _restConnector.Insert(content, transaction);
+                _restConnector.Insert(content, transaction.GetScope());
             }
         }
 
-        public void Insert(IEnumerable<HtmlData> entities, MlTransactionScope transaction)
+        public void Insert(IEnumerable<HtmlData> entities, ITransaction transaction)
         {
             foreach (var entity in entities)
             {
@@ -156,8 +156,13 @@ namespace OfferScraper.Repositories
 
         public void Update(HtmlData entity) => Insert(entity);
 
-        public void Update(HtmlData entity, MlTransactionScope transaction) => Insert(entity, transaction);
+        public void Update(HtmlData entity, ITransaction transaction) => Insert(entity, transaction);
 
-        public void Update(IEnumerable<HtmlData> entities, MlTransactionScope transaction) => Insert(entities, transaction);
+        public void Update(IEnumerable<HtmlData> entities, ITransaction transaction) => Insert(entities, transaction);
+
+        public ITransaction GetTransaction()
+        {
+            return new DatabaseTransaction(_restConnector);
+        }
     }
 }

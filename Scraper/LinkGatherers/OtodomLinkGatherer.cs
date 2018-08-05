@@ -14,7 +14,7 @@ namespace OfferScraper.LinkGatherers
         private static string PageQuery => $"&page=";
         private static string AdvertisementClassName => "listing_no_promo";
 
-        public IEnumerable<Link> Gather()
+        public ICollection<Link> Gather()
         {
             var links = new List<Link>();
             var browser = BrowserFactory.GetBrowser();

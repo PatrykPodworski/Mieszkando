@@ -1,7 +1,9 @@
-﻿namespace OfferScraper.DataGatherers
+﻿using MarklogicDataLayer.DataStructs;
+
+namespace OfferScraper.DataGatherers
 {
     public interface IDataGatherer
     {
-        void Gather(int numberOfLinks);
+        HtmlData Gather(Link link);
     }
 }

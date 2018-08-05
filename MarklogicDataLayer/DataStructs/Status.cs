@@ -3,8 +3,8 @@
     public enum Status
     {
         New,
-        InProcess,
+        InProgress,
         Success,
-        Fatal
+        Failed
     }
 }

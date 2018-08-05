@@ -1,9 +1,8 @@
 ﻿using MarklogicDataLayer.DataStructs;
-using OfferScraper.Commands.Interfaces;
 
 namespace OfferScraper.Commands.Implementation
 {
-    public class GetLinksCommand : ICommand
+    public class GetLinksCommand : BaseCommand
     {
         public OfferType Type { get; set; }
     }

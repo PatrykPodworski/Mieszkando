@@ -1,18 +1,17 @@
-﻿using MarklogicDataLayer.DataStructs;
+﻿using MarklogicDataLayer;
+using MarklogicDataLayer.DatabaseConnectors;
+using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.XQuery;
+using MarklogicDataLayer.XQuery.Functions;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using MarklogicDataLayer.DatabaseConnectors;
-using MarklogicDataLayer;
-using MarklogicDataLayer.XQuery.Functions;
-using MarklogicDataLayer.XQuery;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Net.Http;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace OfferScraper.Repositories
 {
@@ -125,7 +124,7 @@ namespace OfferScraper.Repositories
             };
         }
 
-        public void Insert(Offer entity, MlTransactionScope transaction)
+        public void Insert(Offer entity, ITransaction transaction)
         {
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
@@ -133,11 +132,11 @@ namespace OfferScraper.Repositories
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedOffer = writer.GetStringBuilder().ToString();
                 var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { "Offers" });
-                _restConnector.Insert(content, transaction);
+                _restConnector.Insert(content, transaction.GetScope());
             }
         }
 
-        public void Insert(IEnumerable<Offer> entities, MlTransactionScope transaction)
+        public void Insert(IEnumerable<Offer> entities, ITransaction transaction)
         {
             foreach (var entity in entities)
             {
@@ -147,8 +146,13 @@ namespace OfferScraper.Repositories
 
         public void Update(Offer entity) => Insert(entity);
 
-        public void Update(Offer entity, MlTransactionScope transaction) => Insert(entity, transaction);
+        public void Update(Offer entity, ITransaction transaction) => Insert(entity, transaction);
 
-        public void Update(IEnumerable<Offer> entities, MlTransactionScope transaction) => Insert(entities, transaction);
+        public void Update(IEnumerable<Offer> entities, ITransaction transaction) => Insert(entities, transaction);
+
+        public ITransaction GetTransaction()
+        {
+            return new DatabaseTransaction(_restConnector);
+        }
     }
 }

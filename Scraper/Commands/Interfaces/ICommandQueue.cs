@@ -5,5 +5,7 @@
         ICommand GetNext();
 
         bool HasNext();
+
+        void Add(ICommand command);
     }
 }

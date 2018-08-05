@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using MarklogicDataLayer;
 
 namespace OfferScraper.Repositories
 {
@@ -99,12 +98,12 @@ namespace OfferScraper.Repositories
             File.Delete($"{FileName}Temp{Extension}");
         }
 
-        public void Insert(Link entity, MlTransactionScope transaction)
+        public void Insert(Link entity, ITransaction transaction)
         {
             throw new NotImplementedException();
         }
 
-        public void Insert(IEnumerable<Link> entities, MlTransactionScope transaction)
+        public void Insert(IEnumerable<Link> entities, ITransaction transaction)
         {
             throw new NotImplementedException();
         }
@@ -114,12 +113,17 @@ namespace OfferScraper.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(Link entity, MlTransactionScope transaction)
+        public void Update(Link entity, ITransaction transaction)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(IEnumerable<Link> entities, MlTransactionScope transaction)
+        public void Update(IEnumerable<Link> entities, ITransaction transaction)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ITransaction GetTransaction()
         {
             throw new NotImplementedException();
         }

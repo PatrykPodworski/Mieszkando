@@ -7,8 +7,10 @@ namespace OfferScraper
         private readonly ICommandQueue _commandQueue;
         private readonly ICommandBus _commandBus;
 
-        public WebScrapper()
+        public WebScrapper(ICommandBus commandBus, ICommandQueue commandQueue)
         {
+            _commandBus = commandBus;
+            _commandQueue = commandQueue;
         }
 
         public void Run()

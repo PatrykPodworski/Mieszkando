@@ -15,7 +15,7 @@ namespace OfferScraper.LinkGatherers
         private static string PageQuery => $"?page=";
         private static string BaseUri => "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/";
 
-        public IEnumerable<Link> Gather()
+        public ICollection<Link> Gather()
         {
             var links = new List<Link>();
             var browser = BrowserFactory.GetBrowser();

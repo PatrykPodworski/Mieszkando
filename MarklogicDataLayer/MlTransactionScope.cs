@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MarklogicDataLayer
+﻿namespace MarklogicDataLayer
 {
     public class MlTransactionScope
     {

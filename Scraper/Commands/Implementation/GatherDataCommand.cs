@@ -1,9 +1,12 @@
-﻿using OfferScraper.Commands.Interfaces;
-
-namespace OfferScraper.Commands.Implementation
+﻿namespace OfferScraper.Commands.Implementation
 {
-    public class GatherDataCommand : ICommand
+    public class GatherDataCommand : BaseCommand
     {
         public int NumberOfLinks { get; set; }
+
+        public GatherDataCommand(int nubmerOfLinks)
+        {
+            NumberOfLinks = nubmerOfLinks;
+        }
     }
 }

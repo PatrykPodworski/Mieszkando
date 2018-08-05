@@ -5,6 +5,6 @@ namespace OfferScraper.LinkGatherers
 {
     public interface ILinkGatherer
     {
-        IEnumerable<Link> Gather();
+        ICollection<Link> Gather();
     }
 }
