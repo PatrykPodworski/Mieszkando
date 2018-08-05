@@ -1,5 +1,6 @@
 ﻿using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.Utility;
+using MarklogicDataLayer.XQuery.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfferScraper.Repositories;
 using System;
@@ -125,6 +126,40 @@ namespace Tests
             var expected = htmlData1;
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Get_returns_specified_number_of_documents_queried_by_expression()
+        {
+            var htmlData1 = new MarklogicDataLayer.DataStructs.HtmlData
+            {
+                Id = "1",
+                Content = "test1",
+                OfferType = MarklogicDataLayer.DataStructs.OfferType.Olx,
+                LastUpdate = DateTime.Now,
+                Status = MarklogicDataLayer.DataStructs.Status.New
+            };
+            var htmlData2 = new MarklogicDataLayer.DataStructs.HtmlData
+            {
+                Id = "2",
+                Content = "test2",
+                OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LastUpdate = DateTime.Now,
+                Status = MarklogicDataLayer.DataStructs.Status.New
+            };
+            var htmlData3 = new MarklogicDataLayer.DataStructs.HtmlData
+            {
+                Id = "3",
+                Content = "test3",
+                OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LastUpdate = DateTime.Now,
+                Status = MarklogicDataLayer.DataStructs.Status.InProcess
+            };
+            _sut.Insert(new[] { htmlData1, htmlData2, htmlData3 });
+            var result = _sut.Get(new CtsElementValueQuery("status", "New"), 1).ToList();
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(MarklogicDataLayer.DataStructs.Status.New, result.First().Status);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.Utility;
+using MarklogicDataLayer.XQuery.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfferScraper.Repositories;
 using System;
@@ -44,7 +45,7 @@ namespace Tests
                 };
                 _sut.Insert(link1);
                 Assert.IsTrue(true);
-            } 
+            }
             catch (Exception e)
             {
                 Assert.Fail(e.Message);
@@ -70,8 +71,7 @@ namespace Tests
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
-            _sut.Insert(link1);
-            _sut.Insert(link2);
+            _sut.Insert(new[] { link1, link2 });
             var result = _sut.GetAll().ToList();
             var expected = new[] {
                 link1,
@@ -119,12 +119,45 @@ namespace Tests
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
-            _sut.Insert(link1);
-            _sut.Insert(link2);
+            _sut.Insert(new[] { link1, link2 });
             var result = _sut.GetById(1);
             var expected = link1;
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Get_returns_specified_number_of_documents_queried_by_expression()
+        {
+            var link1 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "1",
+                Uri = "test1",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
+                LastUpdate = DateTime.Now,
+                Status = MarklogicDataLayer.DataStructs.Status.New
+            };
+            var link2 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "2",
+                Uri = "test2",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LastUpdate = DateTime.Now,
+                Status = MarklogicDataLayer.DataStructs.Status.New
+            };
+            var link3 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "3",
+                Uri = "test3",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LastUpdate = DateTime.Now,
+                Status = MarklogicDataLayer.DataStructs.Status.InProcess
+            };
+            _sut.Insert(new [] { link1, link2, link3 });
+            var result = _sut.Get(new CtsElementValueQuery("status", "New"), 1).ToList();
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(MarklogicDataLayer.DataStructs.Status.New, result.First().Status);
         }
     }
 }

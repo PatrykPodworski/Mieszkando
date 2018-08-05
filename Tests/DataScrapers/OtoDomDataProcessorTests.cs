@@ -1,4 +1,4 @@
-﻿using MarklogicDataLayer.DataStructs;
+﻿GIT using MarklogicDataLayer.DataStructs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfferScraper.DataExtractors;
 using System;
@@ -25,7 +25,7 @@ namespace Tests.DataScrapers
             _data = new HtmlData
             {
                 OfferType = OfferType.Olx,
-                Status = Status.New,
+                Status = Status.Unprocessed,
                 Content = File.ReadAllText("../../../Samples/OtodomSampleHtml.txt"),
                 LastUpdate = DateTime.Now,
             };
