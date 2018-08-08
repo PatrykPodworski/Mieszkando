@@ -3,6 +3,7 @@ using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
+using OfferScraper.Constants;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +24,7 @@ namespace OfferScraper.Repositories
 
         public override void Delete(HtmlData entity)
         {
-            var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
+            var offerType = entity.OfferType == OfferType.Olx ? HtmlDataConstants.OlxHtmlData : HtmlDataConstants.OtoDomHtmlData;
             var query = new XdmpDocumentDelete(new MlUri($"{offerType}_{entity.Id}", MlUriDocumentType.Xml)).Query;
             RestConnector.Submit(query);
         }
@@ -53,7 +54,7 @@ namespace OfferScraper.Repositories
 
         public override void Insert(HtmlData entity, ITransaction transaction)
         {
-            var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
+            var offerType = entity.OfferType == OfferType.Olx ? HtmlDataConstants.OlxHtmlData : HtmlDataConstants.OtoDomHtmlData;
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
             {
