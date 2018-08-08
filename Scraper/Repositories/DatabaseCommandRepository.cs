@@ -5,6 +5,10 @@ using System.Linq;
 using MarklogicDataLayer.DatabaseConnectors;
 using System;
 using System.Xml.Linq;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+using MarklogicDataLayer;
 
 namespace OfferScraper.Repositories
 {
@@ -26,7 +30,15 @@ namespace OfferScraper.Repositories
 
         public override void Insert(ICommand entity, ITransaction transaction)
         {
-            throw new System.NotImplementedException();
+            var commandType = entity.GetType().ToString().Split(".").Last();
+            using (var writer = new StringWriter())
+            using (var xmlWriter = XmlWriter.Create(writer))
+            {
+                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
+                var serializedCommand = writer.GetStringBuilder().ToString();
+                var content = MarklogicContent.Xml($"{commandType}_{Guid.NewGuid().ToString()}", serializedCommand, new[] { commandType });
+                RestConnector.Insert(content, transaction.GetScope());
+            }
         }
     }
 }
