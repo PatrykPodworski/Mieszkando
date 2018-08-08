@@ -14,13 +14,13 @@ namespace OfferScraper.Factories
 
         public static CommandFactory Instance => _lazy.Value;
 
-        public ICommand Get(CommandType type, int? intParam)
+        public ICommand Get(CommandType type, int intParam = 0)
         {
             if (type == CommandType.ExtractData)
             {
-                if (intParam != null)
+                if (intParam != 0)
                 {
-                    return new ExtractDataCommand(intParam.GetValueOrDefault());
+                    return new ExtractDataCommand(intParam);
                 }
                 else
                 {
@@ -29,9 +29,9 @@ namespace OfferScraper.Factories
             }
             else if (type == CommandType.GatherData)
             {
-                if (intParam != null)
+                if (intParam != 0)
                 {
-                    return new GatherDataCommand(intParam.GetValueOrDefault());
+                    return new GatherDataCommand(intParam);
                 }
                 else
                 {
@@ -42,18 +42,11 @@ namespace OfferScraper.Factories
             throw new ArgumentException("Couldn't resolve dependency for given CommandType");
         }
 
-        public ICommand Get(CommandType type, OfferType? offerType)
+        public ICommand Get(CommandType type, OfferType offerType)
         {
             if (type == CommandType.GetLinks)
             {
-                if (offerType != null)
-                {
-                    return new GetLinksCommand(offerType.GetValueOrDefault());
-                }
-                else
-                {
-                    return new GetLinksCommand();
-                }
+                return new GetLinksCommand(offerType);
             }
 
             throw new ArgumentException("Couldn't resolve dependency for given CommandType");

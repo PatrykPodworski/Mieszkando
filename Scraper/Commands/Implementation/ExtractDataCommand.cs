@@ -17,5 +17,27 @@ namespace OfferScraper.Commands.Implementation
         {
             NumberOfSamples = numberOfSamples;
         }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as ExtractDataCommand;
+            if (item == null)
+            {
+                return false;
+            }
+
+            return this.LastModified == item.LastModified
+                && this.NumberOfSamples == item.NumberOfSamples
+                && this.Status == item.Status
+                && this.DateOfCreation == item.DateOfCreation;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.LastModified.GetHashCode()
+                ^ this.NumberOfSamples.GetHashCode()
+                ^ this.Status.GetHashCode()
+                ^ this.DateOfCreation.GetHashCode();
+        }
     }
 }

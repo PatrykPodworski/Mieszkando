@@ -7,7 +7,7 @@ namespace OfferScraper.Factories
 {
     public interface ICommandFactory<T>
     {
-        T Get(CommandType type, int? numberOfLinks);
-        T Get(CommandType type, OfferType? offerType);
+        T Get(CommandType type, int numberOfLinks);
+        T Get(CommandType type, OfferType offerType);
     }
 }
