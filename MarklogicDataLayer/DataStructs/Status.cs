@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Xml.Serialization;
+using MarklogicDataLayer.Constants;
 
 namespace MarklogicDataLayer.DataStructs
 {
     [Serializable]
     public enum Status
     {
-        [XmlEnum(Name = "New")]
+        [XmlEnum(Name = StatusConstants.StatusNew)]
         New,
-        [XmlEnum(Name = "InProgress")]
+        [XmlEnum(Name = StatusConstants.StatusInProgress)]
         InProgress,
-        [XmlEnum(Name = "Success")]
+        [XmlEnum(Name = StatusConstants.StatusSuccess)]
         Success,
-        [XmlEnum(Name = "Failed")]
+        [XmlEnum(Name = StatusConstants.StatusFailed)]
         Failed
     }
 }

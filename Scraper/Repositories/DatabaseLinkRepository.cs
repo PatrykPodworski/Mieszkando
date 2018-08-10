@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using MarklogicDataLayer.Constants;
 
 namespace OfferScraper.Repositories
 {

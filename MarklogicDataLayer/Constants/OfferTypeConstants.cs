@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OfferScraper.Constants
+namespace MarklogicDataLayer.Constants
 {
     public class OfferTypeConstants
     {

@@ -1,11 +1,12 @@
 ﻿using System.Xml.Serialization;
+using OfferScraper.Constants;
 
 namespace OfferScraper.Commands.Implementation
 {
-    [XmlRoot("extract_data_command")]
+    [XmlRoot(CommandConstants.ExtractDataCommand)]
     public class ExtractDataCommand : BaseCommand
     {
-        [XmlElement("number_of_samples")]
+        [XmlElement(CommandConstants.NumberOfSamples)]
         public int NumberOfSamples { get; set; }
 
         public ExtractDataCommand()

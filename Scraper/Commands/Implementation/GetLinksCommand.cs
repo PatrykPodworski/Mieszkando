@@ -1,12 +1,13 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using System.Xml.Serialization;
+using OfferScraper.Constants;
 
 namespace OfferScraper.Commands.Implementation
 {
-    [XmlRoot("get_links_command")]
+    [XmlRoot(CommandConstants.GetLinksCommand)]
     public class GetLinksCommand : BaseCommand
     {
-        [XmlElement("offer_type")]
+        [XmlElement(CommandConstants.OfferType)]
         public OfferType Type { get; set; }
 
         public GetLinksCommand()

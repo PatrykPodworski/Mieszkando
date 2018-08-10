@@ -2,16 +2,17 @@
 using OfferScraper.Commands.Interfaces;
 using System;
 using System.Xml.Serialization;
+using OfferScraper.Constants;
 
 namespace OfferScraper.Commands.Implementation
 {
     public abstract class BaseCommand : ICommand
     {
-        [XmlElement("creation_date")]
+        [XmlElement(CommandConstants.CreationDate)]
         public DateTime DateOfCreation { get; set; }
-        [XmlElement("last_modified")]
+        [XmlElement(CommandConstants.LastModified)]
         public DateTime LastModified { get; set; }
-        [XmlElement("status")]
+        [XmlElement(CommandConstants.Status)]
         public Status Status { get; set; }
 
         public bool IsNew()

@@ -1,11 +1,12 @@
 ﻿using System.Xml.Serialization;
+using OfferScraper.Constants;
 
 namespace OfferScraper.Commands.Implementation
 {
-    [XmlRoot("gather_data_command")]
+    [XmlRoot(CommandConstants.GatherDataCommand)]
     public class GatherDataCommand : BaseCommand
     {
-        [XmlElement("number_of_links")]
+        [XmlElement(CommandConstants.NumberOfLinks)]
         public int NumberOfLinks { get; set; }
 
         public GatherDataCommand()

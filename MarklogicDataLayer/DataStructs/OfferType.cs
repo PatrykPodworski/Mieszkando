@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Xml.Serialization;
+using MarklogicDataLayer.Constants;
 
 namespace MarklogicDataLayer.DataStructs
 {
     [Serializable]
     public enum OfferType
     {
-        [XmlEnum(Name = "Olx")]
+        [XmlEnum(Name = OfferTypeConstants.Olx)]
         Olx,
-        [XmlEnum(Name = "OtoDom")]
+        [XmlEnum(Name = OfferTypeConstants.OtoDom)]
         OtoDom,
     }
 }

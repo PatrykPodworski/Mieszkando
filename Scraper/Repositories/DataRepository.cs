@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Xml.Linq;
+using CtsCollectionQuery = MarklogicDataLayer.XQuery.Functions.CtsCollectionQuery;
 
 namespace OfferScraper.Repositories
 {
@@ -31,6 +32,11 @@ namespace OfferScraper.Repositories
         public IQueryable<T> Get(string elementName, string elementValue, long numberOfElements)
         {
             return GetWithExpression(new CtsElementValueQuery(elementName, elementValue), numberOfElements);
+        }
+
+        public IQueryable<T> GetAllFromCollection(string collectionName)
+        {
+            return GetWithExpression(new CtsCollectionQuery(collectionName), long.MinValue);
         }
 
         public IQueryable<T> GetAll()

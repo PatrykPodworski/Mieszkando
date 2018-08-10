@@ -20,22 +20,42 @@ namespace OfferScraper.Factories
             {
                 if (intParam != 0)
                 {
-                    return new ExtractDataCommand(intParam);
+                    return new ExtractDataCommand(intParam)
+                    {
+                        DateOfCreation = DateTime.Now,
+                        LastModified = DateTime.Now,
+                        Status = Status.New,
+                    };
                 }
                 else
                 {
-                    return new ExtractDataCommand();
+                    return new ExtractDataCommand()
+                    {
+                        DateOfCreation = DateTime.Now,
+                        LastModified = DateTime.Now,
+                        Status = Status.New,
+                    };
                 }
             }
             else if (type == CommandType.GatherData)
             {
                 if (intParam != 0)
                 {
-                    return new GatherDataCommand(intParam);
+                    return new GatherDataCommand(intParam)
+                    {
+                        DateOfCreation = DateTime.Now,
+                        LastModified = DateTime.Now,
+                        Status = Status.New,
+                    };
                 }
                 else
                 {
-                    return new GatherDataCommand();
+                    return new GatherDataCommand()
+                    {
+                        DateOfCreation = DateTime.Now,
+                        LastModified = DateTime.Now,
+                        Status = Status.New,
+                    };
                 }
             }
 
@@ -46,7 +66,12 @@ namespace OfferScraper.Factories
         {
             if (type == CommandType.GetLinks)
             {
-                return new GetLinksCommand(offerType);
+                return new GetLinksCommand(offerType)
+                {
+                    DateOfCreation = DateTime.Now,
+                    LastModified = DateTime.Now,
+                    Status = Status.New,
+                };
             }
 
             throw new ArgumentException("Couldn't resolve dependency for given CommandType");

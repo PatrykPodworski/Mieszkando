@@ -8,6 +8,7 @@ using OfferScraper.Factories;
 using OfferScraper.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Tests
@@ -48,6 +49,30 @@ namespace Tests
             {
                 Assert.Fail(ex.Message);
             }
+        }
+
+        [TestMethod]
+        public void Delete_removes_specified_command_from_database()
+        {
+            var input = CommandFactory.Instance.Get(CommandType.ExtractData, 5);
+            _sut.Insert(input);
+            _sut.Delete(input);
+            var result = _sut.GetAllFromCollection(input.GetType().ToString().Split(".").Last()).ToList();
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void Delete_removes_only_specified_command_from_database()
+        {
+            var input = new ICommand[] {
+                CommandFactory.Instance.Get(CommandType.ExtractData, 5),
+                CommandFactory.Instance.Get(CommandType.GatherData, 5),
+                CommandFactory.Instance.Get(CommandType.GetLinks, OfferType.Olx),
+            };
+            _sut.Insert(input);
+            _sut.Delete(input[0]);
+            var result = _sut.GetAll().ToList();
+            Assert.AreEqual(2, result.Count);
         }
     }
 }

@@ -30,6 +30,8 @@ namespace OfferScraper.Repositories
 
         IQueryable<T> Get(string elementName, string elementValue, long numberOfElements);
 
+        IQueryable<T> GetAllFromCollection(string collectionName);
+
         T GetById(int id);
 
         ITransaction GetTransaction();
