@@ -30,7 +30,7 @@ namespace OfferScraper.Repositories
 
         public override Link GetById(int id)
         {
-            var query = new CtsSearch("/", new CtsElementValueQuery("link_id", id.ToString())).Query;
+            var query = new CtsSearch("/", new CtsElementValueQuery(LinkConstants.LinkId, id.ToString())).Query;
             var response = RestConnector.Submit(query);
 
             if (!response.Content.IsMimeMultipartContent())
@@ -41,7 +41,7 @@ namespace OfferScraper.Repositories
             {
                 var text = data.ReadAsStringAsync().Result;
                 var xml = XDocument.Parse(text);
-                var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
+                var linkId = xml.Descendants().Where(x => x.Name == LinkConstants.LinkId).First().Value;
                 if (linkId == id.ToString())
                 {
                     return ExtractLinkInfo(xml);
@@ -66,26 +66,26 @@ namespace OfferScraper.Repositories
 
         private static Link ExtractLinkInfo(XDocument xml)
         {
-            var linkId = xml.Descendants().Where(x => x.Name == "link_id").First().Value;
-            var linkUri = xml.Descendants().Where(x => x.Name == "link_uri").First().Value;
-            var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
-            var linkLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == "last_update").First().Value);
+            var linkId = xml.Descendants().Where(x => x.Name == LinkConstants.LinkId).First().Value;
+            var linkUri = xml.Descendants().Where(x => x.Name == LinkConstants.LinkUri).First().Value;
+            var linkKind = xml.Descendants().Where(x => x.Name == LinkConstants.LinkKind).First().Value == OfferTypeConstants.Olx ? OfferType.Olx : OfferType.OtoDom;
+            var linkLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == LinkConstants.LastUpdate).First().Value);
             var linkStatus = Status.New;
-            switch (xml.Descendants().Where(x => x.Name == "status").First().Value)
+            switch (xml.Descendants().Where(x => x.Name == LinkConstants.Status).First().Value)
             {
-                case "New":
+                case StatusConstants.StatusNew:
                     linkStatus = Status.New;
                     break;
 
-                case "InProgress":
+                case StatusConstants.StatusInProgress:
                     linkStatus = Status.InProgress;
                     break;
 
-                case "Success":
+                case StatusConstants.StatusSuccess:
                     linkStatus = Status.Success;
                     break;
 
-                case "Fatal":
+                case StatusConstants.StatusFailed:
                     linkStatus = Status.Failed;
                     break;
             }

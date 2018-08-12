@@ -32,7 +32,7 @@ namespace OfferScraper.Repositories
 
         public override HtmlData GetById(int id)
         {
-            var query = new CtsSearch("/", new CtsElementValueQuery("html_data_id", id.ToString())).Query;
+            var query = new CtsSearch("/", new CtsElementValueQuery(HtmlDataConstants.HtmlDataId, id.ToString())).Query;
             var response = RestConnector.Submit(query);
 
             if (!response.Content.IsMimeMultipartContent())
@@ -43,7 +43,7 @@ namespace OfferScraper.Repositories
             {
                 var text = data.ReadAsStringAsync().Result;
                 var xml = XDocument.Parse(text);
-                var htmlDataId = xml.Descendants().Where(x => x.Name == "html_data_id").First().Value;
+                var htmlDataId = xml.Descendants().Where(x => x.Name == HtmlDataConstants.HtmlDataId).First().Value;
                 if (htmlDataId == id.ToString())
                 {
                     return ExtractHtmlDataInfo(xml);
@@ -68,26 +68,26 @@ namespace OfferScraper.Repositories
 
         private static HtmlData ExtractHtmlDataInfo(XDocument xml)
         {
-            var htmlDataId = xml.Descendants().Where(x => x.Name == "html_data_id").First().Value;
-            var htmlDataOfferContent = xml.Descendants().Where(x => x.Name == "offer_content").First().Value;
-            var htmlDataOfferType = xml.Descendants().Where(x => x.Name == "offer_type").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
-            var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == "last_update").First().Value);
+            var htmlDataId = xml.Descendants().Where(x => x.Name == HtmlDataConstants.HtmlDataId).First().Value;
+            var htmlDataOfferContent = xml.Descendants().Where(x => x.Name == HtmlDataConstants.OfferContent).First().Value;
+            var htmlDataOfferType = xml.Descendants().Where(x => x.Name == HtmlDataConstants.OfferType).First().Value == OfferTypeConstants.Olx ? OfferType.Olx : OfferType.OtoDom;
+            var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == HtmlDataConstants.LastUpdate).First().Value);
             var htmlDataStatus = Status.New;
-            switch (xml.Descendants().Where(x => x.Name == "status").First().Value)
+            switch (xml.Descendants().Where(x => x.Name == HtmlDataConstants.Status).First().Value)
             {
-                case "New":
+                case StatusConstants.StatusNew:
                     htmlDataStatus = Status.New;
                     break;
 
-                case "InProgress":
+                case StatusConstants.StatusInProgress:
                     htmlDataStatus = Status.InProgress;
                     break;
 
-                case "Success":
+                case StatusConstants.StatusSuccess:
                     htmlDataStatus = Status.Success;
                     break;
 
-                case "Fatal":
+                case StatusConstants.StatusFailed:
                     htmlDataStatus = Status.Failed;
                     break;
             }

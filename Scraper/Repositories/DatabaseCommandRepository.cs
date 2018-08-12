@@ -20,6 +20,8 @@ namespace OfferScraper.Repositories
 {
     public class DatabaseCommandRepository : DataRepository<ICommand>
     {
+        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffffffzzz";
+
         public DatabaseCommandRepository(IDatabaseConnectionSettings databaseConnectionSettings) : base(databaseConnectionSettings, ExtractCommandInfo)
         {
         }
@@ -30,9 +32,9 @@ namespace OfferScraper.Repositories
             flwor.Let(new VariableName("doc"), new CtsSearch("/",
                 new CtsAndQuery(
                     new CtsElementValueQuery(CommandConstants.CreationDate,
-                        (entity as BaseCommand)?.DateOfCreation.ToString("yyyy-MM-ddTHH:mm:ss.fffffffzzz")),
+                        (entity as BaseCommand)?.DateOfCreation.ToString(TimestampFormat)),
                     new CtsElementValueQuery(CommandConstants.LastModified,
-                        (entity as BaseCommand)?.LastModified.ToString("yyyy-MM-ddTHH:mm:ss.fffffffzzz")),
+                        (entity as BaseCommand)?.LastModified.ToString(TimestampFormat)),
                     new CtsCollectionQuery(entity.GetType().ToString().Split(".").Last()))));
             flwor.Return(new XdmpNodeDelete(new VariableName("doc").Query));
             RestConnector.Submit(flwor.Query);
