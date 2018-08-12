@@ -3,6 +3,7 @@ using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
+using OfferScraper.Constants;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,37 +13,27 @@ using System.Net.Http;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using MarklogicDataLayer.Constants;
 
 namespace OfferScraper.Repositories
 {
-    public class DatabaseHtmlDataRepository : IDataRepository<HtmlData>
+    public class DatabaseHtmlDataRepository : DataRepository<HtmlData>
     {
-        private readonly IDatabaseConnectionSettings _databaseConnectionSettings;
-        private readonly RestConnector _restConnector;
-
-        public DatabaseHtmlDataRepository(IDatabaseConnectionSettings databaseConnectionSettings)
+        public DatabaseHtmlDataRepository(IDatabaseConnectionSettings databaseConnectionSettings) : base(databaseConnectionSettings, ExtractHtmlDataInfo)
         {
-            _databaseConnectionSettings = databaseConnectionSettings;
-            _restConnector = new RestConnector(_databaseConnectionSettings);
         }
 
-        public void Delete(HtmlData entity)
+        public override void Delete(HtmlData entity)
         {
-            var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
+            var offerType = entity.OfferType == OfferType.Olx ? HtmlDataConstants.OlxHtmlData : HtmlDataConstants.OtoDomHtmlData;
             var query = new XdmpDocumentDelete(new MlUri($"{offerType}_{entity.Id}", MlUriDocumentType.Xml)).Query;
-            _restConnector.Submit(query);
+            RestConnector.Submit(query);
         }
 
-        public IQueryable<HtmlData> GetAll()
+        public override HtmlData GetById(int id)
         {
-            var query = new CtsSearch("/", new CtsCollectionQuery(new[] { "OlxHtmlData", "OtoDomHtmlData" })).Query;
-            return GetFromQuery(query);
-        }
-
-        public HtmlData GetById(int id)
-        {
-            var query = new CtsSearch("/", new CtsElementValueQuery("html_data_id", id.ToString())).Query;
-            var response = _restConnector.Submit(query);
+            var query = new CtsSearch("/", new CtsElementValueQuery(HtmlDataConstants.HtmlDataId, id.ToString())).Query;
+            var response = RestConnector.Submit(query);
 
             if (!response.Content.IsMimeMultipartContent())
                 return null;
@@ -50,103 +41,53 @@ namespace OfferScraper.Repositories
             var content = response.Content.ReadAsMultipartAsync().Result.Contents;
             foreach (var data in content)
             {
-                var text = ReadAsString(data);
+                var text = data.ReadAsStringAsync().Result;
                 var xml = XDocument.Parse(text);
-                var htmlDataId = xml.Descendants().Where(x => x.Name == "html_data_id").First().Value;
+                var htmlDataId = xml.Descendants().Where(x => x.Name == HtmlDataConstants.HtmlDataId).First().Value;
                 if (htmlDataId == id.ToString())
                 {
-                    return ExtractHtmlDataInfo(xml, htmlDataId);
+                    return ExtractHtmlDataInfo(xml);
                 }
             }
 
             return null;
         }
 
-        public void Insert(HtmlData entity)
+        public override void Insert(HtmlData entity, ITransaction transaction)
         {
-            var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
+            var offerType = entity.OfferType == OfferType.Olx ? HtmlDataConstants.OlxHtmlData : HtmlDataConstants.OtoDomHtmlData;
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedHtmlData = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType });
-                _restConnector.Insert(content);
+                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType, HtmlDataConstants.HtmlDataGeneralCollectionName });
+                RestConnector.Insert(content, transaction.GetScope());
             }
         }
 
-        public void Insert(HtmlData entity, ITransaction transaction)
+        private static HtmlData ExtractHtmlDataInfo(XDocument xml)
         {
-            var offerType = entity.OfferType == OfferType.Olx ? "OlxHtmlData" : "OtoDomHtmlData";
-            using (var writer = new StringWriter())
-            using (var xmlWriter = XmlWriter.Create(writer))
-            {
-                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
-                var serializedHtmlData = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType });
-                _restConnector.Insert(content, transaction.GetScope());
-            }
-        }
-
-        public void Insert(IEnumerable<HtmlData> entities, ITransaction transaction)
-        {
-            foreach (var entity in entities)
-            {
-                Insert(entity, transaction);
-            }
-        }
-
-        public void Update(HtmlData entity) => Insert(entity);
-
-        public void Update(HtmlData entity, ITransaction transaction) => Insert(entity, transaction);
-
-        public void Update(IEnumerable<HtmlData> entities, ITransaction transaction) => Insert(entities, transaction);
-
-        public void Insert(IEnumerable<HtmlData> entities)
-        {
-            using (var transaction = GetTransaction())
-            {
-                foreach (var entity in entities)
-                {
-                    Insert(entity, transaction);
-                }
-            }
-        }
-
-        public void Update(IEnumerable<HtmlData> entities) => Insert(entities);
-
-        public IQueryable<HtmlData> Get(MarklogicDataLayer.XQuery.Expression expression, long numberOfElements = long.MinValue)
-        {
-            var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements).Query;
-            return GetFromQuery(query);
-        }
-
-        private static string ReadAsString(HttpContent content)
-        {
-            return content.ReadAsStringAsync().Result;
-        }
-
-        private static HtmlData ExtractHtmlDataInfo(XDocument xml, string htmlDataId)
-        {
-            var htmlDataOfferContent = xml.Descendants().Where(x => x.Name == "offer_content").First().Value;
-            var htmlDataOfferType = xml.Descendants().Where(x => x.Name == "offer_type").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
-            var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == "last_update").First().Value);
+            var htmlDataId = xml.Descendants().Where(x => x.Name == HtmlDataConstants.HtmlDataId).First().Value;
+            var htmlDataOfferContent = xml.Descendants().Where(x => x.Name == HtmlDataConstants.OfferContent).First().Value;
+            var htmlDataOfferType = xml.Descendants().Where(x => x.Name == HtmlDataConstants.OfferType).First().Value == OfferTypeConstants.Olx ? OfferType.Olx : OfferType.OtoDom;
+            var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == HtmlDataConstants.LastUpdate).First().Value);
             var htmlDataStatus = Status.New;
-            switch (xml.Descendants().Where(x => x.Name == "status").First().Value)
+            switch (xml.Descendants().Where(x => x.Name == HtmlDataConstants.Status).First().Value)
             {
-                case "New":
+                case StatusConstants.StatusNew:
                     htmlDataStatus = Status.New;
                     break;
 
-                case "InProgress":
+                case StatusConstants.StatusInProgress:
                     htmlDataStatus = Status.InProgress;
                     break;
 
-                case "Success":
+                case StatusConstants.StatusSuccess:
                     htmlDataStatus = Status.Success;
                     break;
 
-                case "Fatal":
+                case StatusConstants.StatusFailed:
                     htmlDataStatus = Status.Failed;
                     break;
             }
@@ -160,28 +101,9 @@ namespace OfferScraper.Repositories
             };
         }
 
-        private IQueryable<HtmlData> GetFromQuery(string query)
+        public override IQueryable<HtmlData> GetAll()
         {
-            var response = _restConnector.Submit(query);
-
-            if (!response.Content.IsMimeMultipartContent())
-                return new List<HtmlData>().AsQueryable();
-
-            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
-            var result = new List<HtmlData>();
-            foreach (var data in content)
-            {
-                var text = ReadAsString(data);
-                var xml = XDocument.Parse(text);
-                var htmlDataId = xml.Descendants().Where(x => x.Name == "html_data_id").First().Value;
-                result.Add(ExtractHtmlDataInfo(xml, htmlDataId));
-            }
-            return result.AsQueryable();
-        }
-
-        public ITransaction GetTransaction()
-        {
-            return new DatabaseTransaction(_restConnector);
+            return GetAllFromCollection(HtmlDataConstants.HtmlDataGeneralCollectionName);
         }
     }
 }

@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Xml.Serialization;
+using MarklogicDataLayer.Constants;
 
 namespace MarklogicDataLayer.DataStructs
 {
-    [Serializable, XmlRoot("html_data")]
+    [Serializable, XmlRoot(HtmlDataConstants.HtmlData)]
     public class HtmlData
     {
-        [XmlElement("html_data_id")]
+        [XmlElement(HtmlDataConstants.HtmlDataId)]
         public string Id { get; set; }
-        [XmlElement("offer_type")]
+        [XmlElement(HtmlDataConstants.OfferType)]
         public OfferType OfferType { get; set; }
-        [XmlElement("status")]
+        [XmlElement(HtmlDataConstants.Status)]
         public Status Status { get; set; }
-        [XmlElement("offer_content")]
+        [XmlElement(HtmlDataConstants.OfferContent)]
         public string Content { get; set; }
-        [XmlElement("last_update")]
+        [XmlElement(HtmlDataConstants.LastUpdate)]
         public DateTime LastUpdate { get; set; }
 
         public HtmlData()

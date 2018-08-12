@@ -64,6 +64,11 @@ namespace OfferScraper.Repositories
             return EntityCollection;
         }
 
+        public IQueryable<Link> GetAllFromCollection(string collectionName)
+        {
+            throw new NotImplementedException();
+        }
+
         public Link GetById(int id)
         {
             throw new NotImplementedException();
@@ -136,6 +141,11 @@ namespace OfferScraper.Repositories
         }
 
         public void Insert(IEnumerable<Link> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Link> Get(string elementName, string elementValue, long numberOfElements)
         {
             throw new NotImplementedException();
         }

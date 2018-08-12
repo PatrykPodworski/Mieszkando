@@ -10,36 +10,27 @@ using System.Net.Http;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System;
+using MarklogicDataLayer.Constants;
 
 namespace OfferScraper.Repositories
 {
-    public class DatabaseOfferRepository : IDataRepository<Offer>
+    public class DatabaseOfferRepository : DataRepository<Offer>
     {
-        private readonly IDatabaseConnectionSettings _databaseConnectionSettings;
-        private readonly RestConnector _restConnector;
-
-        public DatabaseOfferRepository(IDatabaseConnectionSettings databaseConnectionSettings)
+        public DatabaseOfferRepository(IDatabaseConnectionSettings databaseConnectionSettings) : base(databaseConnectionSettings, ExtractOfferInfo)
         {
-            _databaseConnectionSettings = databaseConnectionSettings;
-            _restConnector = new RestConnector(_databaseConnectionSettings);
         }
 
-        public void Delete(Offer entity)
+        public override void Delete(Offer entity)
         {
             var query = new XdmpDocumentDelete(new MlUri($"offer_{entity.Id}", MlUriDocumentType.Xml)).Query;
-            _restConnector.Submit(query);
+            RestConnector.Submit(query);
         }
 
-        public IQueryable<Offer> GetAll()
+        public override Offer GetById(int id)
         {
-            var query = new CtsSearch("/", new CtsCollectionQuery(new[] { "Offers" })).Query;
-            return GetFromQuery(query);
-        }
-
-        public Offer GetById(int id)
-        {
-            var query = new CtsSearch("/", new CtsElementValueQuery("offer_id", id.ToString())).Query;
-            var response = _restConnector.Submit(query);
+            var query = new CtsSearch("/", new CtsElementValueQuery(OfferConstants.OfferId, id.ToString())).Query;
+            var response = RestConnector.Submit(query);
 
             if (!response.Content.IsMimeMultipartContent())
                 return null;
@@ -47,91 +38,42 @@ namespace OfferScraper.Repositories
             var content = response.Content.ReadAsMultipartAsync().Result.Contents;
             foreach (var data in content)
             {
-                var text = ReadAsString(data);
+                var text = data.ReadAsStringAsync().Result;
                 var xml = XDocument.Parse(text);
-                var offerId = xml.Descendants().Where(x => x.Name == "offer_id").First().Value;
+                var offerId = xml.Descendants().Where(x => x.Name == OfferConstants.OfferId).First().Value;
                 if (offerId == id.ToString())
                 {
-                    return ExtractOfferInfo(xml, offerId);
+                    return ExtractOfferInfo(xml);
                 }
             }
 
             return null;
         }
 
-        public void Insert(Offer entity)
+        public override void Insert(Offer entity, ITransaction transaction)
         {
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedOffer = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { "Offers" });
-                _restConnector.Insert(content);
+                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { OfferConstants.OffersGeneralCollectionName });
+                RestConnector.Insert(content, transaction.GetScope());
             }
         }
 
-        public void Insert(Offer entity, ITransaction transaction)
+        private static Offer ExtractOfferInfo(XDocument xml)
         {
-            using (var writer = new StringWriter())
-            using (var xmlWriter = XmlWriter.Create(writer))
-            {
-                new XmlSerializer(entity.GetType()).Serialize(writer, entity);
-                var serializedOffer = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { "Offers" });
-                _restConnector.Insert(content, transaction.GetScope());
-            }
-        }
-
-        public void Insert(IEnumerable<Offer> entities, ITransaction transaction)
-        {
-            foreach (var entity in entities)
-            {
-                Insert(entity, transaction);
-            }
-        }
-
-        public void Insert(IEnumerable<Offer> entities)
-        {
-            using (var transaction = GetTransaction())
-            {
-                foreach (var entity in entities)
-                {
-                    Insert(entity, transaction);
-                }
-            }
-        }
-
-        public void Update(Offer entity) => Insert(entity);
-
-        public void Update(Offer entity, ITransaction transaction) => Insert(entity, transaction);
-
-        public void Update(IEnumerable<Offer> entities, ITransaction transaction) => Insert(entities, transaction);
-
-        public void Update(IEnumerable<Offer> entities) => Insert(entities);
-
-        public IQueryable<Offer> Get(MarklogicDataLayer.XQuery.Expression expression, long numberOfElements = long.MinValue)
-        {
-            var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements).Query;
-            return GetFromQuery(query);
-        }
-
-        private static string ReadAsString(HttpContent content)
-        {
-            return content.ReadAsStringAsync().Result;
-        }
-
-        private static Offer ExtractOfferInfo(XDocument xml, string offerId)
-        {
-            var offerTitle = xml.Descendants().Where(x => x.Name == "title").First().Value;
-            var offerDescription = xml.Descendants().Where(x => x.Name == "description").First().Value;
-            var offerDistrict = xml.Descendants().Where(x => x.Name == "district").First().Value;
-            var offerCost = xml.Descendants().Where(x => x.Name == "cost").First().Value;
-            var offerBonusCost = xml.Descendants().Where(x => x.Name == "bonusCost").First().Value;
-            var offerRooms = xml.Descendants().Where(x => x.Name == "rooms").First().Value;
-            var offerArea = xml.Descendants().Where(x => x.Name == "area").First().Value;
-            var offerDateOfPosting = xml.Descendants().Where(x => x.Name == "dateOfPosting").First().Value;
-            var offerDateOfScraping = xml.Descendants().Where(x => x.Name == "dateOfScraping").First().Value;
+            var offerId = xml.Descendants().Where(x => x.Name == OfferConstants.OfferId).First().Value;
+            var offerTitle = xml.Descendants().Where(x => x.Name == OfferConstants.Title).First().Value;
+            var offerDescription = xml.Descendants().Where(x => x.Name == OfferConstants.Description).First().Value;
+            var offerDistrict = xml.Descendants().Where(x => x.Name == OfferConstants.District).First().Value;
+            var offerCost = xml.Descendants().Where(x => x.Name == OfferConstants.Cost).First().Value;
+            var offerBonusCost = xml.Descendants().Where(x => x.Name == OfferConstants.BonusCost).First().Value;
+            var offerRooms = xml.Descendants().Where(x => x.Name == OfferConstants.Rooms).First().Value;
+            var offerArea = xml.Descendants().Where(x => x.Name == OfferConstants.Area).First().Value;
+            var offerDateOfPosting = xml.Descendants().Where(x => x.Name == OfferConstants.DateOfPosting).First().Value;
+            var offerDateOfScraping = xml.Descendants().Where(x => x.Name == OfferConstants.DateOfScraping).First().Value;
 
             return new Offer
             {
@@ -148,28 +90,9 @@ namespace OfferScraper.Repositories
             };
         }
 
-        private IQueryable<Offer> GetFromQuery(string query)
+        public override IQueryable<Offer> GetAll()
         {
-            var response = _restConnector.Submit(query);
-
-            if (!response.Content.IsMimeMultipartContent())
-                return new List<Offer>().AsQueryable();
-
-            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
-            var result = new List<Offer>();
-            foreach (var data in content)
-            {
-                var text = ReadAsString(data);
-                var xml = XDocument.Parse(text);
-                var offerId = xml.Descendants().Where(x => x.Name == "offer_id").First().Value;
-                result.Add(ExtractOfferInfo(xml, offerId));
-            }
-            return result.AsQueryable();
-        }
-
-        public ITransaction GetTransaction()
-        {
-            return new DatabaseTransaction(_restConnector);
+            return GetAllFromCollection(OfferConstants.OffersGeneralCollectionName);
         }
     }
 }

@@ -1,25 +1,26 @@
-﻿using System;
+﻿using MarklogicDataLayer.Constants;
+using System;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace MarklogicDataLayer.DataStructs
 {
-    [Serializable, XmlRoot("link")]
+    [Serializable, XmlRoot(LinkConstants.LinkRoot)]
     public class Link
     {
-        [XmlElement("link_id")]
+        [XmlElement(LinkConstants.LinkId)]
         public string Id { get; set; }
 
-        [XmlElement("link_uri")]
+        [XmlElement(LinkConstants.LinkUri)]
         public string Uri { get; set; }
 
-        [XmlElement("link_kind")]
+        [XmlElement(LinkConstants.LinkKind)]
         public OfferType LinkSourceKind { get; set; }
 
-        [XmlElement("last_update")]
+        [XmlElement(LinkConstants.LastUpdate)]
         public DateTime LastUpdate { get; set; }
 
-        [XmlElement("status")]
+        [XmlElement(LinkConstants.Status)]
         public Status Status { get; set; }
 
         public Link()

@@ -1,39 +1,40 @@
-﻿using System;
+﻿using MarklogicDataLayer.Constants;
+using System;
 using System.Xml.Serialization;
 
 namespace MarklogicDataLayer.DataStructs
 {
-    [Serializable, XmlRoot("offer")]
+    [Serializable, XmlRoot(OfferConstants.OfferRoot)]
     public class Offer
     {
-        [XmlElement("offer_id")]
+        [XmlElement(OfferConstants.OfferId)]
         public string Id { get; set; }
 
-        [XmlElement("title")]
+        [XmlElement(OfferConstants.Title)]
         public string Title { get; set; }
 
-        [XmlElement("description")]
+        [XmlElement(OfferConstants.Description)]
         public string Description { get; set; }
 
-        [XmlElement("district")]
+        [XmlElement(OfferConstants.District)]
         public string District { get; set; }
 
-        [XmlElement("cost")]
+        [XmlElement(OfferConstants.Cost)]
         public string Cost { get; set; }
 
-        [XmlElement("bonusCost")]
+        [XmlElement(OfferConstants.BonusCost)]
         public string BonusCost { get; set; }
 
-        [XmlElement("rooms")]
+        [XmlElement(OfferConstants.Rooms)]
         public string Rooms { get; set; }
 
-        [XmlElement("area")]
+        [XmlElement(OfferConstants.Area)]
         public string Area { get; set; }
 
-        [XmlElement("dateOfPosting")]
+        [XmlElement(OfferConstants.DateOfPosting)]
         public string DateOfPosting { get; set; }
 
-        [XmlElement("dateOfScraping")]
+        [XmlElement(OfferConstants.DateOfScraping)]
         public string DateOfScraping { get; set; }
 
         public Offer()
