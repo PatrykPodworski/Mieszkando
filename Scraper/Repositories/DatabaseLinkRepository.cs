@@ -59,7 +59,7 @@ namespace OfferScraper.Repositories
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedLink = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind });
+                var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind, LinkConstants.LinksGeneralCollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -97,6 +97,11 @@ namespace OfferScraper.Repositories
                 LastUpdate = linkLastUpdate,
                 Status = linkStatus,
             };
+        }
+
+        public override IQueryable<Link> GetAll()
+        {
+            return GetAllFromCollection(LinkConstants.LinksGeneralCollectionName);
         }
     }
 }

@@ -51,7 +51,7 @@ namespace OfferScraper.Repositories
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedCommand = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{commandType}_{Guid.NewGuid().ToString()}", serializedCommand, new[] { commandType });
+                var content = MarklogicContent.Xml($"{commandType}_{Guid.NewGuid().ToString()}", serializedCommand, new[] { commandType, CommandConstants.CommandsGeneralCollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -116,6 +116,11 @@ namespace OfferScraper.Repositories
                 default:
                     throw new ArgumentException("Invalid status");
             }
+        }
+
+        public override IQueryable<ICommand> GetAll()
+        {
+            return GetAllFromCollection(CommandConstants.CommandsGeneralCollectionName);
         }
     }
 }

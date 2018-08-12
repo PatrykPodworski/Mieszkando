@@ -61,7 +61,7 @@ namespace OfferScraper.Repositories
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedHtmlData = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType });
+                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType, HtmlDataConstants.HtmlDataGeneralCollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -99,6 +99,11 @@ namespace OfferScraper.Repositories
                 OfferType = htmlDataOfferType,
                 Content = htmlDataOfferContent,
             };
+        }
+
+        public override IQueryable<HtmlData> GetAll()
+        {
+            return GetAllFromCollection(HtmlDataConstants.HtmlDataGeneralCollectionName);
         }
     }
 }

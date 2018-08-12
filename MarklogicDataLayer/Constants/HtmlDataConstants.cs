@@ -10,5 +10,6 @@
         public const string Status = "status";
         public const string OfferContent = "offer_content";
         public const string LastUpdate = "last_update";
+        public const string HtmlDataGeneralCollectionName = "HtmlData";
     }
 }

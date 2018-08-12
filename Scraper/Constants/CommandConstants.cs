@@ -15,5 +15,6 @@ namespace OfferScraper.Constants
         public const string ExtractDataCommand = "extract_data_command";
         public const string GatherDataCommand = "gather_data_command";
         public const string GetLinksCommand = "get_links_command";
+        public const string CommandsGeneralCollectionName = "Commands";
     }
 }

@@ -39,10 +39,7 @@ namespace OfferScraper.Repositories
             return GetWithExpression(new CtsCollectionQuery(collectionName), long.MinValue);
         }
 
-        public IQueryable<T> GetAll()
-        {
-            return GetWithExpression(new EmptyExpression(), long.MinValue);
-        }
+        public abstract IQueryable<T> GetAll();
 
         public abstract T GetById(int id);
 

@@ -11,6 +11,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System;
+using MarklogicDataLayer.Constants;
 
 namespace OfferScraper.Repositories
 {
@@ -56,7 +57,7 @@ namespace OfferScraper.Repositories
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedOffer = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { "Offers" });
+                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { OfferConstants.OffersGeneralCollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -87,6 +88,11 @@ namespace OfferScraper.Repositories
                 DateOfPosting = offerDateOfPosting,
                 DateOfScraping = offerDateOfScraping,
             };
+        }
+
+        public override IQueryable<Offer> GetAll()
+        {
+            return GetAllFromCollection(OfferConstants.OffersGeneralCollectionName);
         }
     }
 }
