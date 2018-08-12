@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OfferScraper.Extensions
+namespace OfferScraper.Utility.Extensions
 {
     public static class ProcessingExtensions
     {

@@ -65,7 +65,7 @@ namespace Tests
             {
                 Id = "2",
                 Uri = "test2",
-                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Otodom,
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
@@ -113,7 +113,7 @@ namespace Tests
             {
                 Id = "2",
                 Uri = "test2",
-                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Otodom,
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
@@ -139,7 +139,7 @@ namespace Tests
             {
                 Id = "2",
                 Uri = "test2",
-                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Otodom,
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
@@ -147,7 +147,7 @@ namespace Tests
             {
                 Id = "3",
                 Uri = "test3",
-                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Otodom,
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.InProgress
             };

@@ -5,6 +5,8 @@ namespace OfferScraper.LinkGatherers
 {
     public interface ILinkGatherer
     {
-        ICollection<Link> Gather();
+        ICollection<Link> Gather(Link newestLink);
+
+        OfferType GetSupportedType();
     }
 }

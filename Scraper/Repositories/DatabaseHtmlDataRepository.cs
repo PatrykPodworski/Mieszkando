@@ -129,7 +129,7 @@ namespace OfferScraper.Repositories
         private static HtmlData ExtractHtmlDataInfo(XDocument xml, string htmlDataId)
         {
             var htmlDataOfferContent = xml.Descendants().Where(x => x.Name == "offer_content").First().Value;
-            var htmlDataOfferType = xml.Descendants().Where(x => x.Name == "offer_type").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
+            var htmlDataOfferType = xml.Descendants().Where(x => x.Name == "offer_type").First().Value == "Olx" ? OfferType.Olx : OfferType.Otodom;
             var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == "last_update").First().Value);
             var htmlDataStatus = Status.New;
             switch (xml.Descendants().Where(x => x.Name == "status").First().Value)

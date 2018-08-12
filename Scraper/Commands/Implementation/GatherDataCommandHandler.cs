@@ -106,7 +106,7 @@ namespace OfferScraper.Commands.Implementation
             }
         }
 
-        public Type GetCommandType()
+        public Type GetSupportedType()
         {
             return GetType().GetGenericArguments()[0];
         }

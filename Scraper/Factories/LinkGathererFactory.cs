@@ -1,24 +1,26 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using OfferScraper.LinkGatherers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OfferScraper.Factories
 {
     public class LinkGathererFactory : IFactory<ILinkGatherer>
     {
+        private readonly IEnumerable<ILinkGatherer> _linkGaterers;
+
+        public LinkGathererFactory(IEnumerable<ILinkGatherer> linkGatherers)
+        {
+            _linkGaterers = linkGatherers;
+        }
+
         public ILinkGatherer Get(OfferType type)
         {
-            switch (type)
-            {
-                case OfferType.Olx:
-                    return new OlxLinkGatherer();
+            var gatherer = _linkGaterers
+                .FirstOrDefault(x => x.GetSupportedType() == type);
 
-                case OfferType.OtoDom:
-                    return new OtodomLinkGatherer();
-
-                default:
-                    throw new ArgumentException("Couldn't resolve dependency for given OfferType");
-            }
+            return gatherer ?? throw new ArgumentException("There isn't any link gatherer supporting given offer type.");
         }
     }
 }

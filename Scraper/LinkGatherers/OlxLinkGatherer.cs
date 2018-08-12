@@ -1,7 +1,7 @@
 ﻿using MarklogicDataLayer.DataStructs;
-using OfferScraper.Utility;
+using OfferScraper.Utility.Browsers;
+using OfferScraper.Utility.Extensions;
 using ScrapySharp.Extensions;
-using ScrapySharp.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,42 +10,31 @@ namespace OfferScraper.LinkGatherers
 {
     public class OlxLinkGatherer : ILinkGatherer
     {
-        private static string AdvertisementClassName => "a.marginright5.link.linkWithHash";
+        private static string AdvertisementClassName => "#offers_table a.marginright5.link.linkWithHash";
         private static string PageNumberBlockClassName => "block br3 brc8 large tdnone lheight24";
         private static string PageQuery => $"?page=";
-        private static string BaseUri => "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/";
+        private static string _baseUri => "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/";
 
-        public ICollection<Link> Gather()
+        private readonly IBrowser _browser;
+
+        public OlxLinkGatherer(IBrowser browser)
         {
-            var links = new List<Link>();
-            var browser = BrowserFactory.GetBrowser();
-
-            var pagesCount = GetPagesCount(browser);
-
-            for (var i = 1; i <= pagesCount; i++)
-            {
-                var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
-                var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
-                var aTags = page.Html.CssSelect(AdvertisementClassName);
-                links.AddRange(aTags.Select(x => new Link
-                {
-                    Uri = x.Attributes["href"].Value,
-                    LinkSourceKind = OfferType.Olx,
-                    LastUpdate = DateTime.Now,
-                    Status = Status.New
-                }));
-            }
-
-            return links;
+            _browser = browser;
         }
 
-        private static int GetPagesCount(ScrapingBrowser browser)
+        public ICollection<Link> Gather(Link newestLink)
         {
-            var page = browser.NavigateToPage(new Uri($"{BaseUri}"));
-            return int.Parse(page.Html.Descendants().Where(x =>
-                    x.GetAttributeValue("class", "").Contains(PageNumberBlockClassName))
-                .SelectMany(x => x.ChildNodes.Where(y => y.Name == "span")).Last()
-                .InnerText);
+            var page = _browser.GetPage(new Uri(_baseUri));
+            var aTags = page.CssSelect(AdvertisementClassName);
+
+            return aTags
+                .Select(x => x.MapToLink())
+                .ToList();
+        }
+
+        public OfferType GetSupportedType()
+        {
+            return OfferType.Olx;
         }
     }
 }

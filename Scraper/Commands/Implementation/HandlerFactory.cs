@@ -16,7 +16,7 @@ namespace OfferScraper.Commands.Implementation
 
         public ICommandHandler Get(Type type)
         {
-            var handler = _handlers.FirstOrDefault(x => x.GetCommandType() == type);
+            var handler = _handlers.FirstOrDefault(x => x.GetSupportedType() == type);
 
             return handler ?? throw new ArgumentException("Command type not supported.");
         }

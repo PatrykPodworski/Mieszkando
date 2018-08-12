@@ -3,6 +3,6 @@
     public enum OfferType
     {
         Olx,
-        OtoDom,
+        Otodom,
     }
 }

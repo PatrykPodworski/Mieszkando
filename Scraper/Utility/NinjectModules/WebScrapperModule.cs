@@ -3,7 +3,7 @@ using OfferScraper.Commands.Implementation;
 using OfferScraper.Commands.Interfaces;
 using OfferScraper.Repositories;
 
-namespace OfferScraper.NinjectModules
+namespace OfferScraper.Utility.NinjectModules
 {
     public class WebScrapperModule : NinjectModule
     {

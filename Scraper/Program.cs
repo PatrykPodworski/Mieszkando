@@ -1,5 +1,5 @@
 ﻿using Ninject;
-using OfferScraper.NinjectModules;
+using OfferScraper.Utility.NinjectModules;
 
 namespace OfferScraper
 {

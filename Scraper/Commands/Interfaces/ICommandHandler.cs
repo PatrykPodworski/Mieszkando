@@ -4,7 +4,7 @@ namespace OfferScraper.Commands.Interfaces
 {
     public interface ICommandHandler
     {
-        Type GetCommandType();
+        Type GetSupportedType();
     }
 
     public interface ICommandHandler<T> : ICommandHandler

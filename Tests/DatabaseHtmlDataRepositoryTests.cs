@@ -65,7 +65,7 @@ namespace Tests
             {
                 Id = "2",
                 Content = "test2",
-                OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                OfferType = MarklogicDataLayer.DataStructs.OfferType.Otodom,
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
@@ -114,7 +114,7 @@ namespace Tests
             {
                 Id = "2",
                 Content = "test2",
-                OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                OfferType = MarklogicDataLayer.DataStructs.OfferType.Otodom,
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
@@ -141,7 +141,7 @@ namespace Tests
             {
                 Id = "2",
                 Content = "test2",
-                OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                OfferType = MarklogicDataLayer.DataStructs.OfferType.Otodom,
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
@@ -149,7 +149,7 @@ namespace Tests
             {
                 Id = "3",
                 Content = "test3",
-                OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                OfferType = MarklogicDataLayer.DataStructs.OfferType.Otodom,
                 LastUpdate = DateTime.Now,
                 Status = MarklogicDataLayer.DataStructs.Status.InProgress
             };

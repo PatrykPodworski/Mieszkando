@@ -53,7 +53,7 @@ namespace OfferScraper.Repositories
                     var link = new Link
                     {
                         Uri = linkElements[1],
-                        LinkSourceKind = linkElements[1].Contains("otodom") ? OfferType.OtoDom : OfferType.Olx,
+                        LinkSourceKind = linkElements[1].Contains("otodom") ? OfferType.Otodom : OfferType.Olx,
                         Status = Status.New,
                         LastUpdate = DateTime.Now,
                     };

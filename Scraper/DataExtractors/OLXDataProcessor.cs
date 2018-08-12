@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
 using MarklogicDataLayer.DataStructs;
-using OfferScraper.Extensions;
+using OfferScraper.Utility.Extensions;
 using ScrapySharp.Extensions;
 using System;
 using System.Linq;

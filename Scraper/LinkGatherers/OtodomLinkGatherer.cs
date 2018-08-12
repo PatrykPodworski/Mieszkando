@@ -1,6 +1,5 @@
 ﻿using MarklogicDataLayer.DataStructs;
-using OfferScraper.Utility;
-using ScrapySharp.Network;
+using OfferScraper.Utility.Browsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,23 +13,29 @@ namespace OfferScraper.LinkGatherers
         private static string PageQuery => $"&page=";
         private static string AdvertisementClassName => "listing_no_promo";
 
-        public ICollection<Link> Gather()
+        private readonly IBrowser _browser;
+
+        public OtodomLinkGatherer(IBrowser browser)
+        {
+            _browser = browser;
+        }
+
+        public ICollection<Link> Gather(Link newestLink)
         {
             var links = new List<Link>();
-            var browser = BrowserFactory.GetBrowser();
 
-            var pagesCount = GetPagesCount(browser);
+            var pagesCount = GetPagesCount(_browser);
 
             for (var i = 1; i <= pagesCount; i++)
             {
                 var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
-                var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
-                var aTags = page.Html.Descendants().Where(x =>
+                var page = _browser.GetPage(new Uri($"{BaseUri}{pageQuery}"));
+                var aTags = page.Descendants().Where(x =>
                     x.GetAttributeValue("data-featured-tracking", "").Contains(AdvertisementClassName)).ToList();
                 links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link
                 {
                     Uri = x,
-                    LinkSourceKind = OfferType.OtoDom,
+                    LinkSourceKind = OfferType.Otodom,
                     LastUpdate = DateTime.Now,
                     Status = Status.New,
                 }));
@@ -39,13 +44,18 @@ namespace OfferScraper.LinkGatherers
             return links;
         }
 
-        private static int GetPagesCount(ScrapingBrowser browser)
+        private static int GetPagesCount(IBrowser browser)
         {
-            var page = browser.NavigateToPage(new Uri($"{BaseUri}"));
-            return int.Parse(page.Html.Descendants().Where(x =>
+            var page = browser.GetPage(new Uri($"{BaseUri}"));
+            return int.Parse(page.Descendants().Where(x =>
                     x.GetAttributeValue("class", "").Contains(PageNumberBlockClassName))
                 .SelectMany(x => x.ChildNodes.Where(y => y.Name == "strong")).Last()
                 .InnerText);
+        }
+
+        public OfferType GetSupportedType()
+        {
+            return OfferType.Otodom;
         }
     }
 }

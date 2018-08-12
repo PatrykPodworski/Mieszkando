@@ -120,7 +120,7 @@ namespace OfferScraper.Repositories
         private static Link ExtractLinkInfo(XDocument xml, string linkId)
         {
             var linkUri = xml.Descendants().Where(x => x.Name == "link_uri").First().Value;
-            var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.OtoDom;
+            var linkKind = xml.Descendants().Where(x => x.Name == "link_kind").First().Value == "Olx" ? OfferType.Olx : OfferType.Otodom;
             var linkLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == "last_update").First().Value);
             var linkStatus = Status.New;
             switch (xml.Descendants().Where(x => x.Name == "status").First().Value)
