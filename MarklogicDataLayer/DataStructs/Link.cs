@@ -19,6 +19,9 @@ namespace MarklogicDataLayer.DataStructs
         [XmlElement("last_update")]
         public DateTime LastUpdate { get; set; }
 
+        [XmlElement("date_of_gather")]
+        public DateTime DateOfGather { get; set; }
+
         [XmlElement("status")]
         public Status Status { get; set; }
 

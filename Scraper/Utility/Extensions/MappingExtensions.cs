@@ -13,6 +13,7 @@ namespace OfferScraper.Utility.Extensions
                 Uri = node.Attributes["href"].Value,
                 LinkSourceKind = OfferType.Olx,
                 LastUpdate = DateTime.Now,
+                DateOfGather = DateTime.Now,
                 Status = Status.New
             };
         }

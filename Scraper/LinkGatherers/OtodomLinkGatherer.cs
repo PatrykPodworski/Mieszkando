@@ -20,7 +20,7 @@ namespace OfferScraper.LinkGatherers
             _browser = browser;
         }
 
-        public ICollection<Link> Gather(Link newestLink)
+        public IList<Link> Gather(Link newestLink)
         {
             var links = new List<Link>();
 
