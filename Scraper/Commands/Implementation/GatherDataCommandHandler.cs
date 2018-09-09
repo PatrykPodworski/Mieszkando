@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace OfferScraper.Commands.Implementation
 {
-    public class GatherDataCommandHandler : ICommandHandler<GatherDataCommand>
+    public class GatherDataCommandHandler : BaseCommand, ICommandHandler<GatherDataCommand>
     {
         private readonly IDataGatherer _dataGatherer;
         private readonly ICommandQueue _commandQueue;
@@ -23,8 +23,11 @@ namespace OfferScraper.Commands.Implementation
             _dataGatherer = dataGatherer;
         }
 
-        public void Handle(GatherDataCommand command)
+        public void Handle(ICommand comm)
         {
+            CheckCommandType(comm);
+            var command = (GatherDataCommand)comm;
+
             var links = GetLinks(command.NumberOfLinks);
             GetHtmlSamples(links);
         }

@@ -49,8 +49,7 @@ namespace MarklogicDataLayer.DataStructs
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode()
-                ^ LinkSourceKind.GetHashCode()
+            return LinkSourceKind.GetHashCode()
                 ^ Uri.GetHashCode()
                 ^ Status.GetHashCode()
                 ^ LastUpdate.GetHashCode();

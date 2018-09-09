@@ -3,11 +3,10 @@ using OfferScraper.Commands.Interfaces;
 using OfferScraper.Factories;
 using OfferScraper.LinkGatherers;
 using OfferScraper.Repositories;
-using System;
 
 namespace OfferScraper.Commands.Implementation
 {
-    public class GetLinksCommandHandler : ICommandHandler<GetLinksCommand>
+    public class GetLinksCommandHandler : BaseCommand, ICommandHandler<GetLinksCommand>
     {
         private readonly IFactory<ILinkGatherer> _factory;
         private readonly IDataRepository<Link> _dataRepository;
@@ -20,8 +19,12 @@ namespace OfferScraper.Commands.Implementation
             _factory = factory;
         }
 
-        public void Handle(GetLinksCommand command)
+        public void Handle(ICommand comm)
         {
+            CheckCommandType(comm);
+
+            var command = (GetLinksCommand)comm;
+
             var gatherer = _factory.Get(command.Type);
             var links = gatherer.Gather();
 
@@ -30,11 +33,6 @@ namespace OfferScraper.Commands.Implementation
                 _dataRepository.Insert(links, transaction);
                 _commandQueue.Add((new GatherDataCommand(links.Count)));
             }
-        }
-
-        public Type GetCommandType()
-        {
-            return GetType().GetGenericArguments()[0];
         }
     }
 }

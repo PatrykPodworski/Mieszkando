@@ -11,9 +11,9 @@ namespace OfferScraper.Commands.Implementation
             _handlerFactory = handlerFactory;
         }
 
-        public void Send<T>(T command) where T : ICommand
+        public void Send(ICommand command)
         {
-            var handler = (ICommandHandler<T>)_handlerFactory.Get(typeof(T));
+            var handler = _handlerFactory.Get(command.GetType());
             handler.Handle(command);
         }
     }

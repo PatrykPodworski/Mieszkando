@@ -9,14 +9,17 @@ using System.Linq;
 
 namespace OfferScraper.Commands.Implementation
 {
-    public class ProcessDataCommandHandler : ICommandHandler<ExtractDataCommand>
+    public class ProcessDataCommandHandler : BaseCommand, ICommandHandler<ExtractDataCommand>
     {
         private readonly IFactory<IDataProcessor> _factory;
         private IDataRepository<HtmlData> _htmlDataRepository;
         private IDataRepository<Offer> _offerRepository;
 
-        public void Handle(ExtractDataCommand command)
+        public void Handle(ICommand comm)
         {
+            CheckCommandType(comm);
+            var command = (ExtractDataCommand)comm;
+
             var htmlSamples = GetSamples(command.NumberOfSamples);
 
             GetOffers(htmlSamples);
@@ -94,11 +97,6 @@ namespace OfferScraper.Commands.Implementation
                     _htmlDataRepository.Update(htmlData, transaction);
                 }
             }
-        }
-
-        public Type GetCommandType()
-        {
-            return GetType().GetGenericArguments()[0];
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using MarklogicDataLayer.DataStructs;
-using Ninject;
-using OfferScraper.Factories;
+﻿using Ninject;
 using OfferScraper.NinjectModules;
-using OfferScraper.Repositories;
 
 namespace OfferScraper
 {
