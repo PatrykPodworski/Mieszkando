@@ -21,6 +21,7 @@ namespace OfferScraper.LinkGatherers
             var browser = BrowserFactory.GetBrowser();
 
             var pagesCount = GetPagesCount(browser);
+            var linksCount = 1;
 
             for (var i = 1; i <= pagesCount; i++)
             {
@@ -29,6 +30,7 @@ namespace OfferScraper.LinkGatherers
                 var aTags = page.Html.CssSelect(AdvertisementClassName);
                 links.AddRange(aTags.Select(x => new Link
                 {
+                    Id = linksCount++.ToString(),
                     Uri = x.Attributes["href"].Value,
                     LinkSourceKind = OfferType.Olx,
                     LastUpdate = DateTime.Now,

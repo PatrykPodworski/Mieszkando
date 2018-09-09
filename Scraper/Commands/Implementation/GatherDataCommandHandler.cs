@@ -111,7 +111,10 @@ namespace OfferScraper.Commands.Implementation
 
         public Type GetCommandType()
         {
-            return GetType().GetGenericArguments()[0];
+            return GetType()
+                .GetInterfaces()
+                .FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICommandHandler<>))
+                .GetGenericArguments()[0];
         }
     }
 }

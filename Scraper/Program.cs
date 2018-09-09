@@ -9,6 +9,7 @@ namespace OfferScraper
         {
             var kernel = new StandardKernel(new WebScrapperModule());
             var webScrapper = kernel.Get<WebScrapper>();
+            
             webScrapper.Run();
         }
     }

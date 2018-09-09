@@ -149,5 +149,10 @@ namespace OfferScraper.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public int GetCount(string collection)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

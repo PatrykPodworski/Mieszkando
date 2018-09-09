@@ -1,4 +1,5 @@
-﻿using MarklogicDataLayer.DatabaseConnectors;
+﻿using MarklogicDataLayer.Constants;
+using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.Utility;
 using MarklogicDataLayer.XQuery.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -78,6 +79,31 @@ namespace Tests
 
             Assert.AreEqual(2, result.Count);
             CollectionAssert.AreEquivalent(expected, result);
+        }
+
+        [TestMethod]
+        public void GetCount_returns_proper_count()
+        {
+            var link1 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "1",
+                Uri = "test1",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.Olx,
+                LastUpdate = DateTime.Now,
+                Status = MarklogicDataLayer.DataStructs.Status.New
+            };
+            var link2 = new MarklogicDataLayer.DataStructs.Link
+            {
+                Id = "2",
+                Uri = "test2",
+                LinkSourceKind = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
+                LastUpdate = DateTime.Now,
+                Status = MarklogicDataLayer.DataStructs.Status.New
+            };
+            _sut.Insert(new[] { link1, link2 });
+            var result = _sut.GetCount(LinkConstants.LinksGeneralCollectionName);
+
+            Assert.AreEqual(2, result);
         }
 
         [TestMethod]

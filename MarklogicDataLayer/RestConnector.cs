@@ -24,6 +24,7 @@ namespace MarklogicDataLayer
 
     public class RestConnector : IRestConnector
     {
+        private const int TransactionTimeLimit = 900;
         private readonly HttpClient _client;
 
         public RestConnector(IDatabaseConnectionSettings connectionSettings)
@@ -39,7 +40,7 @@ namespace MarklogicDataLayer
 
             _client = new HttpClient(clientHandler)
             {
-                Timeout = TimeSpan.FromSeconds(60),
+                Timeout = TimeSpan.FromSeconds(TransactionTimeLimit),
                 BaseAddress = new Uri($"http://{connectionSettings.Host}:{connectionSettings.Port}")
             };
         }
@@ -117,7 +118,7 @@ namespace MarklogicDataLayer
         public MlTransactionScope BeginTransaction()
         {
             //https://docs.marklogic.com/REST/POST/v1/transactions
-            var response = Post(_client, $"LATEST/transactions?timeLimit=60", new StringContent("", Encoding.UTF8));
+            var response = Post(_client, $"LATEST/transactions?timeLimit={TransactionTimeLimit}", new StringContent("", Encoding.UTF8));
 
             if (response.StatusCode != HttpStatusCode.SeeOther)
                 throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
@@ -128,7 +129,7 @@ namespace MarklogicDataLayer
                 Cookies = GetCookies(response)
             };
 
-            Submit($"xquery version '1.0-ml'; declare option xdmp:transaction-mode 'update'; xdmp:set-transaction-time-limit(60);", transaction);
+            Submit($"xquery version '1.0-ml'; declare option xdmp:transaction-mode 'update'; xdmp:set-transaction-time-limit({TransactionTimeLimit});", transaction);
 
             return transaction;
         }

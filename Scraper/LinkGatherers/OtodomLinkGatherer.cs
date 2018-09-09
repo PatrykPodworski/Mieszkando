@@ -20,6 +20,7 @@ namespace OfferScraper.LinkGatherers
             var browser = BrowserFactory.GetBrowser();
 
             var pagesCount = GetPagesCount(browser);
+            var linksCount = 1;
 
             for (var i = 1; i <= pagesCount; i++)
             {
@@ -29,6 +30,7 @@ namespace OfferScraper.LinkGatherers
                     x.GetAttributeValue("data-featured-tracking", "").Contains(AdvertisementClassName)).ToList();
                 links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link
                 {
+                    Id = linksCount++.ToString(),
                     Uri = x,
                     LinkSourceKind = OfferType.OtoDom,
                     LastUpdate = DateTime.Now,
