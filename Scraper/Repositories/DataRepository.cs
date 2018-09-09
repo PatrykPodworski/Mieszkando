@@ -85,6 +85,11 @@ namespace OfferScraper.Repositories
 
         public void Update(IEnumerable<T> entities) => Insert(entities);
 
+        protected static string ReadAsString(HttpContent content)
+        {
+            return content.ReadAsStringAsync().Result;
+        }
+
         private IQueryable<T> GetFromQuery(string query, Func<XDocument, T> extractionMethod)
         {
             var response = RestConnector.Submit(query);
@@ -103,15 +108,28 @@ namespace OfferScraper.Repositories
             return result.AsQueryable();
         }
 
-        private static string ReadAsString(HttpContent content)
-        {
-            return content.ReadAsStringAsync().Result;
-        }
-
         private IQueryable<T> GetWithExpression(Expression expression, long numberOfElements)
         {
             var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements).Query;
             return GetFromQuery(query, _extractionMethod);
+        }
+
+        public int GetCount(string collection)
+        {
+            var query = new XdmpEstimate(new CtsSearch("/", new CtsCollectionQuery(collection))).Query;
+            var response = RestConnector.Submit(query);
+
+            var result = 0;
+            if (!response.Content.IsMimeMultipartContent())
+                return result;
+
+            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
+            foreach (var data in content)
+            {
+                var text = ReadAsString(data);
+                int.TryParse(text, out result);
+            }
+            return result;
         }
     }
 }

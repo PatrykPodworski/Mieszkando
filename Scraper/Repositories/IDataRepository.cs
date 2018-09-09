@@ -35,5 +35,7 @@ namespace OfferScraper.Repositories
         T GetById(int id);
 
         ITransaction GetTransaction();
+
+        int GetCount(string collection);
     }
 }
