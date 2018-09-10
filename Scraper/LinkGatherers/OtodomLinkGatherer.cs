@@ -23,6 +23,7 @@ namespace OfferScraper.LinkGatherers
             var pagesCount = GetPagesCount(browser);
             var linksCount = 1;
 
+            var linksDateExceeded = false;
             for (var i = 1; i <= pagesCount; i++)
             {
                 var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
@@ -32,6 +33,12 @@ namespace OfferScraper.LinkGatherers
                     .Where(x => x.GetAttributeValue("data-featured-name", "") == AdvertisementClassName)
                     .ToList();
                 var offerLinks = articles.Select(x => x.GetAttributeValue("data-url", "")).ToList();
+                foreach (var offerLink in offerLinks)
+                {
+                    var offerPage = browser.NavigateToPage(new Uri(offerLink));
+                    var offerDate = offerPage.Html.Descendants().First(x => x.Name == "p" && x.InnerText.Contains("Data aktualizacji")).InnerText;
+                    //TODO: add date check for latest link, currently date is being scrapped
+                }
                 links.AddRange(offerLinks.Distinct().Select(x => new Link
                 {
                     Id = linksCount++.ToString(),
