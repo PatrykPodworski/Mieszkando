@@ -13,6 +13,7 @@ namespace OfferScraper.LinkGatherers
         private static string PageNumberBlockClassName => "pager-counter";
         private static string PageQuery => $"&page=";
         private static string AdvertisementClassName => "listing_no_promo";
+        private static string AdvertisementElementName => "article";
 
         public ICollection<Link> Gather()
         {
@@ -26,9 +27,12 @@ namespace OfferScraper.LinkGatherers
             {
                 var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
                 var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
-                var aTags = page.Html.Descendants().Where(x =>
-                    x.GetAttributeValue("data-featured-tracking", "").Contains(AdvertisementClassName)).ToList();
-                links.AddRange(aTags.Select(x => x.GetAttributeValue("href", "")).Distinct().Select(x => new Link
+                var articles = page.Html.Descendants()
+                    .Where(x => x.Name == AdvertisementElementName)
+                    .Where(x => x.GetAttributeValue("data-featured-name", "") == AdvertisementClassName)
+                    .ToList();
+                var offerLinks = articles.Select(x => x.GetAttributeValue("data-url", "")).ToList();
+                links.AddRange(offerLinks.Distinct().Select(x => new Link
                 {
                     Id = linksCount++.ToString(),
                     Uri = x,
