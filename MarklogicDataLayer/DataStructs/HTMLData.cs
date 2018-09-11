@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MarklogicDataLayer.Constants;
+using System;
 using System.Xml.Serialization;
-using MarklogicDataLayer.Constants;
 
 namespace MarklogicDataLayer.DataStructs
 {
@@ -9,18 +9,21 @@ namespace MarklogicDataLayer.DataStructs
     {
         [XmlElement(HtmlDataConstants.HtmlDataId)]
         public string Id { get; set; }
+
         [XmlElement(HtmlDataConstants.OfferType)]
         public OfferType OfferType { get; set; }
+
         [XmlElement(HtmlDataConstants.Status)]
         public Status Status { get; set; }
+
         [XmlElement(HtmlDataConstants.OfferContent)]
         public string Content { get; set; }
+
         [XmlElement(HtmlDataConstants.LastUpdate)]
         public DateTime LastUpdate { get; set; }
 
         public HtmlData()
         {
-
         }
 
         public override bool Equals(object obj)
@@ -40,8 +43,7 @@ namespace MarklogicDataLayer.DataStructs
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode()
-                ^ this.OfferType.GetHashCode()
+            return this.OfferType.GetHashCode()
                 ^ this.Status.GetHashCode()
                 ^ this.Content.GetHashCode()
                 ^ this.LastUpdate.GetHashCode();

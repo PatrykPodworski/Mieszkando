@@ -3,6 +3,7 @@ using OfferScraper.Commands.Interfaces;
 using OfferScraper.DataGatherers;
 using OfferScraper.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OfferScraper.Commands.Implementation
@@ -32,15 +33,16 @@ namespace OfferScraper.Commands.Implementation
             GetHtmlSamples(links);
         }
 
-        private IQueryable<Link> GetLinks(int numberOfLinks)
+        private ICollection<Link> GetLinks(int numberOfLinks)
         {
             return _linkRepository
                     .GetAll()
                     .Where(x => x.Status == Status.New)
-                    .Take(numberOfLinks);
+                    .Take(numberOfLinks)
+                    .ToList();
         }
 
-        private void GetHtmlSamples(IQueryable<Link> links)
+        private void GetHtmlSamples(ICollection<Link> links)
         {
             try
             {
@@ -58,7 +60,7 @@ namespace OfferScraper.Commands.Implementation
             }
         }
 
-        private void ChangeLinksStatusToInProgress(IQueryable<Link> links)
+        private void ChangeLinksStatusToInProgress(ICollection<Link> links)
         {
             using (var transaction = _linkRepository.GetTransaction())
             {
@@ -97,7 +99,7 @@ namespace OfferScraper.Commands.Implementation
             }
         }
 
-        private void ChangeUnprocessedLinksStatusToNew(IQueryable<Link> links)
+        private void ChangeUnprocessedLinksStatusToNew(ICollection<Link> links)
         {
             using (var transaction = _linkRepository.GetTransaction())
             {

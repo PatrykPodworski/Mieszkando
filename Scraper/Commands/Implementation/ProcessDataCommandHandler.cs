@@ -15,6 +15,13 @@ namespace OfferScraper.Commands.Implementation
         private IDataRepository<HtmlData> _htmlDataRepository;
         private IDataRepository<Offer> _offerRepository;
 
+        public ProcessDataCommandHandler(IFactory<IDataProcessor> factory, IDataRepository<HtmlData> htmlRepository, IDataRepository<Offer> offerRepository)
+        {
+            _factory = factory;
+            _htmlDataRepository = htmlRepository;
+            _offerRepository = offerRepository;
+        }
+
         public void Handle(ICommand comm)
         {
             CheckCommandType(comm);
@@ -30,7 +37,8 @@ namespace OfferScraper.Commands.Implementation
             return _htmlDataRepository
                  .GetAll()
                  .Where(x => x.Status == Status.New)
-                 .Take(numberOfSamples);
+                 .Take(numberOfSamples)
+                 .ToList();
         }
 
         private void ChangeSamplesStatusToInProgress(IEnumerable<HtmlData> htmlSamples)
