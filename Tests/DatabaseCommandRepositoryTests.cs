@@ -55,6 +55,7 @@ namespace Tests
         public void Update_changes_specific_document()
         {
             var command = CommandFactory.Instance.Get(CommandType.ExtractData, 5);
+            var id = command.GetId();
             var input = new ICommand[] {
                 command,
                 CommandFactory.Instance.Get(CommandType.GatherData, 5),
@@ -64,7 +65,7 @@ namespace Tests
             command.SetStatus(Status.InProgress);
             _sut.Update(command);
             var result = _sut.GetAll();
-            Assert.IsTrue(result.Any(x => x.IsInProgress()));
+            Assert.IsTrue(result.Any(x => x.IsInProgress() && x.GetId() == id));
         }
 
         [TestMethod]
