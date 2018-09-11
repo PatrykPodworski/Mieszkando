@@ -24,6 +24,8 @@ namespace OfferScraper.NinjectModules
             Bind<ICommandHandler>().To<ProcessDataCommandHandler>();
 
             Bind<IFactory<ILinkGatherer>>().To<LinkGathererFactory>();
+            Bind<IFactory<IDataProcessor>>().To<DataProcessorFactory>();
+
             Bind<IDataProcessor>().To<OlxDataProcessor>();
             Bind<IDataProcessor>().To<OtoDomDataProcessor>();
 

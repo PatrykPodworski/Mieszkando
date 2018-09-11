@@ -31,8 +31,20 @@ namespace OfferScraper.Commands.Implementation
             using (var transaction = _dataRepository.GetTransaction())
             {
                 _dataRepository.Insert(links, transaction);
-                _commandQueue.Add((new GatherDataCommand(links.Count)));
+                AddGatherDataCommands(links.Count, transaction);
             }
+        }
+
+        public void AddGatherDataCommands(int numberOfLinks, ITransaction transaction)
+        {
+            var linksPerCommand = 10;   // configuration
+
+            for (int i = 0; i < numberOfLinks; i += linksPerCommand)
+            {
+                _commandQueue.Add(new GatherDataCommand(linksPerCommand), transaction);
+            }
+
+            _commandQueue.Add(new GatherDataCommand(numberOfLinks % linksPerCommand), transaction);
         }
     }
 }

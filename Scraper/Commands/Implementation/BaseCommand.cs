@@ -23,6 +23,16 @@ namespace OfferScraper.Commands.Implementation
             return Status == Status.New;
         }
 
+        public bool IsInProgress()
+        {
+            return Status == Status.InProgress;
+        }
+
+        public void SetStatus(Status status)
+        {
+            Status = status;
+        }
+
         public void CheckCommandType(ICommand command)
         {
             if (GetCommandType() != command.GetType())

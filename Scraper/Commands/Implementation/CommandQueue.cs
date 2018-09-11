@@ -1,4 +1,5 @@
-﻿using OfferScraper.Commands.Interfaces;
+﻿using MarklogicDataLayer.DataStructs;
+using OfferScraper.Commands.Interfaces;
 using OfferScraper.Repositories;
 using System.Linq;
 
@@ -19,6 +20,17 @@ namespace OfferScraper.Commands.Implementation
             {
                 _repository.Insert(command, transaction);
             }
+        }
+
+        public void Add(ICommand command, ITransaction transaction)
+        {
+            _repository.Insert(command, transaction);
+        }
+
+        public void ChangeCommandStatus(ICommand command, Status status)
+        {
+            command.SetStatus(status);
+            _repository.Update(command);
         }
 
         public ICommand GetNext()

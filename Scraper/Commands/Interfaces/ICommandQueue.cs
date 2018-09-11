@@ -1,4 +1,7 @@
-﻿namespace OfferScraper.Commands.Interfaces
+﻿using MarklogicDataLayer.DataStructs;
+using OfferScraper.Repositories;
+
+namespace OfferScraper.Commands.Interfaces
 {
     public interface ICommandQueue
     {
@@ -7,5 +10,9 @@
         bool HasNext();
 
         void Add(ICommand command);
+
+        void Add(ICommand command, ITransaction transaction);
+
+        void ChangeCommandStatus(ICommand command, Status status);
     }
 }
