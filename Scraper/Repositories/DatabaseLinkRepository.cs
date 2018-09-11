@@ -54,6 +54,7 @@ namespace OfferScraper.Repositories
 
         public override void Insert(Link entity, ITransaction transaction)
         {
+            entity.LastUpdate = DateTime.Now;
             var linkKind = entity.LinkSourceKind == OfferType.Olx ? OfferTypeConstants.Olx : OfferTypeConstants.OtoDom;
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))

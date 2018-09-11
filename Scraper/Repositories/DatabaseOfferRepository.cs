@@ -52,6 +52,7 @@ namespace OfferScraper.Repositories
 
         public override void Insert(Offer entity, ITransaction transaction)
         {
+            entity.DateOfScraping = DateTime.Now.ToShortDateString();
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
             {

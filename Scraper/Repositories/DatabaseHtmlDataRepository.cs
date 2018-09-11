@@ -55,6 +55,7 @@ namespace OfferScraper.Repositories
 
         public override void Insert(HtmlData entity, ITransaction transaction)
         {
+            entity.LastUpdate = DateTime.Now;
             var offerType = entity.OfferType == OfferType.Olx ? HtmlDataConstants.OlxHtmlData : HtmlDataConstants.OtoDomHtmlData;
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
