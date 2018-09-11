@@ -14,6 +14,7 @@ namespace OfferScraper.DataGatherers
 
             return new HtmlData
             {
+                Id = new Guid().ToString(),
                 Content = page.Html.InnerHtml,
                 OfferType = link.LinkSourceKind,
                 Status = Status.New,
