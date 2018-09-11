@@ -52,6 +52,22 @@ namespace Tests
         }
 
         [TestMethod]
+        public void Update_changes_specific_document()
+        {
+            var command = CommandFactory.Instance.Get(CommandType.ExtractData, 5);
+            var input = new ICommand[] {
+                command,
+                CommandFactory.Instance.Get(CommandType.GatherData, 5),
+                CommandFactory.Instance.Get(CommandType.GetLinks, OfferType.Olx),
+            };
+            _sut.Insert(input);
+            command.SetStatus(Status.InProgress);
+            _sut.Update(command);
+            var result = _sut.GetAll();
+            Assert.IsTrue(result.Any(x => x.IsInProgress()));
+        }
+
+        [TestMethod]
         public void Delete_removes_specified_command_from_database()
         {
             var input = CommandFactory.Instance.Get(CommandType.ExtractData, 5);

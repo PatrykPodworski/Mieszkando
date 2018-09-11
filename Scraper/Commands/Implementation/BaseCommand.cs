@@ -9,6 +9,9 @@ namespace OfferScraper.Commands.Implementation
 {
     public abstract class BaseCommand : ICommand
     {
+        [XmlElement(CommandConstants.CommandId)]
+        public string Id { get; set; }
+
         [XmlElement(CommandConstants.CreationDate)]
         public DateTime DateOfCreation { get; set; }
 
@@ -17,6 +20,11 @@ namespace OfferScraper.Commands.Implementation
 
         [XmlElement(CommandConstants.Status)]
         public Status Status { get; set; }
+
+        public string GetId()
+        {
+            return Id;
+        }
 
         public bool IsNew()
         {
@@ -47,6 +55,16 @@ namespace OfferScraper.Commands.Implementation
                 .GetInterfaces()
                 .FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICommandHandler<>))
                 .GetGenericArguments()[0];
+        }
+
+        public void SetDateOfCreation(DateTime date)
+        {
+            DateOfCreation = date;
+        }
+
+        public void SetLastModifiedDate(DateTime date)
+        {
+            LastModified = date;
         }
     }
 }

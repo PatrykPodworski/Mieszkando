@@ -47,13 +47,28 @@ namespace OfferScraper.Repositories
 
         public override void Insert(ICommand entity, ITransaction transaction)
         {
+            var presentDate = DateTime.Now;
+            entity.SetDateOfCreation(presentDate);
+            entity.SetLastModifiedDate(presentDate);
+            InsertEntity(entity, transaction);
+        }
+
+        public override void Update(ICommand entity, ITransaction transaction)
+        {
+            var presentDate = DateTime.Now;
+            entity.SetLastModifiedDate(presentDate);
+            InsertEntity(entity, transaction);
+        }
+
+        private void InsertEntity(ICommand entity, ITransaction transaction)
+        {
             var commandType = entity.GetType().ToString().Split(".").Last();
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedCommand = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{commandType}_{Guid.NewGuid().ToString()}", serializedCommand, new[] { commandType, CommandConstants.CommandsGeneralCollectionName });
+                var content = MarklogicContent.Xml($"{commandType}_{entity.GetId()}", serializedCommand, new[] { commandType, CommandConstants.CommandsGeneralCollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -64,12 +79,14 @@ namespace OfferScraper.Repositories
             var creationDate = Convert.ToDateTime(GetElementValueFromXml(elements, CommandConstants.CreationDate));
             var lastModified = Convert.ToDateTime(GetElementValueFromXml(elements, CommandConstants.LastModified));
             var status = GetElementValueFromXml(elements, CommandConstants.Status);
+            var id = GetElementValueFromXml(elements, CommandConstants.CommandId);
             switch (xml.Root.Name.LocalName)
             {
                 case CommandConstants.ExtractDataCommand:
                     var numberOfSamples = int.Parse(GetElementValueFromXml(elements, CommandConstants.NumberOfSamples));
                     return new ExtractDataCommand()
                     {
+                        Id = id,
                         DateOfCreation = creationDate,
                         LastModified = lastModified,
                         Status = GetStatus(status),
@@ -79,6 +96,7 @@ namespace OfferScraper.Repositories
                     var numberOfLinks = int.Parse(GetElementValueFromXml(elements, CommandConstants.NumberOfLinks));
                     return new GatherDataCommand()
                     {
+                        Id = id,
                         DateOfCreation = creationDate,
                         LastModified = lastModified,
                         Status = GetStatus(status),
@@ -88,6 +106,7 @@ namespace OfferScraper.Repositories
                     var offerType = GetElementValueFromXml(elements, CommandConstants.OfferType) == OfferTypeConstants.Olx ? OfferType.Olx : OfferType.OtoDom;
                     return new GetLinksCommand()
                     {
+                        Id = id,
                         DateOfCreation = creationDate,
                         LastModified = lastModified,
                         Status = GetStatus(status),

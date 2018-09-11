@@ -16,14 +16,14 @@ namespace OfferScraper.Factories
 
         public ICommand Get(CommandType type, int intParam = 0)
         {
+            var guid = Guid.NewGuid().ToString();
             if (type == CommandType.ExtractData)
             {
                 if (intParam != 0)
                 {
                     return new ExtractDataCommand(intParam)
                     {
-                        DateOfCreation = DateTime.Now,
-                        LastModified = DateTime.Now,
+                        Id = guid,
                         Status = Status.New,
                     };
                 }
@@ -31,8 +31,7 @@ namespace OfferScraper.Factories
                 {
                     return new ExtractDataCommand()
                     {
-                        DateOfCreation = DateTime.Now,
-                        LastModified = DateTime.Now,
+                        Id = guid,
                         Status = Status.New,
                     };
                 }
@@ -43,8 +42,7 @@ namespace OfferScraper.Factories
                 {
                     return new GatherDataCommand(intParam)
                     {
-                        DateOfCreation = DateTime.Now,
-                        LastModified = DateTime.Now,
+                        Id = guid,
                         Status = Status.New,
                     };
                 }
@@ -52,8 +50,7 @@ namespace OfferScraper.Factories
                 {
                     return new GatherDataCommand()
                     {
-                        DateOfCreation = DateTime.Now,
-                        LastModified = DateTime.Now,
+                        Id = guid,
                         Status = Status.New,
                     };
                 }
@@ -64,12 +61,12 @@ namespace OfferScraper.Factories
 
         public ICommand Get(CommandType type, OfferType offerType)
         {
+            var guid = Guid.NewGuid().ToString();
             if (type == CommandType.GetLinks)
             {
                 return new GetLinksCommand(offerType)
                 {
-                    DateOfCreation = DateTime.Now,
-                    LastModified = DateTime.Now,
+                    Id = guid,
                     Status = Status.New,
                 };
             }

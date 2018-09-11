@@ -79,7 +79,7 @@ namespace OfferScraper.Repositories
 
         public void Update(T entity) => Insert(entity);
 
-        public void Update(T entity, ITransaction transaction) => Insert(entity, transaction);
+        public virtual void Update(T entity, ITransaction transaction) => Insert(entity, transaction);
 
         public void Update(IEnumerable<T> entities, ITransaction transaction) => Insert(entities, transaction);
 

@@ -1,4 +1,5 @@
 ﻿using MarklogicDataLayer.DataStructs;
+using System;
 
 namespace OfferScraper.Commands.Interfaces
 {
@@ -9,5 +10,11 @@ namespace OfferScraper.Commands.Interfaces
         bool IsInProgress();
 
         void SetStatus(Status status);
+
+        void SetDateOfCreation(DateTime date);
+
+        void SetLastModifiedDate(DateTime date);
+
+        string GetId();
     }
 }
