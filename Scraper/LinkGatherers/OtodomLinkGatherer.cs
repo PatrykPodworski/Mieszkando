@@ -1,4 +1,5 @@
 ﻿using MarklogicDataLayer.DataStructs;
+using OfferScraper.Repositories;
 using OfferScraper.Utility;
 using ScrapySharp.Network;
 using System;
@@ -14,6 +15,12 @@ namespace OfferScraper.LinkGatherers
         private static string PageQuery => $"&page=";
         private static string AdvertisementClassName => "listing_no_promo";
         private static string AdvertisementElementName => "article";
+        private readonly DatabaseUtilityRepository _utilityRepository;
+
+        public OtodomLinkGatherer(DatabaseUtilityRepository utilityRepository)
+        {
+            _utilityRepository = utilityRepository;
+        }
 
         public ICollection<Link> Gather()
         {
@@ -23,7 +30,10 @@ namespace OfferScraper.LinkGatherers
             var pagesCount = GetPagesCount(browser);
             var linksCount = 1;
 
-            var linksDateExceeded = false;
+            var dateOfLastScrapping = _utilityRepository.GetByKind(OfferType.OtoDom)?.DateOfLastScraping;
+
+            dateOfLastScrapping = dateOfLastScrapping ?? DateTime.Now;
+
             for (var i = 1; i <= pagesCount; i++)
             {
                 var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
@@ -36,7 +46,19 @@ namespace OfferScraper.LinkGatherers
                 foreach (var offerLink in offerLinks)
                 {
                     var offerPage = browser.NavigateToPage(new Uri(offerLink));
-                    var offerDate = offerPage.Html.Descendants().First(x => x.Name == "p" && x.InnerText.Contains("Data aktualizacji")).InnerText;
+                    var offerDateText = offerPage.Html.Descendants().First(x => x.Name == "p" && x.InnerText.Contains("Data aktualizacji")).InnerText;
+                    var offerDate = offerDateText.Split(':').Last();
+                    var offerDateTime = DateTime.Parse(offerDate);
+                    if (dateOfLastScrapping > offerDateTime)
+                    {
+                        dateOfLastScrapping = DateTime.Now;
+                        _utilityRepository.Insert(new MarklogicDataLayer.DataStructs.Utility()
+                        {
+                            DateOfLastScraping = dateOfLastScrapping.GetValueOrDefault(),
+                            Type = OfferType.OtoDom,
+                        });
+                        return links;
+                    }
                     //TODO: add date check for latest link, currently date is being scrapped
                 }
                 links.AddRange(offerLinks.Distinct().Select(x => new Link

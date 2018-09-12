@@ -33,6 +33,7 @@ namespace OfferScraper.NinjectModules
             Bind<IDataRepository<Link>>().To<DatabaseLinkRepository>();
             Bind<IDataRepository<HtmlData>>().To<DatabaseHtmlDataRepository>();
             Bind<IDataRepository<Offer>>().To<DatabaseOfferRepository>();
+            Bind<IDataRepository<MarklogicDataLayer.DataStructs.Utility>>().To<DatabaseUtilityRepository>();
 
             Bind<IDataGatherer>().To<DataGatherer>();
 
