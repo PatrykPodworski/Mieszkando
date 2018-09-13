@@ -65,7 +65,6 @@ namespace MarklogicDataLayer.DataStructs
         {
             return this.Id.GetHashCode()
                 ^ this.Title.GetHashCode()
-                ^ this.Description.GetHashCode()
                 ^ this.Cost.GetHashCode()
                 ^ this.BonusCost.GetHashCode()
                 ^ this.Area.GetHashCode()

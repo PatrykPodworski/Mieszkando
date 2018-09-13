@@ -48,6 +48,7 @@ namespace OfferScraper.Commands.Implementation
                 foreach (var htmlData in htmlSamples)
                 {
                     htmlData.Status = Status.InProgress;
+                    _htmlDataRepository.Update(htmlData);
                 }
             }
         }

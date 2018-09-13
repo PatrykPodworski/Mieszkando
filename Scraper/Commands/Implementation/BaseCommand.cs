@@ -21,6 +21,11 @@ namespace OfferScraper.Commands.Implementation
         [XmlElement(CommandConstants.Status)]
         public Status Status { get; set; }
 
+        public BaseCommand()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         public string GetId()
         {
             return Id;

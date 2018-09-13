@@ -1,5 +1,5 @@
-﻿using System.Xml.Serialization;
-using OfferScraper.Constants;
+﻿using OfferScraper.Constants;
+using System.Xml.Serialization;
 
 namespace OfferScraper.Commands.Implementation
 {
@@ -11,12 +11,11 @@ namespace OfferScraper.Commands.Implementation
 
         public GatherDataCommand()
         {
-
         }
 
-        public GatherDataCommand(int nubmerOfLinks)
+        public GatherDataCommand(int numberOfLinks)
         {
-            NumberOfLinks = nubmerOfLinks;
+            NumberOfLinks = numberOfLinks;
         }
 
         public override bool Equals(object obj)
