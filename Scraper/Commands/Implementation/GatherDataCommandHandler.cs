@@ -85,7 +85,7 @@ namespace OfferScraper.Commands.Implementation
                     link.Status = Status.Success;
                     _linkRepository.Update(link, transaction);
 
-                    _commandQueue.Add(new ExtractDataCommand());
+                    _commandQueue.Add(new ExtractDataCommand() { Id = Guid.NewGuid().ToString() });
                 }
             }
             catch (Exception)

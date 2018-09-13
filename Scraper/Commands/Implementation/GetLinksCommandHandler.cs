@@ -3,6 +3,7 @@ using OfferScraper.Commands.Interfaces;
 using OfferScraper.Factories;
 using OfferScraper.LinkGatherers;
 using OfferScraper.Repositories;
+using System;
 
 namespace OfferScraper.Commands.Implementation
 {
@@ -41,10 +42,10 @@ namespace OfferScraper.Commands.Implementation
 
             for (int i = 0; i < numberOfLinks; i += linksPerCommand)
             {
-                _commandQueue.Add(new GatherDataCommand(linksPerCommand), transaction);
+                _commandQueue.Add(new GatherDataCommand(linksPerCommand) { Id = Guid.NewGuid().ToString() }, transaction);
             }
 
-            _commandQueue.Add(new GatherDataCommand(numberOfLinks % linksPerCommand), transaction);
+            _commandQueue.Add(new GatherDataCommand(numberOfLinks % linksPerCommand) { Id = Guid.NewGuid().ToString() }, transaction);
         }
     }
 }
