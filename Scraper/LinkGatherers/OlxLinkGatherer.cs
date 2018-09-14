@@ -1,8 +1,9 @@
-﻿using MarklogicDataLayer.DataStructs;
+﻿using HtmlAgilityPack;
+using MarklogicDataLayer.DataStructs;
 using OfferScraper.Repositories;
-using OfferScraper.Utility;
+using OfferScraper.Utilities.Browsers;
+using OfferScraper.Utilities.Extensions;
 using ScrapySharp.Extensions;
-using ScrapySharp.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,73 +12,91 @@ namespace OfferScraper.LinkGatherers
 {
     public class OlxLinkGatherer : ILinkGatherer
     {
-        private static string AdvertisementClassName => "a.marginright5.link.linkWithHash";
-        private static string PageNumberBlockClassName => "block br3 brc8 large tdnone lheight24";
-        private static string PageQuery => $"?page=";
+        private static string AdvertisementClassName => "#offers_table .wrap";
         private static string BaseUri => "https://www.olx.pl/nieruchomosci/mieszkania/wynajem/gdansk/";
+        private static string PageQuery => "?page=";
+        private static string LinkClassName => "a.marginright5.link.linkWithHash";
+        private static string PageNumberBlockClassName => ".block.br3.brc8.large.tdnone.lheight24";
+
+        private readonly IBrowser _browser;
         private readonly DatabaseUtilityRepository _utilityRepository;
 
-        public OlxLinkGatherer(DatabaseUtilityRepository utilityRepository)
+        public OlxLinkGatherer(IBrowser browser, DatabaseUtilityRepository utilityRepository)
         {
+            _browser = browser;
             _utilityRepository = utilityRepository;
         }
 
         public ICollection<Link> Gather()
         {
-            var links = new List<Link>();
-            var browser = BrowserFactory.GetBrowser();
+            var links = GetLinks();
 
-            var pagesCount = GetPagesCount(browser);
-            var linksCount = 1;
-
-            var dateOfLastScrapping = _utilityRepository.GetByKind(OfferType.OtoDom)?.DateOfLastScraping;
-
-            dateOfLastScrapping = dateOfLastScrapping ?? DateTime.Now;
-
-            for (var i = 1; i <= pagesCount; i++)
-            {
-                var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
-                var page = browser.NavigateToPage(new Uri($"{BaseUri}{pageQuery}"));
-                var aTags = page.Html.CssSelect(AdvertisementClassName);
-                var newestDate = page.Html.Descendants()
-                    .Where(x => x.Name == "i" && x.GetAttributeValue("data-icon") == "clock")
-                    .Where(x => x.ParentNode.Name == "span")
-                    .Select(x => x.ParentNode.InnerText.Trim())
-                    .Where(x => x.Contains("dzisiaj"))
-                    .Select(x => x.Split(' ').Last())
-                    .Select(x => DateTime.Parse(x))
-                    .ToList()
-                    .Max();
-                if (dateOfLastScrapping > newestDate)
-                {
-                    dateOfLastScrapping = DateTime.Now;
-                    _utilityRepository.Insert(new MarklogicDataLayer.DataStructs.Utility()
-                    {
-                        DateOfLastScraping = dateOfLastScrapping.GetValueOrDefault(),
-                        Type = OfferType.OtoDom,
-                    });
-                    return links;
-                }
-                links.AddRange(aTags.Select(x => new Link
-                {
-                    Id = linksCount++.ToString(),
-                    Uri = x.Attributes["href"].Value,
-                    LinkSourceKind = OfferType.Olx,
-                    LastUpdate = DateTime.Now,
-                    Status = Status.New
-                }));
-            }
+            UpdateDateOfLastScrapping();
 
             return links;
         }
 
-        private static int GetPagesCount(ScrapingBrowser browser)
+        private List<Link> GetLinks()
         {
-            var page = browser.NavigateToPage(new Uri($"{BaseUri}"));
-            return int.Parse(page.Html.Descendants().Where(x =>
-                    x.GetAttributeValue("class", "").Contains(PageNumberBlockClassName))
-                .SelectMany(x => x.ChildNodes.Where(y => y.Name == "span")).Last()
-                .InnerText);
+            var numberOfPages = GetMaxPage(_browser);
+
+            var aTags = new List<HtmlNode>();
+
+            for (var i = 1; i <= numberOfPages; i++)
+            {
+                var page = _browser.GetPage(new Uri($"{BaseUri}{PageQuery}{i}"));
+                var aTagsFromPage = page.CssSelect(AdvertisementClassName);
+
+                aTags.AddRange(aTagsFromPage);
+            }
+
+            var dateOfLastScrapping = _utilityRepository.GetByKind(OfferType.Olx)?.DateOfLastScraping ?? DateTime.MinValue;
+
+            var links = aTags
+                .Where(x => IsNewer(x, dateOfLastScrapping))
+                .Select(x => x.CssSelect(LinkClassName)
+                .FirstOrDefault()
+                .MapToLink())
+                .ToList();
+
+            return links;
+        }
+
+        private static int GetMaxPage(IBrowser browser)
+        {
+            var page = browser.GetPage(new Uri(BaseUri));
+
+            return page
+                .CssSelect(PageNumberBlockClassName)
+                .FirstOrDefault(x => x.Attributes["data-cy"].Value == "page-link-last")
+                .CssSelect("span")
+                .FirstOrDefault()
+                .InnerHtml
+                .ParseToInt();
+        }
+
+        private bool IsNewer(HtmlNode node, DateTime dateOfLastScrapping)
+        {
+            var dateOfPosting = node.CssSelect(".breadcrumb span")
+                .ToList()
+                .Last()
+                .InnerHtml
+                .Trim()
+                .RemoveHtmlTag("i")
+                .TranslateDate()
+                .ParseToDateTime();
+
+            return dateOfPosting > dateOfLastScrapping;
+        }
+
+        private void UpdateDateOfLastScrapping()
+        {
+            var utility = _utilityRepository.GetByKind(OfferType.Olx) ?? new Utility(OfferType.Olx);
+
+            using (var transaction = _utilityRepository.GetTransaction())
+            {
+                _utilityRepository.Update(utility, transaction);
+            }
         }
     }
 }

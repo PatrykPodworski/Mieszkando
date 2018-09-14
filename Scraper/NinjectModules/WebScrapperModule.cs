@@ -8,6 +8,7 @@ using OfferScraper.DataGatherers;
 using OfferScraper.Factories;
 using OfferScraper.LinkGatherers;
 using OfferScraper.Repositories;
+using OfferScraper.Utilities.Browsers;
 
 namespace OfferScraper.NinjectModules
 {
@@ -25,6 +26,7 @@ namespace OfferScraper.NinjectModules
 
             Bind<IFactory<ILinkGatherer>>().To<LinkGathererFactory>();
             Bind<IFactory<IDataProcessor>>().To<DataProcessorFactory>();
+            Bind<IDataGatherer>().To<DataGatherer>();
 
             Bind<IDataProcessor>().To<OlxDataProcessor>();
             Bind<IDataProcessor>().To<OtoDomDataProcessor>();
@@ -33,9 +35,9 @@ namespace OfferScraper.NinjectModules
             Bind<IDataRepository<Link>>().To<DatabaseLinkRepository>();
             Bind<IDataRepository<HtmlData>>().To<DatabaseHtmlDataRepository>();
             Bind<IDataRepository<Offer>>().To<DatabaseOfferRepository>();
-            Bind<IDataRepository<MarklogicDataLayer.DataStructs.Utility>>().To<DatabaseUtilityRepository>();
+            Bind<IDataRepository<Utility>>().To<DatabaseUtilityRepository>();
 
-            Bind<IDataGatherer>().To<DataGatherer>();
+            Bind<IBrowser>().To<ScrapySharpBrowser>();
 
             Bind<IDatabaseConnectionSettings>().To<DatabaseConnectionSettings>().WithConstructorArgument("key", "mieszkando-db");
         }

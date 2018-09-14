@@ -12,5 +12,15 @@ namespace MarklogicDataLayer.DataStructs
 
         [XmlElement(UtilityConstants.OfferService)]
         public OfferType Type { get; set; }
+
+        public Utility()
+        {
+        }
+
+        public Utility(OfferType offerType)
+        {
+            Type = offerType;
+            DateOfLastScraping = DateTime.Now;
+        }
     }
 }
