@@ -48,14 +48,9 @@ namespace OfferScraper.LinkGatherers
                     var offerDateText = offerPage.Descendants().First(x => x.Name == "p" && x.InnerText.Contains("Data aktualizacji")).InnerText;
                     var offerDate = offerDateText.Split(':').Last();
                     var offerDateTime = DateTime.Parse(offerDate);
-                    if (dateOfLastScrapping == null || dateOfLastScrapping > offerDateTime)
+                    if (dateOfLastScrapping != null && dateOfLastScrapping > offerDateTime)
                     {
-                        dateOfLastScrapping = DateTime.Now;
-                        _utilityRepository.Insert(new MarklogicDataLayer.DataStructs.Utility()
-                        {
-                            DateOfLastScraping = dateOfLastScrapping.GetValueOrDefault(),
-                            Type = OfferType.OtoDom,
-                        });
+                        UpdateDateOfLastScraping();
                         return links;
                     }
                     links.Add(new Link
@@ -69,7 +64,17 @@ namespace OfferScraper.LinkGatherers
                 }
             }
 
+            UpdateDateOfLastScraping();
             return links;
+        }
+
+        private void UpdateDateOfLastScraping()
+        {
+            _utilityRepository.Insert(new Utility()
+            {
+                DateOfLastScraping = DateTime.Now,
+                Type = OfferType.OtoDom,
+            });
         }
 
         private static int GetPagesCount(IBrowser _browser)
