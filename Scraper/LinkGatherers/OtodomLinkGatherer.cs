@@ -31,9 +31,7 @@ namespace OfferScraper.LinkGatherers
             var linksCount = 1;
 
             var dateOfLastScrapping = _utilityRepository.GetByKind(OfferType.OtoDom)?.DateOfLastScraping;
-
-            dateOfLastScrapping = dateOfLastScrapping ?? DateTime.Now;
-
+            
             for (var i = 1; i <= pagesCount; i++)
             {
                 var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;
@@ -49,7 +47,7 @@ namespace OfferScraper.LinkGatherers
                     var offerDateText = offerPage.Html.Descendants().First(x => x.Name == "p" && x.InnerText.Contains("Data aktualizacji")).InnerText;
                     var offerDate = offerDateText.Split(':').Last();
                     var offerDateTime = DateTime.Parse(offerDate);
-                    if (dateOfLastScrapping > offerDateTime)
+                    if (dateOfLastScrapping == null || dateOfLastScrapping > offerDateTime)
                     {
                         dateOfLastScrapping = DateTime.Now;
                         _utilityRepository.Insert(new MarklogicDataLayer.DataStructs.Utility()
@@ -59,16 +57,15 @@ namespace OfferScraper.LinkGatherers
                         });
                         return links;
                     }
-                    //TODO: add date check for latest link, currently date is being scrapped
+                    links.Add(new Link
+                    {
+                        Id = linksCount++.ToString(),
+                        Uri = offerLink,
+                        LinkSourceKind = OfferType.OtoDom,
+                        LastUpdate = DateTime.Now,
+                        Status = Status.New,
+                    });
                 }
-                links.AddRange(offerLinks.Distinct().Select(x => new Link
-                {
-                    Id = linksCount++.ToString(),
-                    Uri = x,
-                    LinkSourceKind = OfferType.OtoDom,
-                    LastUpdate = DateTime.Now,
-                    Status = Status.New,
-                }));
             }
 
             return links;
