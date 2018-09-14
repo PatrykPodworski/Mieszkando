@@ -1,24 +1,28 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using OfferScraper.LinkGatherers;
-using OfferScraper.NinjectModules;
-using System;
-using Ninject;
 using OfferScraper.Repositories;
+using System;
 
 namespace OfferScraper.Factories
 {
     public class LinkGathererFactory : IFactory<ILinkGatherer>
     {
+        private DatabaseUtilityRepository _repository;
+
+        public LinkGathererFactory(DatabaseUtilityRepository repository)
+        {
+            _repository = repository;
+        }
+
         public ILinkGatherer Get(OfferType type)
         {
-            var kernel = new StandardKernel(new WebScrapperModule());
             switch (type)
             {
                 case OfferType.Olx:
-                    return new OlxLinkGatherer(kernel.Get<DatabaseUtilityRepository>());
+                    return new OlxLinkGatherer(_repository);
 
                 case OfferType.OtoDom:
-                    return new OtodomLinkGatherer(kernel.Get<DatabaseUtilityRepository>());
+                    return new OtodomLinkGatherer(_repository);
 
                 default:
                     throw new ArgumentException("Couldn't resolve dependency for given OfferType");

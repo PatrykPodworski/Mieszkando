@@ -40,7 +40,7 @@ namespace OfferScraper.Commands.Implementation
         {
             var linksPerCommand = 10;   // configuration
 
-            for (int i = 0; i < numberOfLinks; i += linksPerCommand)
+            for (int i = 0; i < numberOfLinks / linksPerCommand; i++)
             {
                 _commandQueue.Add(new GatherDataCommand(linksPerCommand) { Id = Guid.NewGuid().ToString() }, transaction);
             }
