@@ -4,6 +4,7 @@ using OfferScraper.Utilities.Browsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace OfferScraper.LinkGatherers
 {
@@ -45,9 +46,14 @@ namespace OfferScraper.LinkGatherers
                 foreach (var offerLink in offerLinks)
                 {
                     var offerPage = _browser.GetPage(new Uri(offerLink));
-                    var offerDateText = offerPage.Descendants().First(x => x.Name == "p" && x.InnerText.Contains("Data aktualizacji")).InnerText;
-                    var offerDate = offerDateText.Split(':').Last();
-                    var offerDateTime = DateTime.Parse(offerDate);
+                    var offerDateText = offerPage.Descendants().First(x => x.Name == "p" && x.InnerText.Contains("Data dodania")).InnerText.Split(':').Last();
+                    var numberOfDays = Regex.Match(offerDateText, "\\d+").Value;
+                    var offerDateTime = new DateTime();
+                    if (!DateTime.TryParse(offerDateText, out offerDateTime))
+                    {
+                        offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays) * -1);
+                    }
+
                     if (dateOfLastScrapping != null && dateOfLastScrapping > offerDateTime)
                     {
                         UpdateDateOfLastScraping();

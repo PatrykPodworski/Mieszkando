@@ -10,6 +10,7 @@ namespace OfferScraper.Utilities.Extensions
         {
             return new Link
             {
+                Id = Guid.NewGuid().ToString(),
                 Uri = node.Attributes["href"].Value,
                 LinkSourceKind = OfferType.Olx,
                 LastUpdate = DateTime.Now,
