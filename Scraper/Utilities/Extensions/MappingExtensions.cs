@@ -8,14 +8,18 @@ namespace OfferScraper.Utilities.Extensions
     {
         public static Link MapToLink(this HtmlNode node)
         {
-            return new Link
+            if (node.Attributes["href"].Value.Contains("olx"))
             {
-                Id = Guid.NewGuid().ToString(),
-                Uri = node.Attributes["href"].Value,
-                LinkSourceKind = OfferType.Olx,
-                LastUpdate = DateTime.Now,
-                Status = Status.New
-            };
+                return new Link
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Uri = node.Attributes["href"].Value,
+                    LinkSourceKind = OfferType.Olx,
+                    LastUpdate = DateTime.Now,
+                    Status = Status.New
+                };
+            }
+            return null;
         }
     }
 }

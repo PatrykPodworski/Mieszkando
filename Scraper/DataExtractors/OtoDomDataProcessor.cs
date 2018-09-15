@@ -4,6 +4,7 @@ using OfferScraper.Utilities.Extensions;
 using ScrapySharp.Extensions;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace OfferScraper.DataExtractors
 {
@@ -37,8 +38,8 @@ namespace OfferScraper.DataExtractors
 
             var bonusCost = data.CssSelect(".sub-list > li")
                 .FirstOrDefault(x => x.InnerHtml.Contains("Czynsz"))
-                .InnerHtml
-                .GetNumber();
+                ?.InnerHtml
+                ?.GetNumber() ?? "0";
 
             var rooms = data.CssSelect(".main-list > li")
                 .FirstOrDefault(x => x.InnerHtml.Contains("Liczba pokoi"))
@@ -54,12 +55,21 @@ namespace OfferScraper.DataExtractors
                 .LastOrDefault()
                 .InnerHtml;
 
-            var dateOfPosting = data.CssSelect(".text-details > .right > p")
+            var dateOfPostingText = data.CssSelect(".text-details > .right > p")
                 .FirstOrDefault(x => x.InnerHtml.Contains("Data dodania"))
                 .InnerHtml
                 .Split(':')
                 .LastOrDefault()
-                .Trim()
+                .Trim();
+
+            var numberOfDays = Regex.Match(dateOfPostingText, "\\d+").Value;
+            var offerDateTime = new DateTime();
+            if (!DateTime.TryParse(dateOfPostingText, out offerDateTime))
+            {
+                offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays) * -1);
+            }
+
+            var dateOfPosting = offerDateTime
                 .ToShortDateString();
 
             var dateOfScraping = DateTime.Now

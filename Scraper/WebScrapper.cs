@@ -28,22 +28,13 @@ namespace OfferScraper
             while (true)
             {
                 _logger.Log(LogType.Info, "Program started");
-
-                _commandQueue.Add(new GetLinksCommand(MarklogicDataLayer.DataStructs.OfferType.Olx));
-                _commandQueue.Add(new GetLinksCommand(MarklogicDataLayer.DataStructs.OfferType.OtoDom));
-
+                
                 try
                 {
                     while (_commandQueue.HasNext())
                     {
                         var command = _commandQueue.GetNext();
-
-                        if (command.GetType() != typeof(GetLinksCommand))
-                        {
-                            _commandQueue.ChangeCommandStatus(command, MarklogicDataLayer.DataStructs.Status.Failed);
-                            continue;
-                        }
-
+                        
                         _commandBus.Send(command);
                     }
                 }

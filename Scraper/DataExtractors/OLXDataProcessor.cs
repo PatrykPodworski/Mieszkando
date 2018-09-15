@@ -23,10 +23,10 @@ namespace OfferScraper.DataExtractors
         {
             var id = data.CssSelect(".offer-titlebox__details small")
                 .FirstOrDefault(x => x.InnerHtml.Contains("ID"))
-                .InnerHtml
-                .Split(':')
-                .LastOrDefault()
-                .Trim();
+                ?.InnerHtml
+                ?.Split(':')
+                ?.LastOrDefault()
+                ?.Trim() ?? Guid.NewGuid().ToString();
 
             var title = data.CssSelect(".offer-titlebox > h1")
                 .FirstOrDefault()

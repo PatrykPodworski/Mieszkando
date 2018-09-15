@@ -57,6 +57,7 @@ namespace OfferScraper.LinkGatherers
                 .Select(x => x.CssSelect(LinkClassName)
                 .FirstOrDefault()
                 .MapToLink())
+                .Where(x => x != null)
                 .ToList();
 
             return links;
