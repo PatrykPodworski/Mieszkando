@@ -67,7 +67,6 @@ namespace OfferScraper.Repositories
         {
             var offerId = xml.Descendants().Where(x => x.Name == OfferConstants.OfferId).First().Value;
             var offerTitle = xml.Descendants().Where(x => x.Name == OfferConstants.Title).First().Value;
-            var offerDescription = xml.Descendants().Where(x => x.Name == OfferConstants.Description).First().Value;
             var offerDistrict = xml.Descendants().Where(x => x.Name == OfferConstants.District).First().Value;
             var offerCost = xml.Descendants().Where(x => x.Name == OfferConstants.Cost).First().Value;
             var offerBonusCost = xml.Descendants().Where(x => x.Name == OfferConstants.BonusCost).First().Value;
@@ -80,7 +79,6 @@ namespace OfferScraper.Repositories
             {
                 Id = offerId,
                 Title = offerTitle,
-                Description = offerDescription,
                 District = offerDistrict,
                 Cost = offerCost,
                 BonusCost = offerBonusCost,

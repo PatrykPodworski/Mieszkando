@@ -39,7 +39,6 @@ namespace Tests
                 {
                     Id = "1",
                     Title = "title",
-                    Description = "lorem ipsum",
                     Cost = "100.0",
                     BonusCost = "1.0",
                     District = "wealthy",
@@ -64,7 +63,6 @@ namespace Tests
             {
                 Id = "1",
                 Title = "title",
-                Description = "lorem ipsum",
                 Cost = "100.0",
                 BonusCost = "1.0",
                 District = "wealthy",
@@ -77,7 +75,6 @@ namespace Tests
             {
                 Id = "2",
                 Title = "title2",
-                Description = "lorem ipsum2",
                 Cost = "101.0",
                 BonusCost = "11.0",
                 District = "wealthy2",
@@ -105,7 +102,6 @@ namespace Tests
             {
                 Id = "1",
                 Title = "title",
-                Description = "lorem ipsum",
                 Cost = "100.0",
                 BonusCost = "1.0",
                 District = "wealthy",
@@ -128,7 +124,6 @@ namespace Tests
             {
                 Id = "1",
                 Title = "title",
-                Description = "lorem ipsum",
                 Cost = "100.0",
                 BonusCost = "1.0",
                 District = "wealthy",
@@ -141,7 +136,6 @@ namespace Tests
             {
                 Id = "2",
                 Title = "title2",
-                Description = "lorem ipsum2",
                 Cost = "101.0",
                 BonusCost = "11.0",
                 District = "wealthy2",
@@ -165,7 +159,6 @@ namespace Tests
             {
                 Id = "1",
                 Title = "title",
-                Description = "lorem ipsum",
                 Cost = "100.0",
                 BonusCost = "1.0",
                 District = "wealthy",
@@ -178,7 +171,6 @@ namespace Tests
             {
                 Id = "2",
                 Title = "title2",
-                Description = "lorem ipsum2",
                 Cost = "101.0",
                 BonusCost = "11.0",
                 District = "wealthy2",
@@ -191,7 +183,6 @@ namespace Tests
             {
                 Id = "3",
                 Title = "title3",
-                Description = "lorem ipsum3",
                 Cost = "101.0",
                 BonusCost = "11.0",
                 District = "wealthy2",
