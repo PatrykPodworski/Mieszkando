@@ -1,5 +1,5 @@
 ﻿using Ninject;
-using OfferScraper.NinjectModules;
+using OfferScraper.Utilities.NinjectModules;
 
 namespace OfferScraper
 {
@@ -9,7 +9,7 @@ namespace OfferScraper
         {
             var kernel = new StandardKernel(new WebScrapperModule());
             var webScrapper = kernel.Get<WebScrapper>();
-            
+
             webScrapper.Run();
         }
     }

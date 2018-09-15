@@ -77,5 +77,10 @@ namespace OfferScraper.Utilities.Extensions
             DateTime.TryParse(date, out DateTime result);
             return result;
         }
+
+        public static string GetClassName(this object obj)
+        {
+            return obj.GetType().ToString().Split('.').LastOrDefault();
+        }
     }
 }

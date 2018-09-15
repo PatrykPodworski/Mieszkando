@@ -3,6 +3,8 @@ using OfferScraper.Commands.Interfaces;
 using OfferScraper.DataExtractors;
 using OfferScraper.Factories;
 using OfferScraper.Repositories;
+using OfferScraper.Utilities.Extensions;
+using OfferScraper.Utilities.Loggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +16,15 @@ namespace OfferScraper.Commands.Implementation
         private readonly IFactory<IDataProcessor> _factory;
         private IDataRepository<HtmlData> _htmlDataRepository;
         private IDataRepository<Offer> _offerRepository;
+        private ILogger _logger;
 
-        public ProcessDataCommandHandler(IFactory<IDataProcessor> factory, IDataRepository<HtmlData> htmlRepository, IDataRepository<Offer> offerRepository)
+        public ProcessDataCommandHandler(IFactory<IDataProcessor> factory, IDataRepository<HtmlData> htmlRepository, IDataRepository<Offer> offerRepository, ILogger logger)
         {
             _factory = factory;
             _htmlDataRepository = htmlRepository;
             _offerRepository = offerRepository;
+            _logger = logger;
+            _logger.SetSource(typeof(ProcessDataCommandHandler).Name);
         }
 
         public void Handle(ICommand comm)
@@ -28,29 +33,18 @@ namespace OfferScraper.Commands.Implementation
             var command = (ExtractDataCommand)comm;
 
             var htmlSamples = GetSamples(command.NumberOfSamples);
+            _logger.Log(LogType.Info, $"Got {htmlSamples.Count}/{command.NumberOfSamples} samples from database");
 
             GetOffers(htmlSamples);
         }
 
-        private IEnumerable<HtmlData> GetSamples(int numberOfSamples)
+        private ICollection<HtmlData> GetSamples(int numberOfSamples)
         {
             return _htmlDataRepository
                  .GetAll()
                  .Where(x => x.Status == Status.New)
                  .Take(numberOfSamples)
                  .ToList();
-        }
-
-        private void ChangeSamplesStatusToInProgress(IEnumerable<HtmlData> htmlSamples)
-        {
-            using (var transaction = _htmlDataRepository.GetTransaction())
-            {
-                foreach (var htmlData in htmlSamples)
-                {
-                    htmlData.Status = Status.InProgress;
-                    _htmlDataRepository.Update(htmlData);
-                }
-            }
         }
 
         private void GetOffers(IEnumerable<HtmlData> htmlSamples)
@@ -66,7 +60,19 @@ namespace OfferScraper.Commands.Implementation
             }
             catch (Exception)
             {
-                ChangeAbortedSamplesStatusToNew(htmlSamples);
+                ChangeUnprocessedSamplesStatusToNew(htmlSamples);
+            }
+        }
+
+        private void ChangeSamplesStatusToInProgress(IEnumerable<HtmlData> htmlSamples)
+        {
+            using (var transaction = _htmlDataRepository.GetTransaction())
+            {
+                foreach (var htmlData in htmlSamples)
+                {
+                    htmlData.Status = Status.InProgress;
+                    _htmlDataRepository.Update(htmlData);
+                }
             }
         }
 
@@ -75,28 +81,34 @@ namespace OfferScraper.Commands.Implementation
             try
             {
                 var processor = _factory.Get(htmlData.OfferType);
+
+                _logger.Log(LogType.Info, $"Started to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
                 var offer = processor.Process(htmlData);
+                _logger.Log(LogType.Info, $"Finished to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
 
                 using (var transaction = _offerRepository.GetTransaction())
                 {
                     _offerRepository.Insert(offer, transaction);
+                    _logger.Log(LogType.Info, $"Inserted new {offer.GetClassName()} to database");
 
                     htmlData.Status = Status.Success;
                     _htmlDataRepository.Update(htmlData, transaction);
+                    _logger.Log(LogType.Info, $"Updated {htmlData.GetClassName()} with Id: {htmlData.Id}");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 using (var transaction = _htmlDataRepository.GetTransaction())
                 {
                     htmlData.Status = Status.Failed;
                     _htmlDataRepository.Update(htmlData, transaction);
+                    _logger.Log(LogType.Error, $"Failed to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}|{e.Message}");
                 }
                 throw;
             }
         }
 
-        private void ChangeAbortedSamplesStatusToNew(IEnumerable<HtmlData> htmlSamples)
+        private void ChangeUnprocessedSamplesStatusToNew(IEnumerable<HtmlData> htmlSamples)
         {
             foreach (var htmlData in htmlSamples)
             {
@@ -104,6 +116,7 @@ namespace OfferScraper.Commands.Implementation
                 {
                     htmlData.Status = Status.New;
                     _htmlDataRepository.Update(htmlData, transaction);
+                    _logger.Log(LogType.Info, $"Extracting data from {htmlData.GetClassName()} with Id: {htmlData.Id} left unfinished, changed status to new again");
                 }
             }
         }

@@ -3,6 +3,8 @@ using OfferScraper.Commands.Interfaces;
 using OfferScraper.Factories;
 using OfferScraper.LinkGatherers;
 using OfferScraper.Repositories;
+using OfferScraper.Utilities.Extensions;
+using OfferScraper.Utilities.Loggers;
 using System;
 
 namespace OfferScraper.Commands.Implementation
@@ -10,29 +12,44 @@ namespace OfferScraper.Commands.Implementation
     public class GetLinksCommandHandler : BaseCommand, ICommandHandler<GetLinksCommand>
     {
         private readonly IFactory<ILinkGatherer> _factory;
+        private readonly ILogger _logger;
         private readonly IDataRepository<Link> _dataRepository;
         private readonly ICommandQueue _commandQueue;
 
-        public GetLinksCommandHandler(IDataRepository<Link> linkRepository, ICommandQueue commandRepository, IFactory<ILinkGatherer> factory)
+        public GetLinksCommandHandler(IDataRepository<Link> linkRepository, ICommandQueue commandRepository, IFactory<ILinkGatherer> factory, ILogger logger)
         {
             _dataRepository = linkRepository;
             _commandQueue = commandRepository;
             _factory = factory;
+
+            _logger = logger;
+            _logger.SetSource(typeof(GetLinksCommandHandler).Name);
         }
 
         public void Handle(ICommand comm)
         {
-            CheckCommandType(comm);
-
-            var command = (GetLinksCommand)comm;
-
-            var gatherer = _factory.Get(command.Type);
-            var links = gatherer.Gather();
-
-            using (var transaction = _dataRepository.GetTransaction())
+            try
             {
-                _dataRepository.Insert(links, transaction);
-                AddGatherDataCommands(links.Count, transaction);
+                CheckCommandType(comm);
+                var command = (GetLinksCommand)comm;
+
+                var gatherer = _factory.Get(command.Type);
+                var links = gatherer.Gather();
+
+                _logger.Log(LogType.Info, $"{gatherer.GetClassName()} gathered {links.Count} new links");
+
+                using (var transaction = _dataRepository.GetTransaction())
+                {
+                    _dataRepository.Insert(links, transaction);
+                    AddGatherDataCommands(links.Count, transaction);
+                }
+
+                _logger.Log(LogType.Info, $"Inserted {links.Count} new links into database");
+            }
+            catch (Exception e)
+            {
+                _logger.Log(LogType.Error, $"Error while handling command {comm.GetClassName()} with id {comm.GetId()}|{e.Message}");
+                throw;
             }
         }
 
@@ -46,6 +63,8 @@ namespace OfferScraper.Commands.Implementation
             }
 
             _commandQueue.Add(new GatherDataCommand(numberOfLinks % linksPerCommand) { Id = Guid.NewGuid().ToString() }, transaction);
+
+            _logger.Log(LogType.Info, $"Created new {typeof(GatherDataCommand).Name}s: {numberOfLinks / linksPerCommand}x{linksPerCommand} and 1x{numberOfLinks % linksPerCommand}");
         }
     }
 }

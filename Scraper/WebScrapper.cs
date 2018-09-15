@@ -1,24 +1,59 @@
-﻿using OfferScraper.Commands.Interfaces;
+﻿using OfferScraper.Commands.Implementation;
+using OfferScraper.Commands.Interfaces;
+using OfferScraper.Utilities.Loggers;
+using System.Threading;
 
 namespace OfferScraper
 {
     public class WebScrapper
     {
         private readonly ICommandQueue _commandQueue;
+        private readonly ILogger _logger;
+        private readonly int _sleepDuration;
         private readonly ICommandBus _commandBus;
 
-        public WebScrapper(ICommandBus commandBus, ICommandQueue commandQueue)
+        public WebScrapper(ICommandBus commandBus, ICommandQueue commandQueue, ILogger logger)
         {
             _commandBus = commandBus;
             _commandQueue = commandQueue;
+
+            _logger = logger;
+            logger.SetSource(typeof(WebScrapper).Name);
+
+            _sleepDuration = 10 * 60000;    // configuration
         }
 
         public void Run()
         {
-            while (_commandQueue.HasNext())
+            while (true)
             {
-                var command = _commandQueue.GetNext();
-                _commandBus.Send(command);
+                _logger.Log(LogType.Info, "Program started");
+
+                _commandQueue.Add(new GetLinksCommand(MarklogicDataLayer.DataStructs.OfferType.Olx));
+                _commandQueue.Add(new GetLinksCommand(MarklogicDataLayer.DataStructs.OfferType.OtoDom));
+
+                try
+                {
+                    while (_commandQueue.HasNext())
+                    {
+                        var command = _commandQueue.GetNext();
+
+                        if (command.GetType() != typeof(GetLinksCommand))
+                        {
+                            _commandQueue.ChangeCommandStatus(command, MarklogicDataLayer.DataStructs.Status.Failed);
+                            continue;
+                        }
+
+                        _commandBus.Send(command);
+                    }
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
+
+                _logger.Log(LogType.Info, $"No more commands to handle, sleeping for {_sleepDuration / 60000} minutes");
+                Thread.Sleep(_sleepDuration);
             }
         }
     }

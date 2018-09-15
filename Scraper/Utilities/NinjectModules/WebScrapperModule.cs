@@ -9,8 +9,9 @@ using OfferScraper.Factories;
 using OfferScraper.LinkGatherers;
 using OfferScraper.Repositories;
 using OfferScraper.Utilities.Browsers;
+using OfferScraper.Utilities.Loggers;
 
-namespace OfferScraper.NinjectModules
+namespace OfferScraper.Utilities.NinjectModules
 {
     public class WebScrapperModule : NinjectModule
     {
@@ -38,6 +39,7 @@ namespace OfferScraper.NinjectModules
             Bind<IDataRepository<Utility>>().To<DatabaseUtilityRepository>();
 
             Bind<IBrowser>().To<ScrapySharpBrowser>();
+            Bind<ILogger>().To<DefaultOutputLogger>();
 
             Bind<IDatabaseConnectionSettings>().To<DatabaseConnectionSettings>().WithConstructorArgument("key", "mieszkando-db");
         }
