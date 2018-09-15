@@ -13,9 +13,6 @@ namespace MarklogicDataLayer.DataStructs
         [XmlElement(OfferConstants.Title)]
         public string Title { get; set; }
 
-        [XmlElement(OfferConstants.Description)]
-        public string Description { get; set; }
-
         [XmlElement(OfferConstants.District)]
         public string District { get; set; }
 
