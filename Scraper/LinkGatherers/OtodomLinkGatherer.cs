@@ -42,7 +42,7 @@ namespace OfferScraper.LinkGatherers
                     .Where(x => x.Name == AdvertisementElementName)
                     .Where(x => x.GetAttributeValue("data-featured-name", "") == AdvertisementClassName)
                     .ToList();
-                var offerLinks = articles.Select(x => x.GetAttributeValue("data-url", "")).ToList();
+                var offerLinks = articles.Select(x => x.GetAttributeValue("data-url", "")).Where(x => x.Contains("www.otodom.pl/oferta/")).ToList();
                 foreach (var offerLink in offerLinks)
                 {
                     var offerPage = _browser.GetPage(new Uri(offerLink));

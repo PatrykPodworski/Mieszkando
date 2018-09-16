@@ -25,6 +25,7 @@ namespace OfferScraper.DataGatherers
                 OfferType = link.LinkSourceKind,
                 Status = Status.New,
                 LastUpdate = DateTime.Now,
+                LinkId = link.Id,
             };
         }
     }
