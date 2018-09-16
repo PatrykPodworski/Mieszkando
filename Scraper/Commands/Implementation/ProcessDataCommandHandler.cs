@@ -116,6 +116,11 @@ namespace OfferScraper.Commands.Implementation
         {
             foreach (var htmlData in htmlSamples)
             {
+                if (htmlData.Status != Status.InProgress)
+                {
+                    continue;
+                }
+
                 using (var transaction = _htmlDataRepository.GetTransaction())
                 {
                     htmlData.Status = Status.New;
