@@ -16,7 +16,7 @@ namespace CommandAdder
 
         public void Add(string[] names)
         {
-            if (names.Length == 0)
+            if (names.Length != 0)
             {
                 AddSpecificCommands(names);
                 return;

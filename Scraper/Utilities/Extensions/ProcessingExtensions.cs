@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace OfferScraper.Utilities.Extensions
@@ -8,8 +9,8 @@ namespace OfferScraper.Utilities.Extensions
     {
         public static string ToShortDateString(this string date)
         {
-            return DateTime.Parse(date)
-                 .ToShortDateString();
+            DateTime.TryParse(date, new CultureInfo("pl-PL"), DateTimeStyles.None, out DateTime result);
+            return result.ToShortDateString();
         }
 
         public static string Second(this string[] array)
