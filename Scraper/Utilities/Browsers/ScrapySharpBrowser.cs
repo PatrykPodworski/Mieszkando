@@ -8,6 +8,7 @@ namespace OfferScraper.Utilities.Browsers
     public class ScrapySharpBrowser : IBrowser
     {
         private ScrapingBrowser _browser;
+        private int _maxTries = 5;
 
         public ScrapySharpBrowser()
         {
@@ -16,9 +17,30 @@ namespace OfferScraper.Utilities.Browsers
 
         public HtmlNode GetPage(Uri uri)
         {
-            return _browser
-                .NavigateToPage(uri)
-                .Html;
+            for (int i = 0; i < _maxTries; i++)
+            {
+                var page = TryToGetPage(uri);
+
+                if (page != null)
+                {
+                    return page;
+                }
+            }
+            throw new Exception($"Service unavailable, tried to get page from url: {uri.ToString()} {_maxTries} times");
+        }
+
+        private HtmlNode TryToGetPage(Uri uri)
+        {
+            try
+            {
+                return _browser
+                    .NavigateToPage(uri)
+                    .Html;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
