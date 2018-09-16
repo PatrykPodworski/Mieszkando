@@ -59,7 +59,8 @@ namespace Tests
                 Content = "test1",
                 OfferType = MarklogicDataLayer.DataStructs.OfferType.Olx,
                 LastUpdate = DateTime.Now,
-                Status = MarklogicDataLayer.DataStructs.Status.New
+                Status = MarklogicDataLayer.DataStructs.Status.New,
+                LinkId = "1"
             };
             var htmlData2 = new MarklogicDataLayer.DataStructs.HtmlData
             {
@@ -67,7 +68,8 @@ namespace Tests
                 Content = "test2",
                 OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
                 LastUpdate = DateTime.Now,
-                Status = MarklogicDataLayer.DataStructs.Status.New
+                Status = MarklogicDataLayer.DataStructs.Status.New,
+                LinkId = "2"
             };
             _sut.Insert(htmlData1);
             _sut.Insert(htmlData2);
@@ -108,7 +110,8 @@ namespace Tests
                 Content = "test1",
                 OfferType = MarklogicDataLayer.DataStructs.OfferType.Olx,
                 LastUpdate = DateTime.Now,
-                Status = MarklogicDataLayer.DataStructs.Status.New
+                Status = MarklogicDataLayer.DataStructs.Status.New,
+                LinkId = "1"
             };
             var htmlData2 = new MarklogicDataLayer.DataStructs.HtmlData
             {
@@ -116,7 +119,8 @@ namespace Tests
                 Content = "test2",
                 OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
                 LastUpdate = DateTime.Now,
-                Status = MarklogicDataLayer.DataStructs.Status.New
+                Status = MarklogicDataLayer.DataStructs.Status.New,
+                LinkId = "2"
             };
             _sut.Insert(htmlData1);
             _sut.Insert(htmlData2);
@@ -135,7 +139,8 @@ namespace Tests
                 Content = "test1",
                 OfferType = MarklogicDataLayer.DataStructs.OfferType.Olx,
                 LastUpdate = DateTime.Now,
-                Status = MarklogicDataLayer.DataStructs.Status.New
+                Status = MarklogicDataLayer.DataStructs.Status.New,
+                LinkId = "1"
             };
             var htmlData2 = new MarklogicDataLayer.DataStructs.HtmlData
             {
@@ -143,7 +148,8 @@ namespace Tests
                 Content = "test2",
                 OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
                 LastUpdate = DateTime.Now,
-                Status = MarklogicDataLayer.DataStructs.Status.New
+                Status = MarklogicDataLayer.DataStructs.Status.New,
+                LinkId = "2",
             };
             var htmlData3 = new MarklogicDataLayer.DataStructs.HtmlData
             {
@@ -151,7 +157,8 @@ namespace Tests
                 Content = "test3",
                 OfferType = MarklogicDataLayer.DataStructs.OfferType.OtoDom,
                 LastUpdate = DateTime.Now,
-                Status = MarklogicDataLayer.DataStructs.Status.InProgress
+                Status = MarklogicDataLayer.DataStructs.Status.InProgress,
+                LinkId = "3"
             };
             _sut.Insert(new[] { htmlData1, htmlData2, htmlData3 });
             var result = _sut.Get("status", "New", 1).ToList();

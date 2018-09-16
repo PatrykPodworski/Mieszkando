@@ -73,6 +73,7 @@ namespace OfferScraper.Repositories
             var htmlDataOfferContent = xml.Descendants().Where(x => x.Name == HtmlDataConstants.OfferContent).First().Value;
             var htmlDataOfferType = xml.Descendants().Where(x => x.Name == HtmlDataConstants.OfferType).First().Value == OfferTypeConstants.Olx ? OfferType.Olx : OfferType.OtoDom;
             var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == HtmlDataConstants.LastUpdate).First().Value);
+            var htmlDataLinkId = xml.Descendants().Where(x => x.Name == HtmlDataConstants.LinkId).First().Value;
             var htmlDataStatus = Status.New;
             switch (xml.Descendants().Where(x => x.Name == HtmlDataConstants.Status).First().Value)
             {
@@ -99,6 +100,7 @@ namespace OfferScraper.Repositories
                 LastUpdate = htmlDataLastUpdate,
                 OfferType = htmlDataOfferType,
                 Content = htmlDataOfferContent,
+                LinkId = htmlDataLinkId,
             };
         }
 
