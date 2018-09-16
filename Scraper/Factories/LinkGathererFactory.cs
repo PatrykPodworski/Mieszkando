@@ -2,6 +2,7 @@
 using OfferScraper.LinkGatherers;
 using OfferScraper.Repositories;
 using OfferScraper.Utilities.Browsers;
+using OfferScraper.Utilities.Loggers;
 using System;
 
 namespace OfferScraper.Factories
@@ -10,11 +11,13 @@ namespace OfferScraper.Factories
     {
         private IBrowser _browser;
         private DatabaseUtilityRepository _repository;
+        private ILogger _logger;
 
-        public LinkGathererFactory(IBrowser browser, DatabaseUtilityRepository repository)
+        public LinkGathererFactory(IBrowser browser, DatabaseUtilityRepository repository, ILogger logger)
         {
             _browser = browser;
             _repository = repository;
+            _logger = logger;
         }
 
         public ILinkGatherer Get(OfferType type)
@@ -22,10 +25,10 @@ namespace OfferScraper.Factories
             switch (type)
             {
                 case OfferType.Olx:
-                    return new OlxLinkGatherer(_browser, _repository);
+                    return new OlxLinkGatherer(_browser, _repository, _logger);
 
                 case OfferType.OtoDom:
-                    return new OtodomLinkGatherer(_browser, _repository);
+                    return new OtodomLinkGatherer(_browser, _repository, _logger);
 
                 default:
                     throw new ArgumentException("Couldn't resolve dependency for given OfferType");

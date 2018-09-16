@@ -3,6 +3,7 @@ using MarklogicDataLayer.DataStructs;
 using OfferScraper.Repositories;
 using OfferScraper.Utilities.Browsers;
 using OfferScraper.Utilities.Extensions;
+using OfferScraper.Utilities.Loggers;
 using ScrapySharp.Extensions;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,13 @@ namespace OfferScraper.LinkGatherers
 
         private readonly IBrowser _browser;
         private readonly DatabaseUtilityRepository _utilityRepository;
+        private readonly ILogger _logger;
 
-        public OlxLinkGatherer(IBrowser browser, DatabaseUtilityRepository utilityRepository)
+        public OlxLinkGatherer(IBrowser browser, DatabaseUtilityRepository utilityRepository, ILogger logger)
         {
             _browser = browser;
             _utilityRepository = utilityRepository;
+            _logger = logger;
         }
 
         public ICollection<Link> Gather()
@@ -46,6 +49,8 @@ namespace OfferScraper.LinkGatherers
             {
                 var page = _browser.GetPage(new Uri($"{BaseUri}{PageQuery}{i}"));
                 var aTagsFromPage = page.CssSelect(AdvertisementClassName);
+
+                _logger.Log(LogType.Info, $"Added links from {BaseUri}{PageQuery}{i}.");
 
                 aTags.AddRange(aTagsFromPage);
             }

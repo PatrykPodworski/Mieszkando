@@ -1,6 +1,7 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using OfferScraper.Repositories;
 using OfferScraper.Utilities.Browsers;
+using OfferScraper.Utilities.Loggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,13 @@ namespace OfferScraper.LinkGatherers
 
         private readonly IBrowser _browser;
         private readonly DatabaseUtilityRepository _utilityRepository;
+        private readonly ILogger _logger;
 
-        public OtodomLinkGatherer(IBrowser browser, DatabaseUtilityRepository utilityRepository)
+        public OtodomLinkGatherer(IBrowser browser, DatabaseUtilityRepository utilityRepository, ILogger logger)
         {
             _browser = browser;
             _utilityRepository = utilityRepository;
+            _logger = logger;
         }
 
         public ICollection<Link> Gather()
@@ -59,6 +62,9 @@ namespace OfferScraper.LinkGatherers
                         UpdateDateOfLastScraping();
                         return links;
                     }
+
+                    _logger.Log(LogType.Info, $"Added {offerLink} link from OtoDom.");
+
                     links.Add(new Link
                     {
                         Id = linksCount++.ToString(),
