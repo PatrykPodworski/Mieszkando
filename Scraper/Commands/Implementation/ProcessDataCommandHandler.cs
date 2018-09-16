@@ -83,7 +83,7 @@ namespace OfferScraper.Commands.Implementation
                 var processor = _factory.Get(htmlData.OfferType);
 
                 _logger.Log(LogType.Info, $"Started to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
-                 var offer = processor.Process(htmlData);
+                var offer = processor.Process(htmlData);
                 _logger.Log(LogType.Info, $"Finished to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
 
                 using (var transaction = _offerRepository.GetTransaction())
