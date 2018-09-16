@@ -26,6 +26,7 @@ namespace MarklogicDataLayer
     {
         private const int TransactionTimeLimit = 900;
         private readonly HttpClient _client;
+        private readonly int _maxTries = 5;
 
         public RestConnector(IDatabaseConnectionSettings connectionSettings)
         {
@@ -93,26 +94,35 @@ namespace MarklogicDataLayer
 
         public HttpResponseMessage Submit(string query)
         {
-            var content = new StringContent(WebUtility.UrlEncode("xquery") + "=" + WebUtility.UrlEncode(query), null, "application/x-www-form-urlencoded");
-            var result = Post(_client, "eval", content);
+            HttpResponseMessage result = null;
+            for (var i = 0; i < _maxTries; i++)
+            {
+                var content = new StringContent(WebUtility.UrlEncode("xquery") + "=" + WebUtility.UrlEncode(query), null, "application/x-www-form-urlencoded");
+                result = Post(_client, "eval", content);
 
-            if (!result.IsSuccessStatusCode)
-                throw new HttpRequestException(result.Content.ReadAsStringAsync().Result);
+                if (result.IsSuccessStatusCode)
+                    return result;
+            }
 
-            return result;
+            throw new HttpRequestException(result.Content.ReadAsStringAsync().Result);
         }
 
         public HttpResponseMessage Submit(string query, MlTransactionScope transaction)
         {
-            var content = new StringContent(WebUtility.UrlEncode("xquery") + "=" + WebUtility.UrlEncode(query), null, "application/x-www-form-urlencoded");
-            var result = Post(_client, $"eval?txid={transaction.TransactionId}", content, transaction.Cookies);
+            HttpResponseMessage result = null;
+            for (var i = 0; i < _maxTries; i++)
+            {
+                var content = new StringContent(WebUtility.UrlEncode("xquery") + "=" + WebUtility.UrlEncode(query), null, "application/x-www-form-urlencoded");
+                result = Post(_client, $"eval?txid={transaction.TransactionId}", content, transaction.Cookies);
 
-            if (!result.IsSuccessStatusCode)
-                throw new HttpRequestException(result.Content.ReadAsStringAsync().Result);
+                if (result.IsSuccessStatusCode)
+                {
+                    transaction.Cookies = GetCookies(result);
+                    return result;
+                }
+            }
 
-            transaction.Cookies = GetCookies(result);
-
-            return result;
+            throw new HttpRequestException(result.Content.ReadAsStringAsync().Result);
         }
 
         public MlTransactionScope BeginTransaction()
