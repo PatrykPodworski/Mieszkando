@@ -8,6 +8,9 @@ namespace OfferScraper.Utilities.Loggers
         Info,
 
         [StringValue("ERROR")]
-        Error
+        Error,
+
+        [StringValue("DEBUG")]
+        Debug
     }
 }

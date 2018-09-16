@@ -51,7 +51,9 @@ namespace OfferScraper.Commands.Implementation
         {
             try
             {
+                _logger.Log(LogType.Debug, $"Before changing samples state to in progress");
                 ChangeSamplesStatusToInProgress(htmlSamples);
+                _logger.Log(LogType.Debug, $"After changing samples state to in progress");
 
                 foreach (var htmlData in htmlSamples)
                 {
@@ -80,7 +82,9 @@ namespace OfferScraper.Commands.Implementation
         {
             try
             {
+                _logger.Log(LogType.Debug, $"Before getting processor");
                 var processor = _factory.Get(htmlData.OfferType);
+                _logger.Log(LogType.Debug, $"After getting processor {processor.GetClassName()}");
 
                 _logger.Log(LogType.Info, $"Started to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
                 var offer = processor.Process(htmlData);
