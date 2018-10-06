@@ -27,9 +27,9 @@ namespace MarklogicDataLayer.Repositories
 
         public abstract void Delete(T entity);
 
-        public IQueryable<T> Get(string elementName, string elementValue, long numberOfElements)
+        public IQueryable<T> Get(string elementName, string elementValue, string collectionName, long numberOfElements)
         {
-            return GetWithExpression(new CtsElementValueQuery(elementName, elementValue), numberOfElements);
+            return GetWithExpression(new CtsAndQuery(new CtsCollectionQuery(collectionName), new CtsElementValueQuery(elementName, elementValue)), numberOfElements);
         }
 
         public IQueryable<T> GetAllFromCollection(string collectionName)

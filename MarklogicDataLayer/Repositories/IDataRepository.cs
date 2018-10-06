@@ -25,7 +25,7 @@ namespace MarklogicDataLayer.Repositories
 
         void Delete(T entity);
 
-        IQueryable<T> Get(string elementName, string elementValue, long numberOfElements);
+        IQueryable<T> Get(string elementName, string elementValue, string collectionName, long numberOfElements);
 
         IQueryable<T> GetAllFromCollection(string collectionName);
 

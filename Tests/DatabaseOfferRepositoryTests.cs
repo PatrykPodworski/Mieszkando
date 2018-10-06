@@ -1,4 +1,5 @@
-﻿using MarklogicDataLayer.DatabaseConnectors;
+﻿using MarklogicDataLayer.Constants;
+using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.Repositories;
 using MarklogicDataLayer.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -189,7 +190,7 @@ namespace Tests
                 DateOfScraping = "1972-01-01",
             };
             _sut.Insert(new[] { offer1, offer2, offer3 });
-            var result = _sut.Get("district", "wealthy2", 1).ToList();
+            var result = _sut.Get("district", "wealthy2", OfferConstants.OffersGeneralCollectionName, 1).ToList();
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("wealthy2", result.First().District);
