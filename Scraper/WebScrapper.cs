@@ -1,6 +1,5 @@
-﻿using OfferScraper.Commands.Implementation;
-using OfferScraper.Commands.Interfaces;
-using OfferScraper.Utilities.Loggers;
+﻿using Common.Loggers;
+using MarklogicDataLayer.Commands.Interfaces;
 using System.Threading;
 
 namespace OfferScraper
@@ -28,13 +27,13 @@ namespace OfferScraper
             while (true)
             {
                 _logger.Log(LogType.Info, "Program started");
-                
+
                 try
                 {
                     while (_commandQueue.HasNext())
                     {
                         var command = _commandQueue.GetNext();
-                        
+
                         _commandBus.Send(command);
                     }
                 }

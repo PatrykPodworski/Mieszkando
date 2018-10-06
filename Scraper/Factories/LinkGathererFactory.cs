@@ -1,8 +1,8 @@
-﻿using MarklogicDataLayer.DataStructs;
+﻿using Common.Loggers;
+using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.Repositories;
 using OfferScraper.LinkGatherers;
-using OfferScraper.Repositories;
 using OfferScraper.Utilities.Browsers;
-using OfferScraper.Utilities.Loggers;
 using System;
 
 namespace OfferScraper.Factories

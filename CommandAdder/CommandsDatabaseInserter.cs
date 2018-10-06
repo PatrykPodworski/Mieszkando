@@ -1,6 +1,6 @@
-﻿using MarklogicDataLayer.DataStructs;
-using OfferScraper.Commands.Implementation;
-using OfferScraper.Commands.Interfaces;
+﻿using MarklogicDataLayer.Commands.Implementation;
+using MarklogicDataLayer.Commands.Interfaces;
+using MarklogicDataLayer.DataStructs;
 using System;
 
 namespace CommandAdder

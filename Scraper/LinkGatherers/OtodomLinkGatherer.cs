@@ -1,7 +1,7 @@
-﻿using MarklogicDataLayer.DataStructs;
-using OfferScraper.Repositories;
+﻿using Common.Loggers;
+using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.Repositories;
 using OfferScraper.Utilities.Browsers;
-using OfferScraper.Utilities.Loggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace OfferScraper.LinkGatherers
             var linksCount = 1;
 
             var dateOfLastScrapping = _utilityRepository.GetByKind(OfferType.OtoDom)?.DateOfLastScraping;
-            
+
             for (var i = 1; i <= pagesCount; i++)
             {
                 var pageQuery = i > 1 ? $"{PageQuery}{i}" : string.Empty;

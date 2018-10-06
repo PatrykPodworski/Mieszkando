@@ -1,8 +1,7 @@
 ﻿using MarklogicDataLayer.DatabaseConnectors;
+using MarklogicDataLayer.Repositories;
 using MarklogicDataLayer.Utility;
-using MarklogicDataLayer.XQuery.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OfferScraper.Repositories;
 using System;
 using System.Linq;
 

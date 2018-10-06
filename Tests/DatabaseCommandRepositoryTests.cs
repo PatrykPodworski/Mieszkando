@@ -1,15 +1,12 @@
-﻿using MarklogicDataLayer.DatabaseConnectors;
+﻿using MarklogicDataLayer.Commands.Interfaces;
+using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.Repositories;
 using MarklogicDataLayer.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OfferScraper.Commands.Implementation;
-using OfferScraper.Commands.Interfaces;
 using OfferScraper.Factories;
-using OfferScraper.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Tests
 {

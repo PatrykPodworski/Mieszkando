@@ -1,15 +1,16 @@
-﻿using MarklogicDataLayer.DatabaseConnectors;
+﻿using Common.Loggers;
+using MarklogicDataLayer.Commands.Implementation;
+using MarklogicDataLayer.Commands.Interfaces;
+using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.Repositories;
 using Ninject.Modules;
-using OfferScraper.Commands.Implementation;
-using OfferScraper.Commands.Interfaces;
+using OfferScraper.CommandHandlers;
 using OfferScraper.DataGatherers;
 using OfferScraper.DataProcessors;
 using OfferScraper.Factories;
 using OfferScraper.LinkGatherers;
-using OfferScraper.Repositories;
 using OfferScraper.Utilities.Browsers;
-using OfferScraper.Utilities.Loggers;
 
 namespace OfferScraper.Utilities.NinjectModules
 {

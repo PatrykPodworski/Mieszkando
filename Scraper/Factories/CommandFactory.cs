@@ -1,16 +1,17 @@
-﻿using OfferScraper.Commands.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MarklogicDataLayer.Commands.Implementation;
+using MarklogicDataLayer.Commands.Interfaces;
 using MarklogicDataLayer.DataStructs;
-using OfferScraper.Commands.Implementation;
+using System;
 
 namespace OfferScraper.Factories
 {
     public class CommandFactory : ICommandFactory<ICommand>
     {
         private static readonly Lazy<CommandFactory> _lazy = new Lazy<CommandFactory>(() => new CommandFactory());
-        private CommandFactory() { }
+
+        private CommandFactory()
+        {
+        }
 
         public static CommandFactory Instance => _lazy.Value;
 

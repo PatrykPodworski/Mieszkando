@@ -1,5 +1,5 @@
-﻿using Ninject;
-using OfferScraper.Utilities.NinjectModules;
+﻿using CommandAdder.Modules;
+using Ninject;
 
 namespace CommandAdder
 {
@@ -7,7 +7,7 @@ namespace CommandAdder
     {
         private static void Main(string[] args)
         {
-            var kernel = new StandardKernel(new WebScrapperModule());
+            var kernel = new StandardKernel(new CommandAdderModule());
             var adder = kernel.Get<CommandsDatabaseInserter>();
 
             adder.Add(args);

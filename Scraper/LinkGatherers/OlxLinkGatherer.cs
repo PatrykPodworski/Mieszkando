@@ -1,9 +1,10 @@
-﻿using HtmlAgilityPack;
+﻿using Common.Extensions;
+using Common.Loggers;
+using HtmlAgilityPack;
 using MarklogicDataLayer.DataStructs;
-using OfferScraper.Repositories;
+using MarklogicDataLayer.Repositories;
 using OfferScraper.Utilities.Browsers;
 using OfferScraper.Utilities.Extensions;
-using OfferScraper.Utilities.Loggers;
 using ScrapySharp.Extensions;
 using System;
 using System.Collections.Generic;
