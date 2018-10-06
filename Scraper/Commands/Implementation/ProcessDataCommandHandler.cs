@@ -1,6 +1,6 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using OfferScraper.Commands.Interfaces;
-using OfferScraper.DataExtractors;
+using OfferScraper.DataProcessors;
 using OfferScraper.Factories;
 using OfferScraper.Repositories;
 using OfferScraper.Utilities.Extensions;
@@ -44,7 +44,7 @@ namespace OfferScraper.Commands.Implementation
                  .GetAll()
                  .Where(x => x.Status == Status.New)
                  .Take(numberOfSamples)
-                 .ToList();
+                .ToList();
         }
 
         private void GetOffers(IEnumerable<HtmlData> htmlSamples)

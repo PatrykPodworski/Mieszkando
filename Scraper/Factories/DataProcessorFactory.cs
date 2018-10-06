@@ -1,5 +1,5 @@
 ﻿using MarklogicDataLayer.DataStructs;
-using OfferScraper.DataExtractors;
+using OfferScraper.DataProcessors;
 using System;
 
 namespace OfferScraper.Factories

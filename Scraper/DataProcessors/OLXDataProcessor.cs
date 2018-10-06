@@ -5,7 +5,7 @@ using ScrapySharp.Extensions;
 using System;
 using System.Linq;
 
-namespace OfferScraper.DataExtractors
+namespace OfferScraper.DataProcessors
 {
     public class OlxDataProcessor : IDataProcessor
     {

@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace OfferScraper.DataExtractors
+namespace OfferScraper.DataProcessors
 {
     public class OtoDomDataProcessor : IDataProcessor
     {

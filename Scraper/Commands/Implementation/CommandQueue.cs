@@ -35,6 +35,11 @@ namespace OfferScraper.Commands.Implementation
 
         public ICommand GetNext()
         {
+            var qwe = _repository
+                .GetAll()
+                .Where(x => x.IsNew())
+                .Count();
+
             return _repository
                     .GetAll()
                     .FirstOrDefault(x => x.IsNew());

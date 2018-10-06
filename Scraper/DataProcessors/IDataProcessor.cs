@@ -1,6 +1,6 @@
 ﻿using MarklogicDataLayer.DataStructs;
 
-namespace OfferScraper.DataExtractors
+namespace OfferScraper.DataProcessors
 {
     public interface IDataProcessor
     {
