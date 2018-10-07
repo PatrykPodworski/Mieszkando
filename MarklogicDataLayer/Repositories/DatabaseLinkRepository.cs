@@ -58,7 +58,7 @@ namespace MarklogicDataLayer.Repositories
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedLink = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind, LinkConstants.LinksGeneralCollectionName });
+                var content = MarklogicContent.Xml($"{linkKind}_link_{entity.Id}", serializedLink, new[] { linkKind, LinkConstants.CollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -100,7 +100,7 @@ namespace MarklogicDataLayer.Repositories
 
         public override IQueryable<Link> GetAll()
         {
-            return GetAllFromCollection(LinkConstants.LinksGeneralCollectionName);
+            return GetAllFromCollection(LinkConstants.CollectionName);
         }
     }
 }

@@ -161,7 +161,7 @@ namespace Tests
                 LinkId = "3"
             };
             _sut.Insert(new[] { htmlData1, htmlData2, htmlData3 });
-            var result = _sut.Get("status", "New", HtmlDataConstants.HtmlDataGeneralCollectionName, 1).ToList();
+            var result = _sut.Get("status", "New", HtmlDataConstants.CollectionName, 1).ToList();
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(MarklogicDataLayer.DataStructs.Status.New, result.First().Status);

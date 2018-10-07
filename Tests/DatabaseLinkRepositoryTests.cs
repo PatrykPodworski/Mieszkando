@@ -100,7 +100,7 @@ namespace Tests
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
             _sut.Insert(new[] { link1, link2 });
-            var result = _sut.GetCount(LinkConstants.LinksGeneralCollectionName);
+            var result = _sut.GetCount(LinkConstants.CollectionName);
 
             Assert.AreEqual(2, result);
         }
@@ -177,7 +177,7 @@ namespace Tests
                 Status = MarklogicDataLayer.DataStructs.Status.InProgress
             };
             _sut.Insert(new[] { link1, link2, link3 });
-            var result = _sut.Get("status", "New", LinkConstants.LinksGeneralCollectionName, 1).ToList();
+            var result = _sut.Get("status", "New", LinkConstants.CollectionName, 1).ToList();
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(MarklogicDataLayer.DataStructs.Status.New, result.First().Status);

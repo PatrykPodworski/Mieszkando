@@ -1,4 +1,5 @@
 ﻿using MarklogicDataLayer.Commands.Interfaces;
+using MarklogicDataLayer.Constants;
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
 using System.Linq;
@@ -35,14 +36,10 @@ namespace MarklogicDataLayer.Commands.Implementation
 
         public ICommand GetNext()
         {
-            var qwe = _repository
-                .GetAll()
-                .Where(x => x.IsNew())
-                .Count();
-
             return _repository
-                    .GetAll()
-                    .FirstOrDefault(x => x.IsNew());
+                .Get(CommandConstants.Status, StatusConstants.StatusNew, CommandConstants.CollectionName, 1)
+                .ToList()
+                .FirstOrDefault();
         }
 
         public bool HasNext()

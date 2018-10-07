@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MarklogicDataLayer.Constants
+﻿namespace MarklogicDataLayer.Constants
 {
     public class LinkConstants
     {
-        public const string LinksGeneralCollectionName = "Links";
+        public const string CollectionName = "Links";
         public const string LinkId = "link_id";
         public const string LinkUri = "link_uri";
         public const string LinkKind = "link_kind";

@@ -65,7 +65,7 @@ namespace MarklogicDataLayer.Repositories
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedCommand = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{commandType}_{entity.GetId()}", serializedCommand, new[] { commandType, CommandConstants.CommandsGeneralCollectionName });
+                var content = MarklogicContent.Xml($"{commandType}_{entity.GetId()}", serializedCommand, new[] { commandType, CommandConstants.CollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -145,7 +145,7 @@ namespace MarklogicDataLayer.Repositories
 
         public override IQueryable<ICommand> GetAll()
         {
-            return GetAllFromCollection(CommandConstants.CommandsGeneralCollectionName);
+            return GetAllFromCollection(CommandConstants.CollectionName);
         }
     }
 }

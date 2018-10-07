@@ -2,6 +2,7 @@
 using Common.Loggers;
 using MarklogicDataLayer.Commands.Implementation;
 using MarklogicDataLayer.Commands.Interfaces;
+using MarklogicDataLayer.Constants;
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
 using OfferScraper.DataProcessors;
@@ -42,9 +43,7 @@ namespace OfferScraper.CommandHandlers
         private ICollection<HtmlData> GetSamples(int numberOfSamples)
         {
             return _htmlDataRepository
-                 .GetAll()
-                 .Where(x => x.Status == Status.New)
-                 .Take(numberOfSamples)
+                .Get(HtmlDataConstants.Status, StatusConstants.StatusNew, HtmlDataConstants.CollectionName, numberOfSamples)
                 .ToList();
         }
 

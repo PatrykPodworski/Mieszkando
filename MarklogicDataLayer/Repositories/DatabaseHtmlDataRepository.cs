@@ -58,7 +58,7 @@ namespace MarklogicDataLayer.Repositories
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedHtmlData = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType, HtmlDataConstants.HtmlDataGeneralCollectionName });
+                var content = MarklogicContent.Xml($"{offerType}_{entity.Id}", serializedHtmlData, new[] { offerType, HtmlDataConstants.CollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -102,7 +102,7 @@ namespace MarklogicDataLayer.Repositories
 
         public override IQueryable<HtmlData> GetAll()
         {
-            return GetAllFromCollection(HtmlDataConstants.HtmlDataGeneralCollectionName);
+            return GetAllFromCollection(HtmlDataConstants.CollectionName);
         }
     }
 }

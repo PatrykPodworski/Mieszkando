@@ -56,7 +56,7 @@ namespace MarklogicDataLayer.Repositories
             {
                 new XmlSerializer(entity.GetType()).Serialize(writer, entity);
                 var serializedOffer = writer.GetStringBuilder().ToString();
-                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { OfferConstants.OffersGeneralCollectionName });
+                var content = MarklogicContent.Xml($"offer_{entity.Id}", serializedOffer, new[] { OfferConstants.CollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
         }
@@ -89,7 +89,7 @@ namespace MarklogicDataLayer.Repositories
 
         public override IQueryable<Offer> GetAll()
         {
-            return GetAllFromCollection(OfferConstants.OffersGeneralCollectionName);
+            return GetAllFromCollection(OfferConstants.CollectionName);
         }
     }
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MarklogicDataLayer.Constants
+﻿namespace MarklogicDataLayer.Constants
 {
     public class OfferConstants
     {
-        public const string OffersGeneralCollectionName = "Offers";
+        public const string CollectionName = "Offers";
         public const string OfferRoot = "offer";
         public const string OfferId = "offer_id";
         public const string Title = "title";
