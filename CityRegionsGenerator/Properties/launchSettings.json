@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CityRegionsGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "54.27 18.43 54.45 18.95 0.01 0.01 Gdańsk"
+    }
+  }
+}

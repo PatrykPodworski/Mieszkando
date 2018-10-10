@@ -1,11 +1,12 @@
 ﻿using RestSharp;
 using System.Linq;
+using TomtomApiWrapper.Interafaces;
 using TomtomApiWrapper.Models;
 using TomtomApiWrapper.Responses;
 
 namespace TomtomApiWrapper
 {
-    public class TomtomApi
+    public class TomtomApi : ITomtomApi
     {
         private string _apiKey;
         private IRestClient _restClient;
