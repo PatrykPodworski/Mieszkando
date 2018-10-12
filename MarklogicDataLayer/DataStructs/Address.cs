@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarklogicDataLayer.Constants;
+using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -28,5 +29,40 @@ namespace MarklogicDataLayer.DataStructs
         [XmlArray(AddressConstants.RouteNumbers)]
         [XmlArrayItem(AddressConstants.RouteNumber)]
         public List<string> RouteNumbers { get; set; }
+
+        public Address()
+        {
+
+        }
+
+        public override bool Equals(object obj)
+        {
+            var address = obj as Address;
+            return address != null &&
+                   Id == address.Id &&
+                   Country == address.Country &&
+                   CountryCode == address.CountryCode &&
+                   CountrySubdivision == address.CountrySubdivision &&
+                   CountrySecondarySubdivision == address.CountrySecondarySubdivision &&
+                   Municipality == address.Municipality &&
+                   MunicipalitySubdivision == address.MunicipalitySubdivision &&
+                   PostalCode == address.PostalCode &&
+                   Street == address.Street;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1841261193;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Country);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CountryCode);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CountrySubdivision);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CountrySecondarySubdivision);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Municipality);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(MunicipalitySubdivision);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PostalCode);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Street);
+            return hashCode;
+        }
     }
 }
