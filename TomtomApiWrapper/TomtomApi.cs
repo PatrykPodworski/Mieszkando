@@ -1,7 +1,7 @@
-﻿using RestSharp;
+﻿using MarklogicDataLayer.DataStructs;
+using RestSharp;
 using System.Linq;
 using TomtomApiWrapper.Interafaces;
-using TomtomApiWrapper.Models;
 using TomtomApiWrapper.Responses;
 
 namespace TomtomApiWrapper

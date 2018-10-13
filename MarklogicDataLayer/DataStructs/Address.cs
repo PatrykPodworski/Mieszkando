@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using MarklogicDataLayer.Constants;
+using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace TomtomApiWrapper.Models
+namespace MarklogicDataLayer.DataStructs
 {
     public class Address
     {
+        public string Id { get; set; }
         public string Country { get; set; }
         public string CountryCode { get; set; }
         public string CountrySubdivision { get; set; }

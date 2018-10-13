@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using TomtomApiWrapper.Models;
+﻿using MarklogicDataLayer.DataStructs;
+using System.Collections.Generic;
 
 namespace TomtomApiWrapper.Responses
 {
