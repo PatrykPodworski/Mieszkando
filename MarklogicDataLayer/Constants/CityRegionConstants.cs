@@ -8,5 +8,6 @@
         public const string Longitude = "longitude";
         public const string LatitudeSize = "latitude_size";
         public const string LongitudeSize = "longitude_size";
+        public const string Root = "city_region";
     }
 }
