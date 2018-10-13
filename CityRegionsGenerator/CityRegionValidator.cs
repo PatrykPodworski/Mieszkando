@@ -45,7 +45,9 @@ namespace CityRegionsGenerator
 
             for (double currentLong = minLong; currentLong < maxLong; currentLong += _longSize)
             {
-                if (AreValidCityCoords(currentLat, currentLong))
+                var (centerLat, centerLong) = GetRegionCenterCoords(currentLat, currentLong);
+
+                if (AreValidCityCoords(centerLat, centerLong))
                 {
                     regions.Add(new CityRegion
                     {
@@ -58,6 +60,14 @@ namespace CityRegionsGenerator
             }
 
             return regions;
+        }
+
+        private (double, double) GetRegionCenterCoords(double currentLat, double currentLong)
+        {
+            var centerLat = currentLat + _latSize / 2;
+            var centerLong = currentLong + _longSize / 2;
+
+            return (centerLat, centerLong);
         }
 
         private bool AreValidCityCoords(double latitude, double longitude)
