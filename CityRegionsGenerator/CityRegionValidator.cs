@@ -1,5 +1,7 @@
 ﻿using CityRegionsGenerator.Interfaces;
+using Common.Loggers;
 using MarklogicDataLayer.DataStructs;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TomtomApiWrapper.Interafaces;
@@ -12,10 +14,13 @@ namespace CityRegionsGenerator
         private double _latSize;
         private double _longSize;
         private ITomtomApi _tomtomApi;
+        private ILogger _logger;
 
-        public CityRegionValidator(ITomtomApi tomtomApi)
+        public CityRegionValidator(ITomtomApi tomtomApi, ILogger logger)
         {
             _tomtomApi = tomtomApi;
+            _logger = logger;
+            _logger.SetSource(typeof(CityRegionValidator).Name);
         }
 
         public void Prepare(string cityName, double latSize, double longSize)
@@ -34,6 +39,8 @@ namespace CityRegionsGenerator
                 var latRegions = GetLatRegions(currentLat, minLong, maxLong);
 
                 regions.AddRange(latRegions);
+
+                _logger.Log(LogType.Info, $"There are {regions.Count} regions after checking latitude: {currentLat:F}");
             }
 
             return regions;
@@ -49,12 +56,15 @@ namespace CityRegionsGenerator
 
                 if (AreValidCityCoords(centerLat, centerLong))
                 {
+                    _logger.Log(LogType.Info, $"Valid city region found at : {currentLat:F}, {currentLong:F}");
+
                     regions.Add(new CityRegion
                     {
-                        Latitude = currentLat.ToString(CultureInfo.InvariantCulture),
-                        Longitude = currentLong.ToString(CultureInfo.InvariantCulture),
-                        LatitudeSize = _latSize.ToString(CultureInfo.InvariantCulture),
-                        LongitudeSize = _longSize.ToString(CultureInfo.InvariantCulture)
+                        Id = Guid.NewGuid().ToString(),
+                        Latitude = currentLat.ToString("F", CultureInfo.InvariantCulture),
+                        Longitude = currentLong.ToString("F", CultureInfo.InvariantCulture),
+                        LatitudeSize = _latSize.ToString("F", CultureInfo.InvariantCulture),
+                        LongitudeSize = _longSize.ToString("F", CultureInfo.InvariantCulture)
                     });
                 }
             }

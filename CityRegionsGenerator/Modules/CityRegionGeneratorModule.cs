@@ -1,4 +1,8 @@
 ﻿using CityRegionsGenerator.Interfaces;
+using Common.Loggers;
+using MarklogicDataLayer.DatabaseConnectors;
+using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.Repositories;
 using Ninject.Modules;
 using RestSharp;
 using System.Configuration;
@@ -15,7 +19,12 @@ namespace CityRegionsGenerator.Modules
             Bind<ICityRegionValidator>().To<CityRegionValidator>();
 
             Bind<ITomtomApi>().To<TomtomApi>().WithConstructorArgument("apiKey", ConfigurationManager.AppSettings["tomtom-api-key"]);
-            Bind<IRestClient>().ToConstructor<RestClient>((ctx) => new RestClient(ConfigurationManager.AppSettings["tomtom-api-base-url"]));
+            Bind<IRestClient>().ToConstructor((ctx) => new RestClient(ConfigurationManager.AppSettings["tomtom-api-base-url"]));
+
+            Bind<IDataRepository<CityRegion>>().To<DatabaseCityRegionRepository>();
+            Bind<IDatabaseConnectionSettings>().To<DatabaseConnectionSettings>().WithConstructorArgument("key", "mieszkando-db");
+
+            Bind<ILogger>().To<DefaultOutputLogger>();
         }
     }
 }
