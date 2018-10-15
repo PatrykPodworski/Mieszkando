@@ -34,6 +34,12 @@ namespace MarklogicDataLayer.DataStructs
         [XmlElement(OfferConstants.DateOfScraping)]
         public string DateOfScraping { get; set; }
 
+        [XmlElement(OfferConstants.Latitude)]
+        public string Latitude { get; set; }
+
+        [XmlElement(OfferConstants.Longitude)]
+        public string Longitude { get; set; }
+
         public Offer()
         {
         }
@@ -54,7 +60,9 @@ namespace MarklogicDataLayer.DataStructs
                 && this.Rooms == item.Rooms
                 && this.District == item.District
                 && this.DateOfPosting == item.DateOfPosting
-                && this.DateOfScraping == item.DateOfScraping;
+                && this.DateOfScraping == item.DateOfScraping
+                && this.Longitude == item.Longitude
+                && this.Latitude == item.Latitude;
         }
 
         public override int GetHashCode()
@@ -67,7 +75,9 @@ namespace MarklogicDataLayer.DataStructs
                 ^ this.Rooms.GetHashCode()
                 ^ this.District.GetHashCode()
                 ^ this.DateOfPosting.GetHashCode()
-                ^ this.DateOfScraping.GetHashCode();
+                ^ this.DateOfScraping.GetHashCode()
+                ^ this.Latitude.GetHashCode()
+                ^ this.Longitude.GetHashCode();
         }
     }
 }

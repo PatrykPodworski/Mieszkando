@@ -14,5 +14,7 @@
         public const string Area = "area";
         public const string DateOfPosting = "date_of_posting";
         public const string DateOfScraping = "date_of_scraping";
+        public const string Latitude = "latitude";
+        public const string Longitude = "longitude";
     }
 }

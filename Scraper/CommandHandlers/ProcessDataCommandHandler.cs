@@ -90,6 +90,9 @@ namespace OfferScraper.CommandHandlers
                 var offer = processor.Process(htmlData);
                 _logger.Log(LogType.Info, $"Finished to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
 
+                _htmlDataRepository.Delete(htmlData);
+                _logger.Log(LogType.Info, $"Removed obsolete data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
+
                 using (var transaction = _offerRepository.GetTransaction())
                 {
                     _offerRepository.Insert(offer, transaction);

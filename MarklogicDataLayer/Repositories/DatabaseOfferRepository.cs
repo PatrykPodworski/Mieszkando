@@ -63,15 +63,17 @@ namespace MarklogicDataLayer.Repositories
 
         private static Offer ExtractOfferInfo(XDocument xml)
         {
-            var offerId = xml.Descendants().Where(x => x.Name == OfferConstants.OfferId).First().Value;
-            var offerTitle = xml.Descendants().Where(x => x.Name == OfferConstants.Title).First().Value;
-            var offerDistrict = xml.Descendants().Where(x => x.Name == OfferConstants.District).First().Value;
-            var offerCost = xml.Descendants().Where(x => x.Name == OfferConstants.Cost).First().Value;
-            var offerBonusCost = xml.Descendants().Where(x => x.Name == OfferConstants.BonusCost).First().Value;
-            var offerRooms = xml.Descendants().Where(x => x.Name == OfferConstants.Rooms).First().Value;
-            var offerArea = xml.Descendants().Where(x => x.Name == OfferConstants.Area).First().Value;
-            var offerDateOfPosting = xml.Descendants().Where(x => x.Name == OfferConstants.DateOfPosting).First().Value;
-            var offerDateOfScraping = xml.Descendants().Where(x => x.Name == OfferConstants.DateOfScraping).First().Value;
+            var offerId = xml.Descendants().First(x => x.Name == OfferConstants.OfferId).Value;
+            var offerTitle = xml.Descendants().First(x => x.Name == OfferConstants.Title).Value;
+            var offerDistrict = xml.Descendants().First(x => x.Name == OfferConstants.District).Value;
+            var offerCost = xml.Descendants().First(x => x.Name == OfferConstants.Cost).Value;
+            var offerBonusCost = xml.Descendants().First(x => x.Name == OfferConstants.BonusCost).Value;
+            var offerRooms = xml.Descendants().First(x => x.Name == OfferConstants.Rooms).Value;
+            var offerArea = xml.Descendants().First(x => x.Name == OfferConstants.Area).Value;
+            var offerDateOfPosting = xml.Descendants().First(x => x.Name == OfferConstants.DateOfPosting).Value;
+            var offerDateOfScraping = xml.Descendants().First(x => x.Name == OfferConstants.DateOfScraping).Value;
+            var offerLatitude = xml.Descendants().First(x => x.Name == OfferConstants.Latitude).Value;
+            var offerLongitude = xml.Descendants().First(x => x.Name == OfferConstants.Longitude).Value;
 
             return new Offer
             {
@@ -84,6 +86,8 @@ namespace MarklogicDataLayer.Repositories
                 Area = offerArea,
                 DateOfPosting = offerDateOfPosting,
                 DateOfScraping = offerDateOfScraping,
+                Latitude = offerLatitude,
+                Longitude = offerLongitude,
             };
         }
 

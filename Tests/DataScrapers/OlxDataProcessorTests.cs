@@ -18,6 +18,8 @@ namespace Tests.DataScrapers
         private string _expectedId;
         private string _expectedDateOfPosting;
         private object _expectedBonusCost;
+        private string _expectedLatitude;
+        private string _expectedLongitude;
 
         [TestInitialize]
         public void Initialize()
@@ -38,6 +40,8 @@ namespace Tests.DataScrapers
             _expectedArea = "67";
             _expectedDistrict = "Przymorze Małe";
             _expectedDateOfPosting = "23.07.2018";
+            _expectedLatitude = "54.40900000";
+            _expectedLongitude = "18.58144000";
         }
 
         [TestMethod]
@@ -56,6 +60,8 @@ namespace Tests.DataScrapers
             Assert.AreEqual(_expectedDistrict, result.District);
             Assert.AreEqual(_expectedDateOfPosting, result.DateOfPosting);
             Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
+            Assert.AreEqual(_expectedLatitude, result.Latitude);
+            Assert.AreEqual(_expectedLongitude, result.Longitude);
         }
     }
 }

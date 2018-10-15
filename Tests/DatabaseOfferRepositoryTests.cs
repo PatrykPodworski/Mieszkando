@@ -44,6 +44,8 @@ namespace Tests
                     Area = "polite",
                     DateOfPosting = "1970-01-01",
                     DateOfScraping = "1970-01-01",
+                    Latitude = "1",
+                    Longitude = "1",
                 };
                 _sut.Insert(offer1);
                 Assert.IsTrue(true);
@@ -68,6 +70,8 @@ namespace Tests
                 Area = "polite",
                 DateOfPosting = "1970-01-01",
                 DateOfScraping = "1970-01-01",
+                Latitude = "1",
+                Longitude = "1",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
             {
@@ -80,6 +84,8 @@ namespace Tests
                 Area = "polite2",
                 DateOfPosting = "1971-01-01",
                 DateOfScraping = "1972-01-01",
+                Latitude = "1",
+                Longitude = "1",
             };
             _sut.Insert(offer1);
             _sut.Insert(offer2);
@@ -107,7 +113,9 @@ namespace Tests
                 Area = "polite",
                 DateOfPosting = "1970-01-01",
                 DateOfScraping = "1970-01-01",
-            };
+                Latitude = "1",
+                Longitude = "1",
+        };
             _sut.Insert(offer1);
             _sut.Delete(offer1);
             var result = _sut.GetAll().ToList();
@@ -129,6 +137,8 @@ namespace Tests
                 Area = "polite",
                 DateOfPosting = "1970-01-01",
                 DateOfScraping = "1970-01-01",
+                Latitude = "1",
+                Longitude = "1",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
             {
@@ -141,6 +151,8 @@ namespace Tests
                 Area = "polite2",
                 DateOfPosting = "1971-01-01",
                 DateOfScraping = "1972-01-01",
+                Latitude = "1",
+                Longitude = "1",
             };
             _sut.Insert(offer1);
             _sut.Insert(offer2);
@@ -164,6 +176,8 @@ namespace Tests
                 Area = "polite",
                 DateOfPosting = "1970-01-01",
                 DateOfScraping = "1970-01-01",
+                Latitude = "1",
+                Longitude = "1",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
             {
@@ -176,6 +190,8 @@ namespace Tests
                 Area = "polite2",
                 DateOfPosting = "1971-01-01",
                 DateOfScraping = "1972-01-01",
+                Latitude = "1",
+                Longitude = "1",
             };
             var offer3 = new MarklogicDataLayer.DataStructs.Offer
             {
@@ -188,6 +204,8 @@ namespace Tests
                 Area = "polite2",
                 DateOfPosting = "1971-01-01",
                 DateOfScraping = "1972-01-01",
+                Latitude = "1",
+                Longitude = "1",
             };
             _sut.Insert(new[] { offer1, offer2, offer3 });
             var result = _sut.Get("district", "wealthy2", OfferConstants.CollectionName, 1).ToList();

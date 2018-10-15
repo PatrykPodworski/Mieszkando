@@ -68,6 +68,14 @@ namespace OfferScraper.DataProcessors
                 .Second()
                 .ToShortDateString();
 
+            var latitude = data.CssSelect(".bgfff hidden br-1 vtop mapcontainer")
+                .First()
+                .GetAttributeValue("data-lat", "");
+
+            var longitude = data.CssSelect(".bgfff hidden br-1 vtop mapcontainer")
+                .First()
+                .GetAttributeValue("data-lon", "");
+
             var dateOfScraping = DateTime.Now
                 .ToShortDateString();
 
@@ -81,7 +89,9 @@ namespace OfferScraper.DataProcessors
                 Area = area,
                 District = district,
                 DateOfPosting = dateOfPosting,
-                DateOfScraping = dateOfScraping
+                DateOfScraping = dateOfScraping,
+                Latitude = latitude,
+                Longitude = longitude,
             };
         }
     }

@@ -62,6 +62,16 @@ namespace OfferScraper.DataProcessors
                 .LastOrDefault()
                 .Trim();
 
+            var latitude = data
+                .Descendants()
+                .FirstOrDefault(x => x.Name == "meta" && x.GetAttributeValue("itemprop", "") == "latitude")
+                .GetAttributeValue("content", "");
+
+            var longitude = data
+                .Descendants()
+                .FirstOrDefault(x => x.Name == "meta" && x.GetAttributeValue("itemprop", "") == "longitude")
+                .GetAttributeValue("content", ""); ;
+
             var numberOfDays = Regex.Match(dateOfPostingText, "\\d+").Value;
             var offerDateTime = new DateTime();
             if (!DateTime.TryParse(dateOfPostingText, out offerDateTime))
@@ -85,7 +95,9 @@ namespace OfferScraper.DataProcessors
                 Area = area,
                 District = district,
                 DateOfPosting = dateOfPosting,
-                DateOfScraping = dateOfScraping
+                DateOfScraping = dateOfScraping,
+                Latitude = latitude,
+                Longitude = longitude,
             };
         }
     }
