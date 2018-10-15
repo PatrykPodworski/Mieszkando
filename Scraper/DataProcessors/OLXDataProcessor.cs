@@ -1,6 +1,7 @@
 ﻿using Common.Extensions;
 using HtmlAgilityPack;
 using MarklogicDataLayer.DataStructs;
+using OfferScraper.Utilities.DataProcessors;
 using ScrapySharp.Extensions;
 using System;
 using System.Linq;
@@ -43,11 +44,11 @@ namespace OfferScraper.DataProcessors
                 .InnerHtml
                 .GetNumber();
 
-            var rooms = data.CssSelect(".details .value a")
+            var rooms = OlxRoomParser.Parse(data.CssSelect(".details .value a")
                 .FirstOrDefault(x => x.Attributes["href"].Value.Contains("filter_enum_rooms"))
                 .Attributes["href"].Value
                 .Split('=')
-                .LastOrDefault();
+                .LastOrDefault());
 
             var area = data.CssSelect(".details .value > strong")
                 .FirstOrDefault(x => x.InnerHtml.Contains("m²"))

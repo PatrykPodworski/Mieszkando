@@ -27,12 +27,8 @@ namespace MarklogicDataLayer.Repositories
         {
             var flwor = new Flwor();
             flwor.Let(new VariableName("doc"), new CtsSearch("/",
-                new CtsAndQuery(
-                    new CtsElementValueQuery(CommandConstants.CreationDate,
-                        (entity as BaseCommand)?.DateOfCreation.ToString(TimestampFormat)),
-                    new CtsElementValueQuery(CommandConstants.LastModified,
-                        (entity as BaseCommand)?.LastModified.ToString(TimestampFormat)),
-                    new CtsCollectionQuery(entity.GetType().ToString().Split(".").Last()))));
+                    new CtsElementValueQuery(CommandConstants.CommandId,
+                        (entity as BaseCommand)?.Id)));
             flwor.Return(new XdmpNodeDelete(new VariableName("doc").Query));
             RestConnector.Submit(flwor.Query);
         }

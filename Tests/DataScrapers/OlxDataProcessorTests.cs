@@ -36,7 +36,7 @@ namespace Tests.DataScrapers
             _expectedTitle = "Nowoczesne mieszkanie 3 pokoje dla studentów";
             _expectedCost = "3000";
             _expectedBonusCost = "1200";
-            _expectedRooms = "three";
+            _expectedRooms = "3";
             _expectedArea = "67";
             _expectedDistrict = "Przymorze Małe";
             _expectedDateOfPosting = "23.07.2018";
