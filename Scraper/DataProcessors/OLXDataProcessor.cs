@@ -68,11 +68,11 @@ namespace OfferScraper.DataProcessors
                 .Second()
                 .ToShortDateString();
 
-            var latitude = data.CssSelect(".bgfff hidden br-1 vtop mapcontainer")
+            var latitude = data.CssSelect("#mapcontainer")
                 .First()
                 .GetAttributeValue("data-lat", "");
 
-            var longitude = data.CssSelect(".bgfff hidden br-1 vtop mapcontainer")
+            var longitude = data.CssSelect("#mapcontainer")
                 .First()
                 .GetAttributeValue("data-lon", "");
 
