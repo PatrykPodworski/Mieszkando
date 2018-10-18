@@ -21,6 +21,7 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors();
             services.AddSingleton<IDataRepository<CityRegion>, DatabaseCityRegionRepository>();
             services.AddSingleton<IDatabaseConnectionSettings, DatabaseConnectionSettings>(
                 (ctx) => new DatabaseConnectionSettings("mieszkando-db"));
@@ -33,7 +34,7 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(builder => builder.AllowAnyOrigin());
             app.UseMvc();
         }
     }
