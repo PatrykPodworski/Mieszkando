@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MarklogicDataLayer.DatabaseConnectors;
+using MarklogicDataLayer.DataStructs;
+using MarklogicDataLayer.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace WebAPI
 {
@@ -24,6 +21,9 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSingleton<IDataRepository<CityRegion>, DatabaseCityRegionRepository>();
+            services.AddSingleton<IDatabaseConnectionSettings, DatabaseConnectionSettings>(
+                (ctx) => new DatabaseConnectionSettings("mieszkando-db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
