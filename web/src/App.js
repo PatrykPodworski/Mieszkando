@@ -3,6 +3,7 @@ import './App.css';
 import config from './config';
 
 const apiKey = config.tomtomApiKey;
+var cityRegions;
 
 class App extends Component {
   render() {
@@ -13,20 +14,48 @@ class App extends Component {
 
   componentDidMount() { 
     console.log('');
-    const script = document.createElement('script');
-    script.src = process.env.PUBLIC_URL + '/tomtomWebSdk/tomtom.min.js';
-    document.body.appendChild(script);
-    script.async = true;
-    script.onload = function () {
-      window.tomtom.L.map('map', {
+    fetch("http://localhost:62003/api/cityregions")
+    .then((response) =>  response.json())
+    .then((result) => this.cityRegions = result)
+    .then(() => this.loadMap());
+    }
+
+    loadMap() {
+      var map = window.tomtom.map('map', {
         source: 'vector',
         key: apiKey,
-        center: [54.3565, 18.6461],
         basePath: '/tomtomWebSdk',
-        zoom: 15
       });
+
+      var polygon = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',  
+                'properties': {},
+                'geometry': {
+                    'type': 'Polygon',
+                    'coordinates': this.getRegionsCoordinates(this.cityRegions)
+                }
+            }
+        ]
+    };
+    var geoJson = window.tomtom.L.geoJson(polygon, { style: { color: '#FFC312', opacity: 0.5, } }).addTo(map);
+    map.fitBounds(geoJson.getBounds(), { padding: [5, 5] });
+    }
+
+    getRegionsCoordinates(regions) {
+     return regions.map(x => this.getRegionCoordinates(x));
+    }
+
+    getRegionCoordinates(region) {
+      return [
+        [parseFloat(region.longitude), parseFloat(region.latitude)],
+        [parseFloat(region.longitude) + parseFloat(region.longitudeSize), parseFloat(region.latitude)],
+        [parseFloat(region.longitude) + parseFloat(region.longitudeSize), parseFloat(region.latitude) + parseFloat(region.latitudeSize)],
+        [parseFloat(region.longitude), parseFloat(region.latitude) + parseFloat(region.latitudeSize)]
+      ]
     }
   }
-}
 
 export default App;
