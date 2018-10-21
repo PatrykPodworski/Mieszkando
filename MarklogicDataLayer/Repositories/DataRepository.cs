@@ -37,6 +37,11 @@ namespace MarklogicDataLayer.Repositories
             return GetWithExpression(new CtsAndQuery(new CtsCollectionQuery(collectionName), new CtsElementValueQuery(elementName, elementValue)), numberOfElements, startFrom);
         }
 
+        public IQueryable<T> GetFromCollection(string collectionName, long startFrom = 1)
+        {
+            return GetWithExpression(new CtsCollectionQuery(collectionName), long.MinValue, startFrom);
+        }
+
         public IQueryable<T> GetAllFromCollection(string collectionName)
         {
             return GetWithExpression(new CtsCollectionQuery(collectionName), long.MinValue);
