@@ -12,16 +12,17 @@ namespace OfferScraper.DataProcessors
     {
         public Offer Process(HtmlData sample)
         {
-            var data = new HtmlDocument();
-            data.LoadHtml(sample.Content);
-
-            var offer = GetData(data.DocumentNode);
+            var offer = GetData(sample);
 
             return offer;
         }
 
-        private Offer GetData(HtmlNode data)
+        private Offer GetData(HtmlData htmlData)
         {
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(htmlData.Content);
+            var data = htmlDocument.DocumentNode;
+
             var id = data.CssSelect(".text-details > .left > p")
                 .FirstOrDefault(x => x.InnerHtml.Contains("Nr oferty"))
                 .InnerHtml
@@ -98,6 +99,7 @@ namespace OfferScraper.DataProcessors
                 DateOfScraping = dateOfScraping,
                 Latitude = latitude,
                 Longitude = longitude,
+                LinkId = htmlData.LinkId,
             };
         }
     }

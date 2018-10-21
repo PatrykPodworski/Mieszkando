@@ -30,6 +30,7 @@ namespace Tests.DataScrapers
                 Status = Status.New,
                 Content = File.ReadAllText("../../../Samples/OtodomSampleHtml.txt"),
                 LastUpdate = DateTime.Now,
+                LinkId = "asdqwe123",
             };
 
             _expectedId = "54951004";
@@ -62,6 +63,7 @@ namespace Tests.DataScrapers
             Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
             Assert.AreEqual(_expectedLatitude, result.Latitude);
             Assert.AreEqual(_expectedLongitude, result.Longitude);
+            Assert.AreEqual("asdqwe123", result.LinkId);
         }
     }
 }

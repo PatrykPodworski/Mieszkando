@@ -40,6 +40,9 @@ namespace MarklogicDataLayer.DataStructs
         [XmlElement(OfferConstants.Longitude)]
         public string Longitude { get; set; }
 
+        [XmlElement(OfferConstants.LinkId)]
+        public string LinkId { get; set; }
+
         public Offer()
         {
         }

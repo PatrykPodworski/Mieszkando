@@ -16,5 +16,6 @@
         public const string DateOfScraping = "date_of_scraping";
         public const string Latitude = "latitude";
         public const string Longitude = "longitude";
+        public const string LinkId = "link_id";
     }
 }

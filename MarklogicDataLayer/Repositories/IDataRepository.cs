@@ -27,6 +27,8 @@ namespace MarklogicDataLayer.Repositories
 
         IQueryable<T> Get(string elementName, string elementValue, string collectionName, long numberOfElements);
 
+        IQueryable<T> Get(string elementName, string elementValue, string collectionName, long numberOfElements, long startFrom);
+
         IQueryable<T> GetAllFromCollection(string collectionName);
 
         T GetById(int id);

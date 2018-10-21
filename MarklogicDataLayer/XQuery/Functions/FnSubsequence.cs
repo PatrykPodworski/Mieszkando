@@ -8,6 +8,7 @@ namespace MarklogicDataLayer.XQuery.Functions
     {
         private readonly Expression _expression;
         private readonly long _numberOfDocuments;
+        private readonly long _startFrom;
 
         public FnSubsequence(Expression expression, long numberOfDocuments = long.MinValue)
         {
@@ -15,8 +16,15 @@ namespace MarklogicDataLayer.XQuery.Functions
             _numberOfDocuments = numberOfDocuments;
         }
 
+        public FnSubsequence(Expression expression, long numberOfDocuments = long.MinValue, long startFrom = 1)
+        {
+            _expression = expression;
+            _numberOfDocuments = numberOfDocuments;
+            _startFrom = startFrom;
+        }
+
         public override string Query => _numberOfDocuments == long.MinValue
-            ? FunctionToQuery("fn:subsequence", _expression.Query, "1")
-            : FunctionToQuery("fn:subsequence", _expression.Query, "1", _numberOfDocuments.ToString());
+            ? FunctionToQuery("fn:subsequence", _expression.Query, _startFrom.ToString())
+            : FunctionToQuery("fn:subsequence", _expression.Query, _startFrom.ToString(), _numberOfDocuments.ToString());
     }
 }

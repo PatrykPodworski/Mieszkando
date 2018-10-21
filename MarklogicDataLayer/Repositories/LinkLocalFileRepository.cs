@@ -156,5 +156,10 @@ namespace MarklogicDataLayer.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<Link> Get(string elementName, string elementValue, string collectionName, long numberOfElements, long startFrom)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

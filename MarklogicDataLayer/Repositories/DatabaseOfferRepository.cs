@@ -74,6 +74,7 @@ namespace MarklogicDataLayer.Repositories
             var offerDateOfScraping = xml.Descendants().First(x => x.Name == OfferConstants.DateOfScraping).Value;
             var offerLatitude = xml.Descendants().First(x => x.Name == OfferConstants.Latitude).Value;
             var offerLongitude = xml.Descendants().First(x => x.Name == OfferConstants.Longitude).Value;
+            var offerLinkId = xml.Descendants().First(x => x.Name == OfferConstants.LinkId).Value;
 
             return new Offer
             {
@@ -88,6 +89,7 @@ namespace MarklogicDataLayer.Repositories
                 DateOfScraping = offerDateOfScraping,
                 Latitude = offerLatitude,
                 Longitude = offerLongitude,
+                LinkId = offerLinkId,
             };
         }
 
