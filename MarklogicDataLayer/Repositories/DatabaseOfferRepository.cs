@@ -90,6 +90,7 @@ namespace MarklogicDataLayer.Repositories
                 Latitude = offerLatitude,
                 Longitude = offerLongitude,
                 LinkId = offerLinkId,
+                TotalCost = (double.Parse(offerCost) + double.Parse(offerBonusCost)).ToString(),
             };
         }
 

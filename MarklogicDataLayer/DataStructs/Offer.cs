@@ -22,6 +22,9 @@ namespace MarklogicDataLayer.DataStructs
         [XmlElement(OfferConstants.BonusCost)]
         public string BonusCost { get; set; }
 
+        [XmlElement(OfferConstants.TotalCost)]
+        public string TotalCost { get; set; }
+
         [XmlElement(OfferConstants.Rooms)]
         public string Rooms { get; set; }
 

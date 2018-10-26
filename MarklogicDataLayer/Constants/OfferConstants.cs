@@ -10,6 +10,7 @@
         public const string District = "district";
         public const string Cost = "cost";
         public const string BonusCost = "bonus_cost";
+        public const string TotalCost = "total_cost";
         public const string Rooms = "rooms";
         public const string Area = "area";
         public const string DateOfPosting = "date_of_posting";

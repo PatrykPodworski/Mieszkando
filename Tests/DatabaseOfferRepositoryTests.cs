@@ -46,6 +46,7 @@ namespace Tests
                     DateOfScraping = "1970-01-01",
                     Latitude = "1",
                     Longitude = "1",
+                    TotalCost = "101.0",
                 };
                 _sut.Insert(offer1);
                 Assert.IsTrue(true);
@@ -73,6 +74,7 @@ namespace Tests
                 Latitude = "1",
                 Longitude = "1",
                 LinkId = "asd123",
+                TotalCost = "101.0",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
             {
@@ -88,6 +90,7 @@ namespace Tests
                 Latitude = "1",
                 Longitude = "1",
                 LinkId = "qwe123",
+                TotalCost = "112.0",
             };
             _sut.Insert(offer1);
             _sut.Insert(offer2);
@@ -117,6 +120,7 @@ namespace Tests
                 DateOfScraping = "1970-01-01",
                 Latitude = "1",
                 Longitude = "1",
+                TotalCost = "101.0",
         };
             _sut.Insert(offer1);
             _sut.Delete(offer1);
@@ -142,6 +146,7 @@ namespace Tests
                 Latitude = "1",
                 Longitude = "1",
                 LinkId = "asd123",
+                TotalCost = "101.0",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
             {
@@ -157,6 +162,7 @@ namespace Tests
                 Latitude = "1",
                 Longitude = "1",
                 LinkId = "qwe123",
+                TotalCost = "112.0",
             };
             _sut.Insert(offer1);
             _sut.Insert(offer2);
@@ -183,6 +189,7 @@ namespace Tests
                 Latitude = "1",
                 Longitude = "1",
                 LinkId = "asd",
+                TotalCost = "101.0",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
             {
