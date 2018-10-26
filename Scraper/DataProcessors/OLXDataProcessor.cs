@@ -95,6 +95,7 @@ namespace OfferScraper.DataProcessors
                 Latitude = latitude,
                 Longitude = longitude,
                 LinkId = htmlData.LinkId,
+                TotalCost = (double.Parse(cost) + double.Parse(bonusCost)).ToString(),
             };
         }
     }

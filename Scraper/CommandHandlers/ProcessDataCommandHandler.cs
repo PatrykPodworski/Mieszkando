@@ -18,13 +18,15 @@ namespace OfferScraper.CommandHandlers
         private readonly IFactory<IDataProcessor> _factory;
         private IDataRepository<HtmlData> _htmlDataRepository;
         private IDataRepository<Offer> _offerRepository;
+        private DatabaseCityRegionRepository _regionRepository;
         private ILogger _logger;
 
-        public ProcessDataCommandHandler(IFactory<IDataProcessor> factory, IDataRepository<HtmlData> htmlRepository, IDataRepository<Offer> offerRepository, ILogger logger)
+        public ProcessDataCommandHandler(IFactory<IDataProcessor> factory, IDataRepository<HtmlData> htmlRepository, IDataRepository<Offer> offerRepository, DatabaseCityRegionRepository regionRepository, ILogger logger)
         {
             _factory = factory;
             _htmlDataRepository = htmlRepository;
             _offerRepository = offerRepository;
+            _regionRepository = regionRepository;
             _logger = logger;
             _logger.SetSource(typeof(ProcessDataCommandHandler).Name);
         }
@@ -88,6 +90,8 @@ namespace OfferScraper.CommandHandlers
 
                 _logger.Log(LogType.Info, $"Started to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
                 var offer = processor.Process(htmlData);
+                var regionId = _regionRepository.GetByCoordinates(offer.Latitude, offer.Longitude)?.Id;
+                offer.RegionId = regionId;
                 _logger.Log(LogType.Info, $"Finished to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
 
                 _htmlDataRepository.Delete(htmlData);

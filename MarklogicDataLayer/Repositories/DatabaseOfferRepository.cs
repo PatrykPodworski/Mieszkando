@@ -51,6 +51,9 @@ namespace MarklogicDataLayer.Repositories
         public override void Insert(Offer entity, ITransaction transaction)
         {
             entity.DateOfScraping = DateTime.Now.ToShortDateString();
+            entity.TotalCost = entity.TotalCost == null
+                ? (double.Parse(entity.Cost) + double.Parse(entity.BonusCost)).ToString()
+                : entity.TotalCost;
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
             {
@@ -75,6 +78,8 @@ namespace MarklogicDataLayer.Repositories
             var offerLatitude = xml.Descendants().First(x => x.Name == OfferConstants.Latitude).Value;
             var offerLongitude = xml.Descendants().First(x => x.Name == OfferConstants.Longitude).Value;
             var offerLinkId = xml.Descendants().First(x => x.Name == OfferConstants.LinkId).Value;
+            var offerTotalCost = xml.Descendants().First(x => x.Name == OfferConstants.TotalCost).Value;
+            var offerRegionId = xml.Descendants().FirstOrDefault(x => x.Name == OfferConstants.RegionId)?.Value;
 
             return new Offer
             {
@@ -90,7 +95,8 @@ namespace MarklogicDataLayer.Repositories
                 Latitude = offerLatitude,
                 Longitude = offerLongitude,
                 LinkId = offerLinkId,
-                TotalCost = (double.Parse(offerCost) + double.Parse(offerBonusCost)).ToString(),
+                TotalCost = offerTotalCost,
+                RegionId = offerRegionId,
             };
         }
 

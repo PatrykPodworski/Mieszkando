@@ -9,6 +9,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Net.Http;
+using MarklogicDataLayer.XQuery.Constants;
 
 namespace MarklogicDataLayer.Repositories
 {
@@ -47,6 +48,35 @@ namespace MarklogicDataLayer.Repositories
                 {
                     return ExtractCityRegionInfo(xml);
                 }
+            }
+
+            return null;
+        }
+
+        public CityRegion GetByCoordinates(string latitude, string longitude)
+        {
+            var coordinateJump = 0.01;
+            var latitudeCorrected = (double.Parse(latitude.Substring(0, 5)) - coordinateJump).ToString();
+            var longitudeCorrected = (double.Parse(longitude.Substring(0, 5)) - coordinateJump).ToString();
+
+            var query = new CtsSearch("/", new CtsAndQuery(
+                new CtsElementRangeQuery(CityRegionConstants.Latitude, ComparisonOperators.LesserOrEqual, latitude),
+                new CtsElementRangeQuery(CityRegionConstants.Longitude, ComparisonOperators.LesserOrEqual, longitude),
+                new CtsElementRangeQuery(CityRegionConstants.Latitude, ComparisonOperators.GreaterThan, latitudeCorrected),
+                new CtsElementRangeQuery(CityRegionConstants.Longitude, ComparisonOperators.GreaterThan, longitudeCorrected),
+                new CtsCollectionQuery(CityRegionConstants.CollectionName)
+                )).Query;
+            var response = RestConnector.Submit(query);
+
+            if (!response.Content.IsMimeMultipartContent())
+                return null;
+
+            var content = response.Content.ReadAsMultipartAsync().Result.Contents;
+            foreach (var data in content)
+            {
+                var text = data.ReadAsStringAsync().Result;
+                var xml = XDocument.Parse(text);
+                return ExtractCityRegionInfo(xml);
             }
 
             return null;

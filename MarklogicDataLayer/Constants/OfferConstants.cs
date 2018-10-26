@@ -18,5 +18,6 @@
         public const string Latitude = "latitude";
         public const string Longitude = "longitude";
         public const string LinkId = "link_id";
+        public const string RegionId = "region_id"; 
     }
 }
