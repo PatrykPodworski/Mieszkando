@@ -49,6 +49,7 @@ namespace Tests
                     TotalCost = "101.0",
                 };
                 _sut.Insert(offer1);
+
                 Assert.IsTrue(true);
             }
             catch (Exception e)

@@ -47,6 +47,12 @@ namespace MarklogicDataLayer.Repositories
             return GetWithExpression(new CtsCollectionQuery(collectionName), long.MinValue);
         }
 
+        public IQueryable<T> GetWithExpression(Expression expression, long numberOfElements, long startFrom = 1)
+        {
+            var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements, startFrom).Query;
+            return GetFromQuery(query, _extractionMethod);
+        }
+
         public abstract IQueryable<T> GetAll();
 
         public abstract T GetById(int id);
@@ -114,12 +120,6 @@ namespace MarklogicDataLayer.Repositories
                 result.Add(extractionMethod(xml));
             }
             return result.AsQueryable();
-        }
-
-        private IQueryable<T> GetWithExpression(Expression expression, long numberOfElements, long startFrom = 1)
-        {
-            var query = new FnSubsequence(new CtsSearch("/", expression), numberOfElements, startFrom).Query;
-            return GetFromQuery(query, _extractionMethod);
         }
 
         public int GetCount(string collection)
