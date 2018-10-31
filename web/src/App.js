@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import './App.css';
-import RegionMap from './regionMap/regionMap.js'
+import SimpleSearch from './simpleSearch/simpleSearch';
 
 class App extends Component {
   render() {
-    return ( <RegionMap></RegionMap> );
+    return ( 
+      <div className='container'>
+        <SimpleSearch/>
+      </div>
+     );
   }
 }
 
