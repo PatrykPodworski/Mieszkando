@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
 import './App.css';
-import SimpleSearch from './simpleSearch/simpleSearch';
+import Navbar from './navbar/navbar';
+import Footer from './footer/footer';
+import Content from './content/content';
 
 class App extends Component {
   render() {
     return ( 
-      <div className='container'>
-        <SimpleSearch/>
+      <div>
+        <Navbar/>
+        <Content/>
+        <Footer/>
       </div>
      );
   }
