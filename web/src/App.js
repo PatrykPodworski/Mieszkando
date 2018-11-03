@@ -17,7 +17,7 @@ class App extends Component {
   render() {
     return ( 
       <BrowserRouter>
-        <div class ="container">
+        <div className ="container">
           <Navbar/>
           <div className='content'>
             <Route exact path='/' component={SimpleSearch}/>

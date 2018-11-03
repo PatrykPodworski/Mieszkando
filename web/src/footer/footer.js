@@ -8,7 +8,7 @@ export default class Footer extends Component {
         <div className="footer">
         <AppBar position="static" color="secondary">
           <Toolbar>
-          <div class="copyright">
+          <div className="copyright">
             Copyright © {(new Date().getFullYear())} Mieszkando
           </div>
           </Toolbar>
