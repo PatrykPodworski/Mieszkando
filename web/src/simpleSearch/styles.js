@@ -3,13 +3,14 @@ const styles = theme => ({
         marginTop: 7
     },
     link: {
-        '&:hover': {
-            backgroundColor: 'transparent',
-          },
-        textTransform: 'none',
-        padding: 0,
-        minHeight: 0,
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: 7
     },
+    icon: {
+        fontSize: 'inherit',
+        color: 'rgba(0, 0, 0, 0.54);'
+    }
 });
 
 export default styles;

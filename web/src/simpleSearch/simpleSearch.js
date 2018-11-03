@@ -5,9 +5,9 @@ import Paper from '@material-ui/core/Paper';
 import Dropdown from '../dropdown/dropdown';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Icon } from '@material-ui/core';
 import styles from './styles'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import Link from './../link/link'
 
 class SimpleSearch extends Component {
     render(){
@@ -25,10 +25,14 @@ class SimpleSearch extends Component {
                 <Button variant="contained" color="primary" className={classes.button}>
                     Szukaj
                 </Button>
-                <Button href="#text-buttons" className={classes.link}>
-                    Więcej opcji 
-                    <ArrowDropDownIcon/>
-                </Button>
+                <Link to='/advanced'>
+                    <div className={classes.link}>
+                        <FormLabel>Więcej opcji</FormLabel>
+                        <Icon className={classes.icon}>
+                            arrow_drop_down
+                        </Icon> 
+                    </div>
+                </Link>
                 </div>
             </Paper>
         );

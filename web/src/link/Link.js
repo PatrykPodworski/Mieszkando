@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link as RouterLink }  from 'react-router-dom'
-import styles from './Styles'
+import styles from './styles'
 import { withStyles } from '@material-ui/core';
 
 class Link extends Component {

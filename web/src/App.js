@@ -4,14 +4,14 @@ import Navbar from './navbar/navbar';
 import Footer from './footer/footer';
 import SimpleSearch from './simpleSearch/simpleSearch';
 import {BrowserRouter, Route} from 'react-router-dom'
-import Login from './Login/Login';
-import Register from './Register/Register';
-import AdvancedSearch from './AdvancedSearch/AdvancedSearch';
-import SearchResults from './searchResults/SearchResults';
-import ReverseSearch from './reverseSearch/ReverseSearch';
-import ReverseSearchResults from './reverseSearchResults/ReverseSearchResults';
-import MyAccount from './myAccount/MyAccount';
-import Export from './export/Export';
+import Login from './login/login';
+import Register from './register/register';
+import AdvancedSearch from './advancedSearch/advancedSearch';
+import SearchResults from './searchResults/searchResults';
+import ReverseSearch from './reverseSearch/reverseSearch';
+import ReverseSearchResults from './reverseSearchResults/reverseSearchResults';
+import MyAccount from './myAccount/myAccount';
+import Export from './export/export';
 
 class App extends Component {
   render() {
