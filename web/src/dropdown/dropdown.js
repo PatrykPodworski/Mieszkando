@@ -14,7 +14,10 @@ class Dropdown extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
 
-    this.state = {value: props.value};
+    this.state = {
+      value: props.value,
+      labelWidth: 0
+    };
   }
 
   componentDidMount(){
@@ -49,7 +52,7 @@ class Dropdown extends Component {
             }
         >
         {this.props.options.map(x => (
-          <MenuItem value={x}>{x}</MenuItem>
+          <MenuItem value={x} key={x}>{x}</MenuItem>
         ))}
         </Select>
       </FormControl>
