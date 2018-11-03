@@ -6,6 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import styles from './styles';
 import { withStyles } from '@material-ui/core';
+import ReactDOM from 'react-dom';
 
 class Dropdown extends Component {
 
@@ -16,10 +17,22 @@ class Dropdown extends Component {
     this.state = {value: props.value};
   }
 
+  componentDidMount(){
+    this.setState({
+      labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth
+    })
+  }
+
   render() {
+    const { classes } = this.props;
+    
     return (
-      <FormControl variant="outlined">
-        <InputLabel htmlFor="outlined-label-simple">
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel htmlFor="dropdown-simple"
+          ref={ref => {
+                this.InputLabelRef = ref;
+              }}
+        >
           {this.props.label}
         </InputLabel>
         <Select
@@ -28,9 +41,10 @@ class Dropdown extends Component {
           onChange={this.handleChange}
           input={
               <OutlinedInput
-                labelWidth={90}
-                name="label"
-                id="outlined-label-simple"
+                className={classes.outlinedInput} 
+                labelWidth={this.state.labelWidth}
+                name="dropdown-simple"
+                id="dropdown-simple"
               />
             }
         >
