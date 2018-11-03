@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import HomeIcon from '@material-ui/icons/Home'
+import Logo from '../logo/logo'
 
 export default class Navbar extends Component {
     render() {
@@ -10,10 +9,7 @@ export default class Navbar extends Component {
         <div className="navbar">
         <AppBar position="static" color="primary">
           <Toolbar>
-            <HomeIcon/>
-            <Typography variant="h6" color="inherit">
-              Mieszkando
-            </Typography>
+            <Logo size="32"/>
           </Toolbar>
         </AppBar>
       </div>
