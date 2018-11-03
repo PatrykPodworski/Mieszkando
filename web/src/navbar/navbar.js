@@ -9,7 +9,7 @@ export default class Navbar extends Component {
         <div className="navbar">
         <AppBar position="static" color="primary">
           <Toolbar>
-            <Logo size="32"/>
+            <Logo show={this.props.isLoggedIn} size={32}/>
           </Toolbar>
         </AppBar>
       </div>

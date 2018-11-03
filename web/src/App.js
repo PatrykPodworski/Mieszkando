@@ -12,14 +12,24 @@ import ReverseSearch from './reverseSearch/reverseSearch';
 import ReverseSearchResults from './reverseSearchResults/reverseSearchResults';
 import MyAccount from './myAccount/myAccount';
 import Export from './export/export';
+import Logo from './logo/logo';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      isLoggedIn: true,
+    };
+  }
+
   render() {
     return ( 
       <BrowserRouter>
         <div className ="container">
-          <Navbar/>
+          <Navbar isLoggedIn={this.state.isLoggedIn}/>
           <div className='content'>
+            <Logo show={!this.state.isLoggedIn} size={72} className='logo'/>
             <Route exact path='/' component={SimpleSearch}/>
             <Route exact path='/simple' component={SimpleSearch}/>
             <Route exact path='/advanced' component={AdvancedSearch}/>
