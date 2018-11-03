@@ -4,9 +4,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import './dropdown.css';
+import styles from './styles';
+import { withStyles } from '@material-ui/core';
 
-export default class Dropdown extends Component {
+class Dropdown extends Component {
 
   constructor(props){
     super(props);
@@ -17,13 +18,8 @@ export default class Dropdown extends Component {
 
   render() {
     return (
-      <FormControl variant="outlined" className='dropdown'>
-        <InputLabel
-          ref={ref => {
-            this.InputLabelRef = ref;
-          }}
-          htmlFor="outlined-label-simple"
-        >
+      <FormControl variant="outlined">
+        <InputLabel htmlFor="outlined-label-simple">
           {this.props.label}
         </InputLabel>
         <Select
@@ -38,9 +34,9 @@ export default class Dropdown extends Component {
               />
             }
         >
-          <MenuItem value={1}>1</MenuItem>
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={3}>3</MenuItem>
+        {this.props.options.map(x => (
+          <MenuItem value={x}>{x}</MenuItem>
+        ))}
         </Select>
       </FormControl>
     )
@@ -51,3 +47,5 @@ export default class Dropdown extends Component {
     this.setState({value: e.target.value});
   }
 }
+
+export default withStyles(styles)(Dropdown);
