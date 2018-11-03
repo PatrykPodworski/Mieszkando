@@ -3,13 +3,14 @@ import './simpleSearch.css';
 import SingleSlider from '../singleSlider/singleSlider';
 import Paper from '@material-ui/core/Paper';
 import Dropdown from '../dropdown/dropdown';
+import FormLabel from '@material-ui/core/FormLabel';
 
 export default class SimpleSearch extends Component {
     render(){
         return (
             <Paper className="simpleSearch" elevation={1}>
                 <div className="input-field slider">
-                    <label>Cena</label>
+                    <FormLabel>Cena</FormLabel>
                     <SingleSlider start={800} min={500} max={2000}/>
                 </div>
                 <div className="input-field">
