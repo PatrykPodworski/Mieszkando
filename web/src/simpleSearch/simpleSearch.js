@@ -4,9 +4,14 @@ import SingleSlider from '../singleSlider/singleSlider';
 import Paper from '@material-ui/core/Paper';
 import Dropdown from '../dropdown/dropdown';
 import FormLabel from '@material-ui/core/FormLabel';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core';
+import styles from './styles'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
-export default class SimpleSearch extends Component {
+class SimpleSearch extends Component {
     render(){
+        const {classes} = this.props;
         return (
             <Paper className="simpleSearch" elevation={1}>
                 <div className="input-field slider">
@@ -17,10 +22,17 @@ export default class SimpleSearch extends Component {
                     <Dropdown label={'Liczba pokoi'} value={2} options={[1,2,3,4,5]}/>
                 </div>
                 <div className="input-field">
-                <button>Szukaj</button>
-                <div>Więcej opcji</div>
+                <Button variant="contained" color="primary" className={classes.button}>
+                    Szukaj
+                </Button>
+                <Button href="#text-buttons" className={classes.link}>
+                    Więcej opcji 
+                    <ArrowDropDownIcon/>
+                </Button>
                 </div>
             </Paper>
         );
     }
 }
+
+export default withStyles(styles)(SimpleSearch);
