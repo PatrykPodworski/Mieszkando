@@ -37,6 +37,10 @@ namespace GarbageCollector.Activities
                 do
                 {
                     offers = _databaseOfferRepository.GetFromCollection(OfferConstants.CollectionName, startFrom).ToList();
+                    if (offers.Count == 0 && result == GCActivityStatus.Started)
+                    {
+                        result = GCActivityStatus.None;
+                    }
                     foreach (var offer in offers)
                     {
                         _logger.Log(LogType.Info, $"Checking Offer with id: {offer.Id}");
@@ -46,15 +50,18 @@ namespace GarbageCollector.Activities
                         var offerPage = _browser.GetPage(new Uri(link));
                         if (IsInactive(offerPage))
                         {
+                            var updatedOffer = offer;
+                            updatedOffer.LinkId = string.Empty;
                             _logger.Log(LogType.Info, $"Offer with id: {offer.Id} is inactive");
                             _logger.Log(LogType.Info, $"Removing inactive Link with id: {linkDocument.Id}");
                             _databaseLinkRepository.Delete(linkDocument);
+                            _databaseOfferRepository.Update(updatedOffer);
+
+                            result = GCActivityStatus.Performed;
                         }
                     }
                     startFrom += _batchSize;
                 } while (offers.Count != 0);
-
-                result = GCActivityStatus.Performed;
             }
             catch (Exception)
             {
