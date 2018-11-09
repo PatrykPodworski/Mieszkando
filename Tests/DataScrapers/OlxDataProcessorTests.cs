@@ -65,5 +65,115 @@ namespace Tests.DataScrapers
             Assert.AreEqual(_expectedLongitude, result.Longitude);
             Assert.AreEqual("asdqwe123", result.LinkId);
         }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectId()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedId, result.Id);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectTitle()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedTitle, result.Title);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectCost()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedCost, result.Cost);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectBonusCost()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedBonusCost, result.BonusCost);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectArea()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedArea, result.Area);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectRooms()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedRooms, result.Rooms);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectDistrict()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedDistrict, result.District);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectDateOfPosting()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedDateOfPosting, result.DateOfPosting);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectDateOfScrapping()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectLatitude()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedLatitude, result.Latitude);
+        }
+
+        [TestMethod]
+        public void OLX_Process_GetCorrectLongitude()
+        {
+            var processor = new OlxDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedLongitude, result.Longitude);
+        }
     }
 }
