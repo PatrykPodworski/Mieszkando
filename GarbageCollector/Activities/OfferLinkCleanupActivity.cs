@@ -37,6 +37,10 @@ namespace GarbageCollector.Activities
                 do
                 {
                     offers = _databaseOfferRepository.GetFromCollection(OfferConstants.CollectionName, startFrom).ToList();
+                    if (offers.Count == 0 && result == GCActivityStatus.Started)
+                    {
+                        result = GCActivityStatus.None;
+                    }
                     foreach (var offer in offers)
                     {
                         _logger.Log(LogType.Info, $"Checking Offer with id: {offer.Id}");
@@ -52,12 +56,12 @@ namespace GarbageCollector.Activities
                             _logger.Log(LogType.Info, $"Removing inactive Link with id: {linkDocument.Id}");
                             _databaseLinkRepository.Delete(linkDocument);
                             _databaseOfferRepository.Update(updatedOffer);
+
+                            result = GCActivityStatus.Performed;
                         }
                     }
                     startFrom += _batchSize;
                 } while (offers.Count != 0);
-
-                result = GCActivityStatus.Performed;
             }
             catch (Exception)
             {
