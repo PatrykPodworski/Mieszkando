@@ -46,9 +46,12 @@ namespace GarbageCollector.Activities
                         var offerPage = _browser.GetPage(new Uri(link));
                         if (IsInactive(offerPage))
                         {
+                            var updatedOffer = offer;
+                            updatedOffer.LinkId = string.Empty;
                             _logger.Log(LogType.Info, $"Offer with id: {offer.Id} is inactive");
                             _logger.Log(LogType.Info, $"Removing inactive Link with id: {linkDocument.Id}");
                             _databaseLinkRepository.Delete(linkDocument);
+                            _databaseOfferRepository.Update(updatedOffer);
                         }
                     }
                     startFrom += _batchSize;
