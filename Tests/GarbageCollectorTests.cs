@@ -1,6 +1,7 @@
 ﻿using Common.Loggers;
 using GarbageCollector.Activities;
 using HtmlAgilityPack;
+using MarklogicDataLayer.Constants;
 using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
@@ -14,12 +15,15 @@ using System.Linq;
 
 namespace Tests
 {
-    [TestCategory("Integration")]
     [TestClass]
     public class GarbageCollectorTests
     {
         private IBrowser _browser;
         private ILogger _logger;
+        private IDatabaseConnectionSettings _dbConnectionSettings;
+        private DatabaseOfferRepository _dbOfferRepository;
+        private DatabaseLinkRepository _dbLinkRepository;
+        private OfferLinkCleanupActivity _sut;
 
         [TestInitialize]
         public void Initialize()
@@ -32,6 +36,17 @@ namespace Tests
             var loggerMock = new Mock<ILogger>();
             loggerMock.Setup(x => x.Log(It.IsAny<LogType>(), It.IsAny<string>()));
             _logger = loggerMock.Object;
+
+            _dbConnectionSettings = new DatabaseConnectionSettings("vps561493.ovh.net", 8086, "admin", "admin");
+            _dbOfferRepository = new DatabaseOfferRepository(_dbConnectionSettings);
+            _dbLinkRepository = new DatabaseLinkRepository(_dbConnectionSettings);
+            _sut = new OfferLinkCleanupActivity(_dbOfferRepository, _dbLinkRepository, _browser, _logger);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            DbFlush.Perform(_dbConnectionSettings);
         }
 
         [TestMethod]
@@ -102,6 +117,78 @@ namespace Tests
             var result = sut.Perform();
 
             Assert.AreEqual(GCActivityStatus.Error, result);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public void Perform_removes_inactive_Link_document()
+        {
+            var link = new Link()
+            {
+                Id = "link_id_1",
+                Uri = "http://www.placeholder.com",
+                LinkSourceKind = OfferType.Olx,
+                LastUpdate = DateTime.Now,
+                Status = Status.New
+            };
+            var offer = new Offer()
+            {
+                Id = "offer_id_1",
+                LinkId = "link_id_1",
+                Title = "title",
+                Cost = "100.0",
+                BonusCost = "1.0",
+                District = "wealthy",
+                Rooms = "42",
+                Area = "polite",
+                DateOfPosting = "1970-01-01",
+                DateOfScraping = "1970-01-01",
+                Latitude = "1",
+                Longitude = "1",
+            };
+            _dbLinkRepository.Insert(link);
+            _dbOfferRepository.Insert(offer);
+            _sut.Perform();
+
+            var result = _dbLinkRepository.GetAllFromCollection(LinkConstants.CollectionName);
+
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public void Perform_updates_link_id_in_inactive_Offer()
+        {
+            var link = new Link()
+            {
+                Id = "link_id_1",
+                Uri = "http://www.placeholder.com",
+                LinkSourceKind = OfferType.Olx,
+                LastUpdate = DateTime.Now,
+                Status = Status.New
+            };
+            var offer = new Offer()
+            {
+                Id = "offer_id_1",
+                LinkId = "link_id_1",
+                Title = "title",
+                Cost = "100.0",
+                BonusCost = "1.0",
+                District = "wealthy",
+                Rooms = "42",
+                Area = "polite",
+                DateOfPosting = "1970-01-01",
+                DateOfScraping = "1970-01-01",
+                Latitude = "1",
+                Longitude = "1",
+            };
+            _dbLinkRepository.Insert(link);
+            _dbOfferRepository.Insert(offer);
+            _sut.Perform();
+
+            var result = _dbOfferRepository.Get(OfferConstants.OfferId, "offer_id_1", OfferConstants.CollectionName, 1).First();
+
+            Assert.AreEqual(string.Empty, result.LinkId);
         }
     }
 }
