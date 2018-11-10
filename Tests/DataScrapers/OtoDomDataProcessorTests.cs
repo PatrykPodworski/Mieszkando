@@ -7,6 +7,7 @@ using System.IO;
 namespace Tests.DataScrapers
 {
     [TestClass]
+    [TestCategory("Unit")]
     public class OtodomDataProcessorTests
     {
         private HtmlData _data;

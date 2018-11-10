@@ -4,13 +4,12 @@ using MarklogicDataLayer.SearchQuery.SearchModels;
 using MarklogicDataLayer.XQuery.Constants;
 using MarklogicDataLayer.XQuery.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Tests
 {
     [TestClass]
+    [TestCategory("Unit")]
     public class OfferSearchQueryProviderTests
     {
         [TestMethod]
@@ -25,10 +24,10 @@ namespace Tests
             });
             var sut = new OfferSearchQueryProvider(searchModel);
 
-            var expected = new CtsSearch("/", 
+            var expected = new CtsSearch("/",
                     new CtsAndQuery(
-                        new CtsElementRangeQuery(OfferConstants.TotalCost, ComparisonOperators.Equal, "1000"), 
-                        new CtsElementRangeQuery(OfferConstants.Area, ComparisonOperators.Equal, "43"), 
+                        new CtsElementRangeQuery(OfferConstants.TotalCost, ComparisonOperators.Equal, "1000"),
+                        new CtsElementRangeQuery(OfferConstants.Area, ComparisonOperators.Equal, "43"),
                         new CtsCollectionQuery(OfferConstants.CollectionName))).Query;
             var actual = sut.GetSearchQuery();
 
