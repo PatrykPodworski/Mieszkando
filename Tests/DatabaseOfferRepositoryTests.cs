@@ -173,7 +173,7 @@ namespace Tests
             Assert.AreEqual(expected, result);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void Get_returns_specified_number_of_documents_queried_by_expression()
         {
             var offer1 = new MarklogicDataLayer.DataStructs.Offer

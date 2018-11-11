@@ -4,6 +4,7 @@ using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -52,7 +53,7 @@ namespace MarklogicDataLayer.Repositories
         {
             entity.DateOfScraping = DateTime.Now.ToShortDateString();
             entity.TotalCost = entity.TotalCost == null
-                ? (double.Parse(entity.Cost) + double.Parse(entity.BonusCost)).ToString()
+                ? (double.Parse(entity.Cost, CultureInfo.InvariantCulture) + double.Parse(entity.BonusCost, CultureInfo.InvariantCulture)).ToString()
                 : entity.TotalCost;
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
@@ -117,6 +118,7 @@ namespace MarklogicDataLayer.Repositories
                 Link = offerLink,
                 TotalCost = offerTotalCost,
                 RegionId = offerRegionId,
+                OfferType = offerType,
             };
         }
     }

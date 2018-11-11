@@ -78,7 +78,7 @@ namespace OfferScraper.DataProcessors
             var offerDateTime = new DateTime();
             if (!DateTime.TryParse(dateOfPostingText, new CultureInfo("pl-PL"), DateTimeStyles.None, out offerDateTime))
             {
-                offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays) * -1);
+                offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays, CultureInfo.InvariantCulture) * -1);
             }
 
             var dateFormat = "dd.MM.yyyy";

@@ -94,8 +94,8 @@ namespace Tests
             Assert.AreEqual(GCActivityStatus.Error, result);
         }
 
-        //[TestCategory("Integration")]
-        //[TestMethod]
+        [TestCategory("Integration")]
+        [TestMethod]
         public void Perform_updates_link_and_OfferType_in_inactive_Offer()
         {
             var offer = new Offer()

@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Net.Http;
 using MarklogicDataLayer.XQuery.Constants;
+using System.Globalization;
 
 namespace MarklogicDataLayer.Repositories
 {
@@ -51,8 +52,8 @@ namespace MarklogicDataLayer.Repositories
         public CityRegion GetByCoordinates(string latitude, string longitude)
         {
             var coordinateJump = 0.01;
-            var latitudeCorrected = (double.Parse(latitude.Substring(0, 5)) - coordinateJump).ToString();
-            var longitudeCorrected = (double.Parse(longitude.Substring(0, 5)) - coordinateJump).ToString();
+            var latitudeCorrected = (double.Parse(latitude.Substring(0, 5)) - coordinateJump, CultureInfo.InvariantCulture).ToString();
+            var longitudeCorrected = (double.Parse(longitude.Substring(0, 5)) - coordinateJump, CultureInfo.InvariantCulture).ToString();
 
             var query = new CtsSearch("/", new CtsAndQuery(
                 new CtsElementRangeQuery(CityRegionConstants.Latitude, ComparisonOperators.LesserOrEqual, latitude),
