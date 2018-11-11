@@ -75,7 +75,7 @@ namespace Common.Extensions
 
         public static DateTime ParseToDateTime(this string date)
         {
-            DateTime.TryParse(date, out DateTime result);
+            DateTime.TryParse(date, new CultureInfo("pl-PL"), DateTimeStyles.None, out DateTime result);
             return result;
         }
 

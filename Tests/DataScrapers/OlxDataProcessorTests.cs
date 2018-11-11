@@ -31,7 +31,6 @@ namespace Tests.DataScrapers
                 Status = Status.New,
                 Content = File.ReadAllText("../../../Samples/OlxSampleHtml.txt"),
                 LastUpdate = DateTime.Now,
-                Link = "asdqwe123",
             };
 
             _expectedId = "469945769";
@@ -44,27 +43,6 @@ namespace Tests.DataScrapers
             _expectedDateOfPosting = "23.07.2018";
             _expectedLatitude = "54.40900000";
             _expectedLongitude = "18.58144000";
-        }
-
-        [TestMethod]
-        public void OLX_Process_GetCorrectData()
-        {
-            var processor = new OlxDataProcessor();
-
-            var result = processor.Process(_data);
-
-            Assert.AreEqual(_expectedId, result.Id);
-            Assert.AreEqual(_expectedTitle, result.Title);
-            Assert.AreEqual(_expectedCost, result.Cost);
-            Assert.AreEqual(_expectedBonusCost, result.BonusCost);
-            Assert.AreEqual(_expectedRooms, result.Rooms);
-            Assert.AreEqual(_expectedArea, result.Area);
-            Assert.AreEqual(_expectedDistrict, result.District);
-            Assert.AreEqual(_expectedDateOfPosting, result.DateOfPosting);
-            Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
-            Assert.AreEqual(_expectedLatitude, result.Latitude);
-            Assert.AreEqual(_expectedLongitude, result.Longitude);
-            Assert.AreEqual("asdqwe123", result.Link);
         }
 
         [TestMethod]
@@ -154,7 +132,7 @@ namespace Tests.DataScrapers
 
             var result = processor.Process(_data);
 
-            Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
+            Assert.AreEqual(DateTime.Now.ToString("dd.MM.yyyy"), result.DateOfScraping);
         }
 
         [TestMethod]

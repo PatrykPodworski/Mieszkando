@@ -31,7 +31,6 @@ namespace Tests.DataScrapers
                 Status = Status.New,
                 Content = File.ReadAllText("../../../Samples/OtodomSampleHtml.txt"),
                 LastUpdate = DateTime.Now,
-                Link = "asdqwe123",
             };
 
             _expectedId = "54951004";
@@ -133,7 +132,7 @@ namespace Tests.DataScrapers
 
             var result = processor.Process(_data);
 
-            Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
+            Assert.AreEqual(DateTime.Now.ToString("dd.MM.yyyy"), result.DateOfScraping);
         }
 
         [TestMethod]
