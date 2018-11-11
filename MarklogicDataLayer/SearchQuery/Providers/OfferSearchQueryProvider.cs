@@ -30,7 +30,7 @@ namespace MarklogicDataLayer.SearchQuery.Providers
 
             subQueries.Add(new CtsCollectionQuery(OfferConstants.CollectionName));
 
-            var result = new CtsSearch("/", new CtsAndQuery(subQueries));
+            var result = new CtsAndQuery(subQueries);
 
             return result.Query;
         }

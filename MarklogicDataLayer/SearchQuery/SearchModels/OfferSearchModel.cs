@@ -6,10 +6,10 @@ namespace MarklogicDataLayer.SearchQuery.SearchModels
 {
     public class OfferSearchModel
     {
-        public List<(string TotalCost, string ComparisonOperator)> CostSearch { get; set; }
-        public List<(string Area, string ComparisonOperator)> AreaSearch { get; set; }
+        public List<CostSearchModel> CostSearch { get; set; }
+        public List<AreaSearchModel> AreaSearch { get; set; }
 
-        public OfferSearchModel(List<(string TotalCost, string ComparisonOperator)> costSearch, List<(string Area, string ComparisonOperator)> areaSearch)
+        public OfferSearchModel(List<CostSearchModel> costSearch, List<AreaSearchModel> areaSearch)
         {
             CostSearch = costSearch;
             AreaSearch = areaSearch;

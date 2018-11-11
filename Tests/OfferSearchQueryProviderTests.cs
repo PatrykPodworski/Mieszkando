@@ -24,11 +24,10 @@ namespace Tests
             });
             var sut = new OfferSearchQueryProvider(searchModel);
 
-            var expected = new CtsSearch("/",
-                    new CtsAndQuery(
+            var expected = new CtsAndQuery(
                         new CtsElementRangeQuery(OfferConstants.TotalCost, ComparisonOperators.Equal, "1000"),
                         new CtsElementRangeQuery(OfferConstants.Area, ComparisonOperators.Equal, "43"),
-                        new CtsCollectionQuery(OfferConstants.CollectionName))).Query;
+                        new CtsCollectionQuery(OfferConstants.CollectionName)).Query;
             var actual = sut.GetSearchQuery();
 
             Assert.AreEqual(expected, actual);
@@ -48,13 +47,12 @@ namespace Tests
             });
             var sut = new OfferSearchQueryProvider(searchModel);
 
-            var expected = new CtsSearch("/",
-                    new CtsAndQuery(
+            var expected = new CtsAndQuery(
                         new CtsElementRangeQuery(OfferConstants.TotalCost, ComparisonOperators.GreaterThan, "1000"),
                         new CtsElementRangeQuery(OfferConstants.TotalCost, ComparisonOperators.LesserOrEqual, "1500"),
                         new CtsElementRangeQuery(OfferConstants.Area, ComparisonOperators.GreaterThan, "31"),
                         new CtsElementRangeQuery(OfferConstants.Area, ComparisonOperators.LesserThan, "42"),
-                        new CtsCollectionQuery(OfferConstants.CollectionName))).Query;
+                        new CtsCollectionQuery(OfferConstants.CollectionName)).Query;
             var actual = sut.GetSearchQuery();
 
             Assert.AreEqual(expected, actual);
