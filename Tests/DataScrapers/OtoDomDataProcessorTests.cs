@@ -47,27 +47,6 @@ namespace Tests.DataScrapers
         }
 
         [TestMethod]
-        public void OtoDom_Process_GetCorrectData()
-        {
-            var processor = new OtoDomDataProcessor();
-
-            var result = processor.Process(_data);
-
-            Assert.AreEqual(_expectedId, result.Id);
-            Assert.AreEqual(_expectedTitle, result.Title);
-            Assert.AreEqual(_expectedCost, result.Cost);
-            Assert.AreEqual(_expectedBonusCost, result.BonusCost);
-            Assert.AreEqual(_expectedRooms, result.Rooms);
-            Assert.AreEqual(_expectedArea, result.Area);
-            Assert.AreEqual(_expectedDistrict, result.District);
-            Assert.AreEqual(_expectedDateOfPosting, result.DateOfPosting);
-            Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
-            Assert.AreEqual(_expectedLatitude, result.Latitude);
-            Assert.AreEqual(_expectedLongitude, result.Longitude);
-            Assert.AreEqual("asdqwe123", result.Link);
-        }
-
-        [TestMethod]
         public void OtoDom_Process_GetCorrectId()
         {
             var processor = new OtoDomDataProcessor();

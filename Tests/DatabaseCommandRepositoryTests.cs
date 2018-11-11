@@ -1,5 +1,4 @@
 ﻿using MarklogicDataLayer.Commands.Interfaces;
-using MarklogicDataLayer.Constants;
 using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
@@ -12,7 +11,7 @@ using System.Linq;
 namespace Tests
 {
     [TestClass]
-    [TestCategory("Unit")]
+    [TestCategory("Integration")]
     public class DatabaseCommandRepositoryTests
     {
         [TestInitialize]

@@ -1,6 +1,5 @@
 ﻿using Common.Extensions;
 using HtmlAgilityPack;
-using MarklogicDataLayer.Constants;
 using MarklogicDataLayer.DataStructs;
 using ScrapySharp.Extensions;
 using System;
@@ -81,12 +80,12 @@ namespace OfferScraper.DataProcessors
                 offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays) * -1);
             }
 
-            var dateOfPosting = offerDateTime
-                .ToShortDateString();
+            var dateFormat = "dd.MM.yyyy";
 
-            var dateOfScraping = DateTime.Now
-                .ToShortDateString();
-            
+            var dateOfPosting = offerDateTime.ToString(dateFormat);
+
+            var dateOfScraping = DateTime.Now.ToString(dateFormat);
+
             return new Offer
             {
                 Id = id,

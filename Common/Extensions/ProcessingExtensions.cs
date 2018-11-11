@@ -7,10 +7,10 @@ namespace Common.Extensions
 {
     public static class ProcessingExtensions
     {
-        public static string ToShortDateString(this string date)
+        public static string ToString(this string date, string format)
         {
             DateTime.TryParse(date, new CultureInfo("pl-PL"), DateTimeStyles.None, out DateTime result);
-            return result.ToShortDateString();
+            return result.ToString(format);
         }
 
         public static string Second(this string[] array)
