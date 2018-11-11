@@ -64,6 +64,11 @@ namespace MarklogicDataLayer.Repositories
             }
         }
 
+        public override IQueryable<Offer> GetFromCollection(string collectionName = OfferConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
+        }
+
         private static Offer ExtractOfferInfo(XDocument xml)
         {
             var offerId = xml.Descendants().First(x => x.Name == OfferConstants.OfferId).Value;
@@ -77,9 +82,24 @@ namespace MarklogicDataLayer.Repositories
             var offerDateOfScraping = xml.Descendants().First(x => x.Name == OfferConstants.DateOfScraping).Value;
             var offerLatitude = xml.Descendants().First(x => x.Name == OfferConstants.Latitude).Value;
             var offerLongitude = xml.Descendants().First(x => x.Name == OfferConstants.Longitude).Value;
-            var offerLinkId = xml.Descendants().First(x => x.Name == OfferConstants.LinkId).Value;
+            var offerLink = xml.Descendants().First(x => x.Name == OfferConstants.Link).Value;
             var offerTotalCost = xml.Descendants().First(x => x.Name == OfferConstants.TotalCost).Value;
             var offerRegionId = xml.Descendants().FirstOrDefault(x => x.Name == OfferConstants.RegionId)?.Value;
+            var offerType = OfferType.Olx;
+            switch (xml.Descendants().First(x => x.Name == OfferConstants.OfferType).Value)
+            {
+                case OfferTypeConstants.Olx:
+                    offerType = OfferType.Olx;
+                    break;
+
+                case OfferTypeConstants.OtoDom:
+                    offerType = OfferType.OtoDom;
+                    break;
+
+                case OfferTypeConstants.Outdated:
+                    offerType = OfferType.Outdated;
+                    break;
+            }
 
             return new Offer
             {
@@ -94,15 +114,10 @@ namespace MarklogicDataLayer.Repositories
                 DateOfScraping = offerDateOfScraping,
                 Latitude = offerLatitude,
                 Longitude = offerLongitude,
-                LinkId = offerLinkId,
+                Link = offerLink,
                 TotalCost = offerTotalCost,
                 RegionId = offerRegionId,
             };
-        }
-
-        public override IQueryable<Offer> GetAll()
-        {
-            return GetAllFromCollection(OfferConstants.CollectionName);
         }
     }
 }

@@ -11,5 +11,7 @@ namespace MarklogicDataLayer.DataStructs
         Olx,
         [XmlEnum(Name = OfferTypeConstants.OtoDom)]
         OtoDom,
+        [XmlEnum(Name = OfferTypeConstants.Outdated)]
+        Outdated,
     }
 }

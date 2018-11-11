@@ -24,11 +24,6 @@ namespace MarklogicDataLayer.Repositories
             throw new System.NotImplementedException();
         }
 
-        public override IQueryable<MarklogicDataLayer.DataStructs.Utility> GetAll()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override MarklogicDataLayer.DataStructs.Utility GetById(int id)
         {
             throw new System.NotImplementedException();

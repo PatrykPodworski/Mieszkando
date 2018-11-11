@@ -13,20 +13,18 @@ namespace GarbageCollector
     {
         private List<IGCActivity> _activities { get; set; }
         private IDataRepository<Offer> _offerRepository;
-        private IDataRepository<Link> _linkRepository;
         private IBrowser _browser;
         private ILogger _logger;
 
-        public GarbageCollectorService(IDataRepository<Offer> offerRepository, IDataRepository<Link> linkRepository, IBrowser browser, ILogger logger)
+        public GarbageCollectorService(IDataRepository<Offer> offerRepository, IBrowser browser, ILogger logger)
         {
             _offerRepository = offerRepository;
-            _linkRepository = linkRepository;
             _browser = browser;
             _logger = logger;
 
             _activities = new List<IGCActivity>()
             {
-                new OfferLinkCleanupActivity(_offerRepository, _linkRepository, _browser, _logger),
+                new OfferLinkCleanupActivity(_offerRepository, _browser, _logger),
             };
         }
 

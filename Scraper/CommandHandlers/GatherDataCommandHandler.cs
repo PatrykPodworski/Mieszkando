@@ -92,9 +92,8 @@ namespace OfferScraper.CommandHandlers
                     _htmlDataRepository.Insert(htmlData, transaction);
                     _logger.Log(LogType.Info, $"Inserted new {htmlData.GetClassName()} to database");
 
-                    link.Status = Status.Success;
-                    _linkRepository.Update(link, transaction);
-                    _logger.Log(LogType.Info, $"Updated {link.GetClassName()} with Id: {link.Id}");
+                    _linkRepository.Delete(link);
+                    _logger.Log(LogType.Info, $"Removed {link.GetClassName()} with Id: {link.Id}");
 
                     _commandQueue.Add(new ExtractDataCommand() { Id = Guid.NewGuid().ToString() });
                     _logger.Log(LogType.Info, $"Created new {typeof(ExtractDataCommand).Name} 1x1");

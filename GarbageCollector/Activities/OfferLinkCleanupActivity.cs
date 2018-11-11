@@ -13,15 +13,13 @@ namespace GarbageCollector.Activities
     public class OfferLinkCleanupActivity : IGCActivity
     {
         private IDataRepository<Offer> _databaseOfferRepository;
-        private IDataRepository<Link> _databaseLinkRepository;
         private IBrowser _browser;
         private ILogger _logger;
 
         private const int _batchSize = 100;
 
-        public OfferLinkCleanupActivity(IDataRepository<Offer> databaseOfferRepository, IDataRepository<Link> databaseLinkRepository, IBrowser browser, ILogger logger)
+        public OfferLinkCleanupActivity(IDataRepository<Offer> databaseOfferRepository, IBrowser browser, ILogger logger)
         {
-            _databaseLinkRepository = databaseLinkRepository;
             _databaseOfferRepository = databaseOfferRepository;
             _browser = browser;
             _logger = logger;
@@ -44,17 +42,14 @@ namespace GarbageCollector.Activities
                     foreach (var offer in offers)
                     {
                         _logger.Log(LogType.Info, $"Checking Offer with id: {offer.Id}");
-                        var linkId = offer.LinkId;
-                        var linkDocument = _databaseLinkRepository.Get(LinkConstants.LinkId, linkId, LinkConstants.CollectionName, 1).First();
-                        var link = linkDocument.Uri;
+                        var link = offer.Link;
                         var offerPage = _browser.GetPage(new Uri(link));
                         if (IsInactive(offerPage))
                         {
                             var updatedOffer = offer;
-                            updatedOffer.LinkId = string.Empty;
+                            updatedOffer.Link = string.Empty;
+                            updatedOffer.OfferType = OfferType.Outdated;
                             _logger.Log(LogType.Info, $"Offer with id: {offer.Id} is inactive");
-                            _logger.Log(LogType.Info, $"Removing inactive Link with id: {linkDocument.Id}");
-                            _databaseLinkRepository.Delete(linkDocument);
                             _databaseOfferRepository.Update(updatedOffer);
 
                             result = GCActivityStatus.Performed;
