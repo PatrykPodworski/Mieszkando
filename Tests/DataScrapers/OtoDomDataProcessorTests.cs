@@ -7,6 +7,7 @@ using System.IO;
 namespace Tests.DataScrapers
 {
     [TestClass]
+    [TestCategory("Unit")]
     public class OtodomDataProcessorTests
     {
         private HtmlData _data;
@@ -64,6 +65,116 @@ namespace Tests.DataScrapers
             Assert.AreEqual(_expectedLatitude, result.Latitude);
             Assert.AreEqual(_expectedLongitude, result.Longitude);
             Assert.AreEqual("asdqwe123", result.Link);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectId()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedId, result.Id);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectTitle()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedTitle, result.Title);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectCost()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedCost, result.Cost);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectBonusCost()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedBonusCost, result.BonusCost);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectRooms()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedRooms, result.Rooms);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectArea()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedArea, result.Area);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectDistrict()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedDistrict, result.District);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectDateOfPosting()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedDateOfPosting, result.DateOfPosting);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectDateOfScraping()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(DateTime.Now.ToShortDateString(), result.DateOfScraping);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectLatitude()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedLatitude, result.Latitude);
+        }
+
+        [TestMethod]
+        public void OtoDom_Process_GetCorrectLongitude()
+        {
+            var processor = new OtoDomDataProcessor();
+
+            var result = processor.Process(_data);
+
+            Assert.AreEqual(_expectedLongitude, result.Longitude);
         }
     }
 }

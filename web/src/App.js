@@ -1,61 +1,51 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
-import config from './config';
-
-const apiKey = config.tomtomApiKey;
-var cityRegions;
+import Navbar from './navbar/navbar';
+import Footer from './footer/footer';
+import SimpleSearch from './simpleSearch/simpleSearch';
+import {BrowserRouter, Route} from 'react-router-dom'
+import Login from './login/login';
+import Register from './register/register';
+import AdvancedSearch from './advancedSearch/advancedSearch';
+import SearchResults from './searchResults/searchResults';
+import ReverseSearch from './reverseSearch/reverseSearch';
+import ReverseSearchResults from './reverseSearchResults/reverseSearchResults';
+import MyAccount from './myAccount/myAccount';
+import Export from './export/export';
+import Logo from './logo/logo';
 
 class App extends Component {
-  render() {
-    return (
-      <div id = 'map'></div>
-    );
-  }
+  constructor(props){
+    super(props);
 
-  componentDidMount() { 
-    console.log('');
-    fetch("http://localhost:62003/api/cityregions")
-    .then((response) =>  response.json())
-    .then((result) => this.cityRegions = result)
-    .then(() => this.loadMap());
-    }
-
-    loadMap() {
-      var map = window.tomtom.map('map', {
-        source: 'vector',
-        key: apiKey,
-        basePath: '/tomtomWebSdk',
-      });
-
-      var polygon = {
-        'type': 'FeatureCollection',
-        'features': [
-            {
-                'type': 'Feature',  
-                'properties': {},
-                'geometry': {
-                    'type': 'Polygon',
-                    'coordinates': this.getRegionsCoordinates(this.cityRegions)
-                }
-            }
-        ]
+    this.state = {
+      isLoggedIn: true,
     };
-    var geoJson = window.tomtom.L.geoJson(polygon, { style: { color: '#FFC312', opacity: 0.5, } }).addTo(map);
-    map.fitBounds(geoJson.getBounds(), { padding: [5, 5] });
-    }
-
-    getRegionsCoordinates(regions) {
-     return regions.map(x => this.getRegionCoordinates(x));
-    }
-
-    getRegionCoordinates(region) {
-      return [
-        [parseFloat(region.longitude), parseFloat(region.latitude)],
-        [parseFloat(region.longitude) + parseFloat(region.longitudeSize), parseFloat(region.latitude)],
-        [parseFloat(region.longitude) + parseFloat(region.longitudeSize), parseFloat(region.latitude) + parseFloat(region.latitudeSize)],
-        [parseFloat(region.longitude), parseFloat(region.latitude) + parseFloat(region.latitudeSize)]
-      ]
-    }
   }
+
+  render() {
+    return ( 
+      <BrowserRouter>
+        <div className ="container">
+          <Navbar isLoggedIn={this.state.isLoggedIn}/>
+          <div className='content'>
+            <Logo show={!this.state.isLoggedIn} size={72} className='logo'/>
+            <Route exact path='/' component={SimpleSearch}/>
+            <Route exact path='/simple' component={SimpleSearch}/>
+            <Route exact path='/advanced' component={AdvancedSearch}/>
+            <Route path='/searchResults' component={SearchResults}/>
+            <Route path='/reveseSearch' component={ReverseSearch}/>
+            <Route path='/reveseSearchResults' component={ReverseSearchResults}/>
+            <Route path='/login' component={Login}/>
+            <Route path='/register' component={Register}/>
+            <Route path='/myaccount' component={MyAccount}/>
+            <Route path='/export' component={Export}/>
+          </div>
+          <Footer/>
+        </div>
+      </BrowserRouter>
+     );
+  }
+}
 
 export default App;

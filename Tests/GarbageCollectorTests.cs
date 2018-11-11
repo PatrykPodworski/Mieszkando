@@ -16,6 +16,7 @@ using System.Linq;
 namespace Tests
 {
     [TestClass]
+    [TestCategory("Unit")]
     public class GarbageCollectorTests
     {
         private IBrowser _browser;

@@ -12,6 +12,7 @@ using System.Linq;
 namespace Tests
 {
     [TestClass]
+    [TestCategory("Unit")]
     public class DatabaseCommandRepositoryTests
     {
         [TestInitialize]

@@ -1,0 +1,31 @@
+.noUi-horizontal .noUi-handle {
+    border-radius: 50%;
+    box-shadow: none;
+    width: 24px;
+    height: 24px;
+    top: -7px;
+    background-color: #3FB8AF;
+    border: 0px;
+}
+
+html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
+    right: -12px;
+}
+
+.noUi-handle::before, .noUi-handle::after {
+    content: none;
+}
+
+.noUi-horizontal .noUi-tooltip {
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+    background: none;
+    bottom: 100%;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.noUi-horizontal {
+    margin-top: 20px;
+    height: 10px;
+}
