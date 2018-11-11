@@ -74,7 +74,7 @@ namespace Tests
                 DateOfScraping = "1970-01-01",
                 Latitude = "1",
                 Longitude = "1",
-                LinkId = "asd123",
+                Link = "asd123",
                 TotalCost = "101.0",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
@@ -90,7 +90,7 @@ namespace Tests
                 DateOfScraping = "1972-01-01",
                 Latitude = "1",
                 Longitude = "1",
-                LinkId = "qwe123",
+                Link = "qwe123",
                 TotalCost = "112.0",
             };
             _sut.Insert(offer1);
@@ -146,7 +146,7 @@ namespace Tests
                 DateOfScraping = "1970-01-01",
                 Latitude = "1",
                 Longitude = "1",
-                LinkId = "asd123",
+                Link = "asd123",
                 TotalCost = "101.0",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
@@ -162,7 +162,7 @@ namespace Tests
                 DateOfScraping = "1972-01-01",
                 Latitude = "1",
                 Longitude = "1",
-                LinkId = "qwe123",
+                Link = "qwe123",
                 TotalCost = "112.0",
             };
             _sut.Insert(offer1);
@@ -189,7 +189,7 @@ namespace Tests
                 DateOfScraping = "1970-01-01",
                 Latitude = "1",
                 Longitude = "1",
-                LinkId = "asd",
+                Link = "asd",
                 TotalCost = "101.0",
             };
             var offer2 = new MarklogicDataLayer.DataStructs.Offer
@@ -205,7 +205,7 @@ namespace Tests
                 DateOfScraping = "1972-01-01",
                 Latitude = "1",
                 Longitude = "1",
-                LinkId = "qwe",
+                Link = "qwe",
             };
             var offer3 = new MarklogicDataLayer.DataStructs.Offer
             {
@@ -220,7 +220,7 @@ namespace Tests
                 DateOfScraping = "1972-01-01",
                 Latitude = "1",
                 Longitude = "1",
-                LinkId = "123",
+                Link = "123",
             };
             _sut.Insert(new[] { offer1, offer2, offer3 });
             var result = _sut.Get("district", "wealthy2", OfferConstants.CollectionName, 1).ToList();

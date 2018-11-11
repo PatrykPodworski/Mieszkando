@@ -1,5 +1,6 @@
 ﻿using Common.Extensions;
 using HtmlAgilityPack;
+using MarklogicDataLayer.Constants;
 using MarklogicDataLayer.DataStructs;
 using ScrapySharp.Extensions;
 using System;
@@ -85,7 +86,7 @@ namespace OfferScraper.DataProcessors
 
             var dateOfScraping = DateTime.Now
                 .ToShortDateString();
-
+            
             return new Offer
             {
                 Id = id,
@@ -99,7 +100,9 @@ namespace OfferScraper.DataProcessors
                 DateOfScraping = dateOfScraping,
                 Latitude = latitude,
                 Longitude = longitude,
-                LinkId = htmlData.LinkId,
+                Link = htmlData.Link,
+                TotalCost = (double.Parse(cost, System.Globalization.CultureInfo.InvariantCulture) + double.Parse(bonusCost, System.Globalization.CultureInfo.InvariantCulture)).ToString(),
+                OfferType = OfferType.OtoDom,
             };
         }
     }

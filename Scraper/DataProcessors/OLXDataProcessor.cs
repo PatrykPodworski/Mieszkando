@@ -94,8 +94,9 @@ namespace OfferScraper.DataProcessors
                 DateOfScraping = dateOfScraping,
                 Latitude = latitude,
                 Longitude = longitude,
-                LinkId = htmlData.LinkId,
-                TotalCost = (double.Parse(cost) + double.Parse(bonusCost)).ToString(),
+                Link = htmlData.Link,
+                TotalCost = (double.Parse(cost, System.Globalization.CultureInfo.InvariantCulture) + double.Parse(bonusCost, System.Globalization.CultureInfo.InvariantCulture)).ToString(),
+                OfferType = OfferType.Olx
             };
         }
     }
