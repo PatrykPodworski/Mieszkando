@@ -25,11 +25,6 @@ namespace MarklogicDataLayer.Repositories
             RestConnector.Submit(query);
         }
 
-        public override IQueryable<CityRegion> GetAll()
-        {
-            return GetAllFromCollection(CityRegionConstants.CollectionName);
-        }
-
         public override CityRegion GetById(int id)
         {
             var query = new CtsSearch("/", new CtsElementValueQuery(CityRegionConstants.Id, id.ToString())).Query;
@@ -92,6 +87,11 @@ namespace MarklogicDataLayer.Repositories
                 var content = MarklogicContent.Xml($"{CityRegionConstants.Id}_{entity.Id}", serializedCityRegion, new[] { CityRegionConstants.CollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
+        }
+
+        public override IQueryable<CityRegion> GetFromCollection(string collectionName = CityRegionConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
         }
 
         private static CityRegion ExtractCityRegionInfo(XDocument xml)

@@ -113,6 +113,11 @@ namespace MarklogicDataLayer.Repositories
             }
         }
 
+        public override IQueryable<ICommand> GetFromCollection(string collectionName = CommandConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
+        }
+
         private static string GetElementValueFromXml(IEnumerable<XElement> elements, string elementName)
         {
             return elements.Where(x => x.Name.LocalName == elementName).First().Value;
@@ -137,11 +142,6 @@ namespace MarklogicDataLayer.Repositories
                 default:
                     throw new ArgumentException("Invalid status");
             }
-        }
-
-        public override IQueryable<ICommand> GetAll()
-        {
-            return GetAllFromCollection(CommandConstants.CollectionName);
         }
     }
 }

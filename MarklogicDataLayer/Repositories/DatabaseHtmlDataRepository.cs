@@ -63,6 +63,11 @@ namespace MarklogicDataLayer.Repositories
             }
         }
 
+        public override IQueryable<HtmlData> GetFromCollection(string collectionName = HtmlDataConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
+        }
+
         private static HtmlData ExtractHtmlDataInfo(XDocument xml)
         {
             var htmlDataId = xml.Descendants().Where(x => x.Name == HtmlDataConstants.HtmlDataId).First().Value;
@@ -98,11 +103,6 @@ namespace MarklogicDataLayer.Repositories
                 Content = htmlDataOfferContent,
                 Link = htmlDataLink,
             };
-        }
-
-        public override IQueryable<HtmlData> GetAll()
-        {
-            return GetAllFromCollection(HtmlDataConstants.CollectionName);
         }
     }
 }

@@ -95,7 +95,7 @@ namespace Tests
             };
             _sut.Insert(offer1);
             _sut.Insert(offer2);
-            var result = _sut.GetAll().ToList();
+            var result = _sut.GetFromCollection().ToList();
             var expected = new[] {
                 offer1,
                 offer2
@@ -125,7 +125,7 @@ namespace Tests
         };
             _sut.Insert(offer1);
             _sut.Delete(offer1);
-            var result = _sut.GetAll().ToList();
+            var result = _sut.GetFromCollection().ToList();
 
             Assert.AreEqual(0, result.Count);
         }

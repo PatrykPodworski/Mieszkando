@@ -63,6 +63,11 @@ namespace MarklogicDataLayer.Repositories
             }
         }
 
+        public override IQueryable<Link> GetFromCollection(string collectionName = LinkConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
+        }
+
         private static Link ExtractLinkInfo(XDocument xml)
         {
             var linkId = xml.Descendants().Where(x => x.Name == LinkConstants.LinkId).First().Value;
@@ -96,11 +101,6 @@ namespace MarklogicDataLayer.Repositories
                 LastUpdate = linkLastUpdate,
                 Status = linkStatus,
             };
-        }
-
-        public override IQueryable<Link> GetAll()
-        {
-            return GetAllFromCollection(LinkConstants.CollectionName);
         }
     }
 }

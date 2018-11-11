@@ -64,6 +64,11 @@ namespace MarklogicDataLayer.Repositories
             }
         }
 
+        public override IQueryable<Offer> GetFromCollection(string collectionName = OfferConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
+        }
+
         private static Offer ExtractOfferInfo(XDocument xml)
         {
             var offerId = xml.Descendants().First(x => x.Name == OfferConstants.OfferId).Value;
@@ -113,11 +118,6 @@ namespace MarklogicDataLayer.Repositories
                 TotalCost = offerTotalCost,
                 RegionId = offerRegionId,
             };
-        }
-
-        public override IQueryable<Offer> GetAll()
-        {
-            return GetAllFromCollection(OfferConstants.CollectionName);
         }
     }
 }

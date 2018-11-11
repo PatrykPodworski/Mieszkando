@@ -1,4 +1,5 @@
-﻿using MarklogicDataLayer.DatabaseConnectors;
+﻿using MarklogicDataLayer.Constants;
+using MarklogicDataLayer.DatabaseConnectors;
 using MarklogicDataLayer.Repositories;
 using MarklogicDataLayer.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -64,7 +65,7 @@ namespace Tests
             };
             _sut.Insert(region1);
             _sut.Delete(region1);
-            var result = _sut.GetAll().ToList();
+            var result = _sut.GetFromCollection().ToList();
 
             Assert.AreEqual(0, result.Count);
         }
