@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MarklogicDataLayer.XQuery;
 
 namespace MarklogicDataLayer.Repositories
 {
@@ -163,6 +164,11 @@ namespace MarklogicDataLayer.Repositories
         }
 
         public IQueryable<Link> GetFromCollection(string collectionName, long startFrom)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Link> GetWithExpression(Expression expression, long numberOfElements, long startFrom)
         {
             throw new NotImplementedException();
         }

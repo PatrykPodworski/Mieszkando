@@ -1,3 +1,4 @@
+using MarklogicDataLayer.XQuery;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,8 @@ namespace MarklogicDataLayer.Repositories
         IQueryable<T> Get(string elementName, string elementValue, string collectionName, long numberOfElements, long startFrom);
 
         IQueryable<T> GetFromCollection(string collectionName, long startFrom);
+
+        IQueryable<T> GetWithExpression(Expression expression, long numberOfElements, long startFrom);
 
         T GetById(int id);
 

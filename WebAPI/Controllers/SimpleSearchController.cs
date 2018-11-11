@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
+using MarklogicDataLayer.SearchQuery.SearchModels;
+using MarklogicDataLayer.SearchQuery.Providers;
 
 namespace WebAPI.Controllers
 {
@@ -19,9 +21,22 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Offer> Get()
+        public IEnumerable<Offer> Get(string totalCost, string costComparisonOperator, string totalArea, string areaComparisonOperator)
         {
-            return new List<Offer>();
+            var costSearches = new List<CostSearchModel>
+            {
+                //new CostSearchModel(totalCost, costComparisonOperator),
+            };
+            var areaSearches = new List<AreaSearchModel>
+            {
+                //new AreaSearchModel(totalArea, areaComparisonOperator),
+            };
+            var searchModel = new OfferSearchModel(costSearches, areaSearches);
+
+            var queryProvider = new OfferSearchQueryProvider(searchModel);
+            var query = queryProvider.GetSearchExpression();
+
+            return _repository.GetWithExpression(query, 1000, 1);
         }
     }
 }

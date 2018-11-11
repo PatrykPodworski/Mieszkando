@@ -15,12 +15,12 @@ namespace Tests
         [TestMethod]
         public void GetSearchQuery_returns_proper_query_for_simple_model()
         {
-            var searchModel = new OfferSearchModel(new List<(string TotalCost, string ComparisonOperator)>
+            var searchModel = new OfferSearchModel(new List<CostSearchModel>
             {
-                ("1000", ComparisonOperators.Equal),
-            }, new List<(string Area, string ComparisonOperator)>
+                new CostSearchModel("1000", ComparisonOperators.Equal),
+            }, new List<AreaSearchModel>
             {
-                ("43", ComparisonOperators.Equal),
+                new AreaSearchModel("43", ComparisonOperators.Equal),
             });
             var sut = new OfferSearchQueryProvider(searchModel);
 
@@ -28,7 +28,7 @@ namespace Tests
                         new CtsElementRangeQuery(OfferConstants.TotalCost, ComparisonOperators.Equal, "1000"),
                         new CtsElementRangeQuery(OfferConstants.Area, ComparisonOperators.Equal, "43"),
                         new CtsCollectionQuery(OfferConstants.CollectionName)).Query;
-            var actual = sut.GetSearchQuery();
+            var actual = sut.GetSearchExpression().Query;
 
             Assert.AreEqual(expected, actual);
         }
@@ -36,14 +36,14 @@ namespace Tests
         [TestMethod]
         public void GetSearchQuery_returns_proper_query_for_complex_model()
         {
-            var searchModel = new OfferSearchModel(new List<(string TotalCost, string ComparisonOperator)>
+            var searchModel = new OfferSearchModel(new List<CostSearchModel>
             {
-                ("1000", ComparisonOperators.GreaterThan),
-                ("1500", ComparisonOperators.LesserOrEqual),
-            }, new List<(string Area, string ComparisonOperator)>
+                new CostSearchModel("1000", ComparisonOperators.GreaterThan),
+                new CostSearchModel("1500", ComparisonOperators.LesserOrEqual),
+            }, new List<AreaSearchModel>
             {
-                ("31", ComparisonOperators.GreaterThan),
-                ("42", ComparisonOperators.LesserThan),
+                new AreaSearchModel("31", ComparisonOperators.GreaterThan),
+                new AreaSearchModel("42", ComparisonOperators.LesserThan),
             });
             var sut = new OfferSearchQueryProvider(searchModel);
 
@@ -53,7 +53,7 @@ namespace Tests
                         new CtsElementRangeQuery(OfferConstants.Area, ComparisonOperators.GreaterThan, "31"),
                         new CtsElementRangeQuery(OfferConstants.Area, ComparisonOperators.LesserThan, "42"),
                         new CtsCollectionQuery(OfferConstants.CollectionName)).Query;
-            var actual = sut.GetSearchQuery();
+            var actual = sut.GetSearchExpression().Query;
 
             Assert.AreEqual(expected, actual);
         }

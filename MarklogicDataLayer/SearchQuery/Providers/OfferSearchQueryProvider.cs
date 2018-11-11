@@ -1,5 +1,6 @@
 ﻿using MarklogicDataLayer.Constants;
 using MarklogicDataLayer.SearchQuery.SearchModels;
+using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace MarklogicDataLayer.SearchQuery.Providers
             _searchModel = searchModel;
         }
 
-        public string GetSearchQuery()
+        public Expression GetSearchExpression()
         {
             var subQueries = new List<Function>();
 
@@ -25,14 +26,14 @@ namespace MarklogicDataLayer.SearchQuery.Providers
 
             foreach (var areaSearch in _searchModel.AreaSearch)
             {
-                subQueries.Add(new CtsElementRangeQuery(OfferConstants.Area, areaSearch.ComparisonOperator, areaSearch.Area));
+                subQueries.Add(new CtsElementRangeQuery(OfferConstants.Area, areaSearch.ComparisonOperator, areaSearch.TotalArea));
             }
 
             subQueries.Add(new CtsCollectionQuery(OfferConstants.CollectionName));
 
             var result = new CtsAndQuery(subQueries);
 
-            return result.Query;
+            return result;
         }
     }
 }
