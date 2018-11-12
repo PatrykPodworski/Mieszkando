@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
@@ -20,20 +17,11 @@ namespace WebAPI.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public IEnumerable<Offer> Get(string totalCost, string costComparisonOperator, string totalArea, string areaComparisonOperator)
+        [HttpGet()]
+        public IEnumerable<Offer> Get(string maxCost, string noOfRooms)
         {
-            var costSearches = new List<CostSearchModel>
-            {
-                //new CostSearchModel(totalCost, costComparisonOperator),
-            };
-            var areaSearches = new List<AreaSearchModel>
-            {
-                //new AreaSearchModel(totalArea, areaComparisonOperator),
-            };
-            var searchModel = new OfferSearchModel(costSearches, areaSearches);
-
-            var queryProvider = new OfferSearchQueryProvider(searchModel);
+            var searchModel = new SimpleSearchModel(maxCost, noOfRooms);
+            var queryProvider = new SimpleSearchQueryProvider(searchModel);
             var query = queryProvider.GetSearchExpression();
 
             return _repository.GetWithExpression(query, 1000, 1);
