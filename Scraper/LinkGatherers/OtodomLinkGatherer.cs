@@ -55,7 +55,7 @@ namespace OfferScraper.LinkGatherers
                     var offerDateTime = new DateTime();
                     if (!DateTime.TryParse(offerDateText, new CultureInfo("pl-PL"), DateTimeStyles.None, out offerDateTime))
                     {
-                        offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays) * -1);
+                        offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays, CultureInfo.InvariantCulture) * -1);
                     }
 
                     if (dateOfLastScrapping != null && dateOfLastScrapping > offerDateTime)
@@ -96,7 +96,7 @@ namespace OfferScraper.LinkGatherers
             return int.Parse(page.Descendants().Where(x =>
                     x.GetAttributeValue("class", "").Contains(PageNumberBlockClassName))
                 .SelectMany(x => x.ChildNodes.Where(y => y.Name == "strong")).Last()
-                .InnerText);
+                .InnerText, CultureInfo.InvariantCulture);
         }
     }
 }

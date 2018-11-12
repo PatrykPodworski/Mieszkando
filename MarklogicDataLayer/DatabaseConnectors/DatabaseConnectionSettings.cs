@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Globalization;
 
 namespace MarklogicDataLayer.DatabaseConnectors
 {
@@ -72,7 +73,7 @@ namespace MarklogicDataLayer.DatabaseConnectors
                 throw new InvalidOperationException("Invalid config value");
 
             _host = parts[0];
-            _port = int.Parse(parts[1]);
+            _port = int.Parse(parts[1], CultureInfo.InvariantCulture);
             _userName = parts[2];
             _password = parts[3];
         }
