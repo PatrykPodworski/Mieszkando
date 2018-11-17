@@ -4,6 +4,7 @@ using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -63,12 +64,17 @@ namespace MarklogicDataLayer.Repositories
             }
         }
 
+        public override IQueryable<Link> GetFromCollection(string collectionName = LinkConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
+        }
+
         private static Link ExtractLinkInfo(XDocument xml)
         {
             var linkId = xml.Descendants().Where(x => x.Name == LinkConstants.LinkId).First().Value;
             var linkUri = xml.Descendants().Where(x => x.Name == LinkConstants.LinkUri).First().Value;
             var linkKind = xml.Descendants().Where(x => x.Name == LinkConstants.LinkKind).First().Value == OfferTypeConstants.Olx ? OfferType.Olx : OfferType.OtoDom;
-            var linkLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == LinkConstants.LastUpdate).First().Value);
+            var linkLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == LinkConstants.LastUpdate).First().Value, CultureInfo.InvariantCulture);
             var linkStatus = Status.New;
             switch (xml.Descendants().Where(x => x.Name == LinkConstants.Status).First().Value)
             {
@@ -96,11 +102,6 @@ namespace MarklogicDataLayer.Repositories
                 LastUpdate = linkLastUpdate,
                 Status = linkStatus,
             };
-        }
-
-        public override IQueryable<Link> GetAll()
-        {
-            return GetAllFromCollection(LinkConstants.CollectionName);
         }
     }
 }

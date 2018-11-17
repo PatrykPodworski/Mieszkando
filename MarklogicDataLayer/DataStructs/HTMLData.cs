@@ -22,8 +22,8 @@ namespace MarklogicDataLayer.DataStructs
         [XmlElement(HtmlDataConstants.LastUpdate)]
         public DateTime LastUpdate { get; set; }
 
-        [XmlElement(HtmlDataConstants.LinkId)]
-        public string LinkId { get; set; }
+        [XmlElement(HtmlDataConstants.Link)]
+        public string Link { get; set; }
 
         public HtmlData()
         {

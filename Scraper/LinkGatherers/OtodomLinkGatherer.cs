@@ -4,6 +4,7 @@ using MarklogicDataLayer.Repositories;
 using OfferScraper.Utilities.Browsers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -52,9 +53,9 @@ namespace OfferScraper.LinkGatherers
                     var offerDateText = offerPage.Descendants().First(x => x.Name == "p" && x.InnerText.Contains("Data dodania")).InnerText.Split(':').Last();
                     var numberOfDays = Regex.Match(offerDateText, "\\d+").Value;
                     var offerDateTime = new DateTime();
-                    if (!DateTime.TryParse(offerDateText, out offerDateTime))
+                    if (!DateTime.TryParse(offerDateText, new CultureInfo("pl-PL"), DateTimeStyles.None, out offerDateTime))
                     {
-                        offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays) * -1);
+                        offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays, CultureInfo.InvariantCulture) * -1);
                     }
 
                     if (dateOfLastScrapping != null && dateOfLastScrapping > offerDateTime)
@@ -95,7 +96,7 @@ namespace OfferScraper.LinkGatherers
             return int.Parse(page.Descendants().Where(x =>
                     x.GetAttributeValue("class", "").Contains(PageNumberBlockClassName))
                 .SelectMany(x => x.ChildNodes.Where(y => y.Name == "strong")).Last()
-                .InnerText);
+                .InnerText, CultureInfo.InvariantCulture);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace Tests
                 Status = MarklogicDataLayer.DataStructs.Status.New
             };
             _sut.Insert(new[] { link1, link2 });
-            var result = _sut.GetAll().ToList();
+            var result = _sut.GetFromCollection().ToList();
             var expected = new[] {
                 link1,
                 link2
@@ -118,7 +118,7 @@ namespace Tests
             };
             _sut.Insert(link);
             _sut.Delete(link);
-            var result = _sut.GetAll().ToList();
+            var result = _sut.GetFromCollection().ToList();
 
             Assert.AreEqual(0, result.Count);
         }

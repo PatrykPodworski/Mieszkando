@@ -4,6 +4,7 @@ using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -63,13 +64,18 @@ namespace MarklogicDataLayer.Repositories
             }
         }
 
+        public override IQueryable<HtmlData> GetFromCollection(string collectionName = HtmlDataConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
+        }
+
         private static HtmlData ExtractHtmlDataInfo(XDocument xml)
         {
             var htmlDataId = xml.Descendants().Where(x => x.Name == HtmlDataConstants.HtmlDataId).First().Value;
             var htmlDataOfferContent = xml.Descendants().Where(x => x.Name == HtmlDataConstants.OfferContent).First().Value;
             var htmlDataOfferType = xml.Descendants().Where(x => x.Name == HtmlDataConstants.OfferType).First().Value == OfferTypeConstants.Olx ? OfferType.Olx : OfferType.OtoDom;
-            var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == HtmlDataConstants.LastUpdate).First().Value);
-            var htmlDataLinkId = xml.Descendants().Where(x => x.Name == HtmlDataConstants.LinkId).First().Value;
+            var htmlDataLastUpdate = DateTime.Parse(xml.Descendants().Where(x => x.Name == HtmlDataConstants.LastUpdate).First().Value, CultureInfo.InvariantCulture);
+            var htmlDataLink = xml.Descendants().Where(x => x.Name == HtmlDataConstants.Link).First().Value;
             var htmlDataStatus = Status.New;
             switch (xml.Descendants().Where(x => x.Name == HtmlDataConstants.Status).First().Value)
             {
@@ -96,13 +102,8 @@ namespace MarklogicDataLayer.Repositories
                 LastUpdate = htmlDataLastUpdate,
                 OfferType = htmlDataOfferType,
                 Content = htmlDataOfferContent,
-                LinkId = htmlDataLinkId,
+                Link = htmlDataLink,
             };
-        }
-
-        public override IQueryable<HtmlData> GetAll()
-        {
-            return GetAllFromCollection(HtmlDataConstants.CollectionName);
         }
     }
 }

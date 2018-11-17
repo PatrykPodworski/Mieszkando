@@ -3,6 +3,7 @@ using HtmlAgilityPack;
 using MarklogicDataLayer.DataStructs;
 using ScrapySharp.Extensions;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -75,16 +76,16 @@ namespace OfferScraper.DataProcessors
 
             var numberOfDays = Regex.Match(dateOfPostingText, "\\d+").Value;
             var offerDateTime = new DateTime();
-            if (!DateTime.TryParse(dateOfPostingText, out offerDateTime))
+            if (!DateTime.TryParse(dateOfPostingText, new CultureInfo("pl-PL"), DateTimeStyles.None, out offerDateTime))
             {
-                offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays) * -1);
+                offerDateTime = DateTime.Now.AddDays(int.Parse(numberOfDays, CultureInfo.InvariantCulture) * -1);
             }
 
-            var dateOfPosting = offerDateTime
-                .ToShortDateString();
+            var dateFormat = "dd.MM.yyyy";
 
-            var dateOfScraping = DateTime.Now
-                .ToShortDateString();
+            var dateOfPosting = offerDateTime.ToString(dateFormat);
+
+            var dateOfScraping = DateTime.Now.ToString(dateFormat);
 
             return new Offer
             {
@@ -99,7 +100,9 @@ namespace OfferScraper.DataProcessors
                 DateOfScraping = dateOfScraping,
                 Latitude = latitude,
                 Longitude = longitude,
-                LinkId = htmlData.LinkId,
+                Link = htmlData.Link,
+                TotalCost = (double.Parse(cost, System.Globalization.CultureInfo.InvariantCulture) + double.Parse(bonusCost, System.Globalization.CultureInfo.InvariantCulture)).ToString(),
+                OfferType = OfferType.OtoDom,
             };
         }
     }

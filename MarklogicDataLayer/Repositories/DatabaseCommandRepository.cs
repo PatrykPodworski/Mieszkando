@@ -7,6 +7,7 @@ using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -76,7 +77,7 @@ namespace MarklogicDataLayer.Repositories
             switch (xml.Root.Name.LocalName)
             {
                 case CommandConstants.ExtractDataCommand:
-                    var numberOfSamples = int.Parse(GetElementValueFromXml(elements, CommandConstants.NumberOfSamples));
+                    var numberOfSamples = int.Parse(GetElementValueFromXml(elements, CommandConstants.NumberOfSamples), CultureInfo.InvariantCulture);
                     return new ExtractDataCommand()
                     {
                         Id = id,
@@ -87,7 +88,7 @@ namespace MarklogicDataLayer.Repositories
                     };
 
                 case CommandConstants.GatherDataCommand:
-                    var numberOfLinks = int.Parse(GetElementValueFromXml(elements, CommandConstants.NumberOfLinks));
+                    var numberOfLinks = int.Parse(GetElementValueFromXml(elements, CommandConstants.NumberOfLinks), CultureInfo.InvariantCulture);
                     return new GatherDataCommand()
                     {
                         Id = id,
@@ -111,6 +112,11 @@ namespace MarklogicDataLayer.Repositories
                 default:
                     throw new ArgumentException("Could not resolve for this document.");
             }
+        }
+
+        public override IQueryable<ICommand> GetFromCollection(string collectionName = CommandConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
         }
 
         private static string GetElementValueFromXml(IEnumerable<XElement> elements, string elementName)
@@ -137,11 +143,6 @@ namespace MarklogicDataLayer.Repositories
                 default:
                     throw new ArgumentException("Invalid status");
             }
-        }
-
-        public override IQueryable<ICommand> GetAll()
-        {
-            return GetAllFromCollection(CommandConstants.CollectionName);
         }
     }
 }

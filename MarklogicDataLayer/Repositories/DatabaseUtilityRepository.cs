@@ -4,6 +4,7 @@ using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -20,11 +21,6 @@ namespace MarklogicDataLayer.Repositories
         }
 
         public override void Delete(MarklogicDataLayer.DataStructs.Utility entity)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override IQueryable<MarklogicDataLayer.DataStructs.Utility> GetAll()
         {
             throw new System.NotImplementedException();
         }
@@ -55,7 +51,7 @@ namespace MarklogicDataLayer.Repositories
 
                 var xml = XDocument.Parse(text);
                 var dateOfLastScraping = DateTime.Parse(
-                    xml.Descendants().First(x => x.Name == UtilityConstants.DateOfLastScraping).Value);
+                    xml.Descendants().First(x => x.Name == UtilityConstants.DateOfLastScraping).Value, CultureInfo.InvariantCulture);
                 var result = new MarklogicDataLayer.DataStructs.Utility()
                 {
                     DateOfLastScraping = dateOfLastScraping,

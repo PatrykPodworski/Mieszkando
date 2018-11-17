@@ -63,12 +63,14 @@ namespace OfferScraper.DataProcessors
                 .LastOrDefault()
                 .Trim();
 
+            var dateFormat = "dd.MM.yyyy";
+
             var dateOfPosting = data.CssSelect(".offer-titlebox__details em")
                 .First()
                 .InnerHtml
                 .Split(",")
                 .Second()
-                .ToShortDateString();
+                .ToString(dateFormat);
 
             var latitude = data.CssSelect("#mapcontainer")
                 .First()
@@ -79,7 +81,7 @@ namespace OfferScraper.DataProcessors
                 .GetAttributeValue("data-lon", "");
 
             var dateOfScraping = DateTime.Now
-                .ToShortDateString();
+                .ToString(dateFormat);
 
             return new Offer
             {
@@ -94,8 +96,9 @@ namespace OfferScraper.DataProcessors
                 DateOfScraping = dateOfScraping,
                 Latitude = latitude,
                 Longitude = longitude,
-                LinkId = htmlData.LinkId,
-                TotalCost = (double.Parse(cost) + double.Parse(bonusCost)).ToString(),
+                Link = htmlData.Link,
+                TotalCost = (double.Parse(cost, System.Globalization.CultureInfo.InvariantCulture) + double.Parse(bonusCost, System.Globalization.CultureInfo.InvariantCulture)).ToString(),
+                OfferType = OfferType.Olx
             };
         }
     }

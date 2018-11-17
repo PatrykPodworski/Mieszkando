@@ -1,3 +1,4 @@
+using MarklogicDataLayer.XQuery;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,8 +6,6 @@ namespace MarklogicDataLayer.Repositories
 {
     public interface IDataRepository<T> where T : class
     {
-        IQueryable<T> GetAll();
-
         void Insert(T entity);
 
         void Insert(T entity, ITransaction transaction);
@@ -31,7 +30,7 @@ namespace MarklogicDataLayer.Repositories
 
         IQueryable<T> GetFromCollection(string collectionName, long startFrom);
 
-        IQueryable<T> GetAllFromCollection(string collectionName);
+        IQueryable<T> GetWithExpression(Expression expression, long numberOfElements, long startFrom);
 
         T GetById(int id);
 

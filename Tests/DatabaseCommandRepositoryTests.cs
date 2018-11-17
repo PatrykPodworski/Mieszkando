@@ -11,6 +11,7 @@ using System.Linq;
 namespace Tests
 {
     [TestClass]
+    [TestCategory("Integration")]
     public class DatabaseCommandRepositoryTests
     {
         [TestInitialize]
@@ -61,7 +62,7 @@ namespace Tests
             _sut.Insert(input);
             command.SetStatus(Status.InProgress);
             _sut.Update(command);
-            var result = _sut.GetAll();
+            var result = _sut.GetFromCollection();
             Assert.IsTrue(result.Any(x => x.IsInProgress() && x.GetId() == id));
         }
 
@@ -71,7 +72,7 @@ namespace Tests
             var input = CommandFactory.Instance.Get(CommandType.ExtractData, 5);
             _sut.Insert(input);
             _sut.Delete(input);
-            var result = _sut.GetAllFromCollection(input.GetType().ToString().Split(".").Last()).ToList();
+            var result = _sut.GetFromCollection(input.GetType().ToString().Split(".").Last()).ToList();
             Assert.AreEqual(0, result.Count);
         }
 
@@ -85,7 +86,7 @@ namespace Tests
             };
             _sut.Insert(input);
             _sut.Delete(input[0]);
-            var result = _sut.GetAll().ToList();
+            var result = _sut.GetFromCollection().ToList();
             Assert.AreEqual(2, result.Count);
         }
     }

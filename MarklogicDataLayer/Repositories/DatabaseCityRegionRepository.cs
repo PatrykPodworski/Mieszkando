@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Net.Http;
 using MarklogicDataLayer.XQuery.Constants;
+using System.Globalization;
 
 namespace MarklogicDataLayer.Repositories
 {
@@ -23,11 +24,6 @@ namespace MarklogicDataLayer.Repositories
         {
             var query = new XdmpDocumentDelete(new MlUri($"{CityRegionConstants.Id}_{entity.Id}", MlUriDocumentType.Xml)).Query;
             RestConnector.Submit(query);
-        }
-
-        public override IQueryable<CityRegion> GetAll()
-        {
-            return GetAllFromCollection(CityRegionConstants.CollectionName);
         }
 
         public override CityRegion GetById(int id)
@@ -56,8 +52,8 @@ namespace MarklogicDataLayer.Repositories
         public CityRegion GetByCoordinates(string latitude, string longitude)
         {
             var coordinateJump = 0.01;
-            var latitudeCorrected = (double.Parse(latitude.Substring(0, 5)) - coordinateJump).ToString();
-            var longitudeCorrected = (double.Parse(longitude.Substring(0, 5)) - coordinateJump).ToString();
+            var latitudeCorrected = (double.Parse(latitude.Substring(0, 5)) - coordinateJump, CultureInfo.InvariantCulture).ToString();
+            var longitudeCorrected = (double.Parse(longitude.Substring(0, 5)) - coordinateJump, CultureInfo.InvariantCulture).ToString();
 
             var query = new CtsSearch("/", new CtsAndQuery(
                 new CtsElementRangeQuery(CityRegionConstants.Latitude, ComparisonOperators.LesserOrEqual, latitude),
@@ -92,6 +88,11 @@ namespace MarklogicDataLayer.Repositories
                 var content = MarklogicContent.Xml($"{CityRegionConstants.Id}_{entity.Id}", serializedCityRegion, new[] { CityRegionConstants.CollectionName });
                 RestConnector.Insert(content, transaction.GetScope());
             }
+        }
+
+        public override IQueryable<CityRegion> GetFromCollection(string collectionName = CityRegionConstants.CollectionName, long startFrom = 1)
+        {
+            return base.GetFromCollection(collectionName, startFrom);
         }
 
         private static CityRegion ExtractCityRegionInfo(XDocument xml)
