@@ -10,19 +10,52 @@ import styles from './styles'
 import Link from './../link/link'
 
 class SimpleSearch extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            maxPrice: props.startPrice,
+            numberOfRooms: props.startNumberOfRooms
+        }
+
+        this.handleClick = this.handleClick.bind(this);
+        this.handleMaxPriceChange = this.handleMaxPriceChange.bind(this);
+        this.handleNumberOfRoomsChange = this.handleNumberOfRoomsChange.bind(this);
+    }
+
+    handleClick() {
+        console.log(this.state);
+    }
+
+    handleMaxPriceChange(maxPrice){
+        this.setState({maxPrice: maxPrice});
+    }
+
+    handleNumberOfRoomsChange(numberOfRooms){
+        this.setState({numberOfRooms:numberOfRooms});
+    }
+
     render(){
         const {classes} = this.props;
         return (
             <Paper className="simpleSearch" elevation={1}>
                 <div className="input-field slider">
                     <FormLabel>Cena</FormLabel>
-                    <SingleSlider start={800} min={500} max={2000}/>
+                    <SingleSlider 
+                        start={this.props.startPrice} 
+                        min={500} 
+                        max={2000} 
+                        onPriceChange={this.handleMaxPriceChange}/>
                 </div>
                 <div className="input-field">
-                    <Dropdown label={'Liczba pokoi'} value={2} options={[1,2,3,4,5]}/>
+                    <Dropdown 
+                        label={'Liczba pokoi'} 
+                        value={this.props.startNumberOfRooms} 
+                        options={[1,2,3,4,5,6,7,8,9]}
+                        onNumberOfRoomsChange={this.handleNumberOfRoomsChange}/>
                 </div>
                 <div className="input-field">
-                <Button variant="contained" color="primary" className={classes.button}>
+                <Button variant="contained" color="primary" className={classes.button} onClick={this.handleClick}>
                     Szukaj
                 </Button>
                 <Link to='/advanced'>
