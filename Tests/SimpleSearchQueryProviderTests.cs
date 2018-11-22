@@ -17,7 +17,7 @@ namespace Tests
 
             var sut = new SimpleSearchQueryProvider(searchModel);
             var expected = new CtsAndQuery(
-                new CtsElementRangeQuery(OfferConstants.TotalCost, "<=", searchModel.MaxCost), 
+                new CtsElementRangeQuery(OfferConstants.TotalCost, "'<='", searchModel.MaxCost), 
                 new CtsElementValueQuery(OfferConstants.Rooms, searchModel.NoOfRooms), 
                 new CtsCollectionQuery(OfferConstants.CollectionName)).Query;
 
