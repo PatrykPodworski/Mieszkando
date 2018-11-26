@@ -100,11 +100,7 @@ namespace OfferScraper.CommandHandlers
                 using (var transaction = _offerRepository.GetTransaction())
                 {
                     _offerRepository.Insert(offer, transaction);
-                    _logger.Log(LogType.Info, $"Inserted new {offer.GetClassName()} to database");
-
-                    htmlData.Status = Status.Success;
-                    _htmlDataRepository.Update(htmlData, transaction);
-                    _logger.Log(LogType.Info, $"Updated {htmlData.GetClassName()} with Id: {htmlData.Id}");
+                    _logger.Log(LogType.Info, $"Inserted new {offer.GetClassName()} to database");  
                 }
             }
             catch (Exception e)
