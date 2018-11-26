@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles, Icon } from '@material-ui/core';
 import styles from './styles'
 import Link from './../link/link'
+import HttpService from './../services/httpService'
 
 class SimpleSearch extends Component {
     constructor(props) {
@@ -18,6 +19,8 @@ class SimpleSearch extends Component {
             numberOfRooms: props.startNumberOfRooms
         }
 
+        this.HttpService = new HttpService();
+
         this.handleClick = this.handleClick.bind(this);
         this.handleMaxPriceChange = this.handleMaxPriceChange.bind(this);
         this.handleNumberOfRoomsChange = this.handleNumberOfRoomsChange.bind(this);
@@ -25,6 +28,7 @@ class SimpleSearch extends Component {
 
     handleClick() {
         console.log(this.state);
+        this.HttpService.getSerchResults(this.state.maxPrice, this.state.numberOfRooms);
     }
 
     handleMaxPriceChange(maxPrice){
