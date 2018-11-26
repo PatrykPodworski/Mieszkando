@@ -2,7 +2,6 @@
 using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace WebAPI.Controllers
 {
@@ -17,11 +16,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<CityRegion> Get()
+        public IActionResult Get()
         {
             var cityRegions = _repository.GetFromCollection(CityRegionConstants.CollectionName, 1);
 
-            return cityRegions;
+            return Ok(cityRegions);
         }
     }
 }

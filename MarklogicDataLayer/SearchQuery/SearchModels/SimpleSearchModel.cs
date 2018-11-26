@@ -1,20 +1,13 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MarklogicDataLayer.SearchQuery.SearchModels
 {
     public class SimpleSearchModel
     {
+        [Required]
         public string MaxCost { get; set; }
-        public string NoOfRooms { get; set; }
 
-        public SimpleSearchModel(string maxCost, string noOfRooms)
-        {
-            if (string.IsNullOrEmpty(maxCost) || string.IsNullOrEmpty(noOfRooms))
-            {
-                throw new ArgumentException();
-            }
-            MaxCost = maxCost;
-            NoOfRooms = noOfRooms;
-        }
+        [Required]
+        public string NumberOfRooms { get; set; }
     }
 }

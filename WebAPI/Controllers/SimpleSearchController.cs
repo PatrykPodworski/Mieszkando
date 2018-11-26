@@ -1,30 +1,35 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using MarklogicDataLayer.DataStructs;
+﻿using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
-using MarklogicDataLayer.SearchQuery.SearchModels;
 using MarklogicDataLayer.SearchQuery.Providers;
+using MarklogicDataLayer.SearchQuery.SearchModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class SimpleSearchController : Controller
+    public class OffersController : Controller
     {
         private readonly IDataRepository<Offer> _repository;
 
-        public SimpleSearchController(IDataRepository<Offer> repository)
+        public OffersController(IDataRepository<Offer> repository)
         {
             _repository = repository;
         }
 
         [HttpGet()]
-        public IEnumerable<Offer> Get(string maxCost, string noOfRooms)
+        public IActionResult Get(SimpleSearchModel model)
         {
-            var searchModel = new SimpleSearchModel(maxCost, noOfRooms);
-            var queryProvider = new SimpleSearchQueryProvider(searchModel);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var queryProvider = new SimpleSearchQueryProvider(model);
             var query = queryProvider.GetSearchExpression();
 
-            return _repository.GetWithExpression(query, 1000, 1);
+            var result = _repository.GetWithExpression(query, 1000, 1);
+
+            return Ok(result);
         }
     }
 }
