@@ -20,6 +20,11 @@ namespace MarklogicDataLayer.XQuery.Functions
         {
         }
 
+        public CtsElementValueQuery(string elemName, double value, string[] options = null, double weight = 1.0, string ns = null)
+            : this(elemName, value.ToString(), options, weight, ns)
+        {
+        }
+
         public CtsElementValueQuery(string elemName, VariableName values, string[] options = null, double weight = 1.0, string ns = null)
             : this(elemName, options, weight, ns)
         {

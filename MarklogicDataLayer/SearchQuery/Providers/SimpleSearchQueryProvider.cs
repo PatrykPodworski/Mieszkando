@@ -19,8 +19,9 @@ namespace MarklogicDataLayer.SearchQuery.Providers
         {
             var subQueries = new List<Function>();
 
+            double.TryParse(_searchModel.NoOfRooms, out var rooms);
             subQueries.Add(new CtsElementRangeQuery(OfferConstants.TotalCost, "'<='", _searchModel.MaxCost));
-            subQueries.Add(new CtsElementValueQuery(OfferConstants.Rooms, _searchModel.NoOfRooms));
+            subQueries.Add(new CtsElementValueQuery(OfferConstants.Rooms, rooms));
             subQueries.Add(new CtsCollectionQuery(OfferConstants.CollectionName));
 
             var result = new CtsAndQuery(subQueries);
