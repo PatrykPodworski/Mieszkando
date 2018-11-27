@@ -12,15 +12,15 @@ namespace Tests.DataScrapers
     {
         private HtmlData _data;
         private string _expectedTitle;
-        private string _expectedCost;
-        private string _expectedRooms;
-        private string _expectedArea;
+        private double _expectedCost;
+        private int _expectedRooms;
+        private double _expectedArea;
         private string _expectedDistrict;
         private string _expectedId;
         private string _expectedDateOfPosting;
-        private object _expectedBonusCost;
-        private string _expectedLongitude;
-        private string _expectedLatitude;
+        private double _expectedBonusCost;
+        private double _expectedLongitude;
+        private double _expectedLatitude;
 
         [TestInitialize]
         public void Initialize()
@@ -35,14 +35,14 @@ namespace Tests.DataScrapers
 
             _expectedId = "54951004";
             _expectedTitle = "BEZ PROWIZJI 3-Pokojowe Mieszkanie Browar Gdański";
-            _expectedCost = "2540";
-            _expectedBonusCost = "277,53";
-            _expectedRooms = "3";
-            _expectedArea = "65,29";
+            _expectedCost = 2540;
+            _expectedBonusCost = 277.53;
+            _expectedRooms = 3;
+            _expectedArea = 65.29;
             _expectedDistrict = "Wrzeszcz";
             _expectedDateOfPosting = "20.07.2018";
-            _expectedLatitude = "54.37822";
-            _expectedLongitude = "18.59636";
+            _expectedLatitude = 54.37822;
+            _expectedLongitude = 18.59636;
         }
 
         [TestMethod]

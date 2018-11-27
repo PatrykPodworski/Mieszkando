@@ -4,7 +4,6 @@ using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.XQuery;
 using MarklogicDataLayer.XQuery.Functions;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -52,9 +51,7 @@ namespace MarklogicDataLayer.Repositories
         public override void Insert(Offer entity, ITransaction transaction)
         {
             entity.DateOfScraping = DateTime.Now.ToShortDateString();
-            entity.TotalCost = entity.TotalCost == null
-                ? (double.Parse(entity.Cost, CultureInfo.InvariantCulture) + double.Parse(entity.BonusCost, CultureInfo.InvariantCulture)).ToString()
-                : entity.TotalCost;
+            entity.TotalCost = entity.Cost + entity.BonusCost;
             using (var writer = new StringWriter())
             using (var xmlWriter = XmlWriter.Create(writer))
             {
@@ -75,16 +72,16 @@ namespace MarklogicDataLayer.Repositories
             var offerId = xml.Descendants().First(x => x.Name == OfferConstants.OfferId).Value;
             var offerTitle = xml.Descendants().First(x => x.Name == OfferConstants.Title).Value;
             var offerDistrict = xml.Descendants().First(x => x.Name == OfferConstants.District).Value;
-            var offerCost = xml.Descendants().First(x => x.Name == OfferConstants.Cost).Value;
-            var offerBonusCost = xml.Descendants().First(x => x.Name == OfferConstants.BonusCost).Value;
-            var offerRooms = xml.Descendants().First(x => x.Name == OfferConstants.Rooms).Value;
-            var offerArea = xml.Descendants().First(x => x.Name == OfferConstants.Area).Value;
+            double.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.Cost).Value, out var offerCost);
+            double.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.BonusCost).Value, out var offerBonusCost);
+            int.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.Rooms).Value, out var offerRooms);
+            double.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.Area).Value, out var offerArea);
             var offerDateOfPosting = xml.Descendants().First(x => x.Name == OfferConstants.DateOfPosting).Value;
             var offerDateOfScraping = xml.Descendants().First(x => x.Name == OfferConstants.DateOfScraping).Value;
-            var offerLatitude = xml.Descendants().First(x => x.Name == OfferConstants.Latitude).Value;
-            var offerLongitude = xml.Descendants().First(x => x.Name == OfferConstants.Longitude).Value;
+            double.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.Latitude).Value, out var offerLatitude);
+            double.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.Longitude).Value, out var offerLongitude);
             var offerLink = xml.Descendants().First(x => x.Name == OfferConstants.Link).Value;
-            var offerTotalCost = xml.Descendants().First(x => x.Name == OfferConstants.TotalCost).Value;
+            double.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.TotalCost).Value, out var offerTotalCost);
             var offerRegionId = xml.Descendants().FirstOrDefault(x => x.Name == OfferConstants.RegionId)?.Value;
             var offerType = OfferType.Olx;
             switch (xml.Descendants().First(x => x.Name == OfferConstants.OfferType).Value)

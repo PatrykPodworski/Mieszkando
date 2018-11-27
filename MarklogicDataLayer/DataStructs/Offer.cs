@@ -17,19 +17,19 @@ namespace MarklogicDataLayer.DataStructs
         public string District { get; set; }
 
         [XmlElement(OfferConstants.Cost)]
-        public string Cost { get; set; }
+        public double Cost { get; set; }
 
         [XmlElement(OfferConstants.BonusCost)]
-        public string BonusCost { get; set; }
+        public double BonusCost { get; set; }
 
         [XmlElement(OfferConstants.TotalCost)]
-        public string TotalCost { get; set; }
+        public double TotalCost { get; set; }
 
         [XmlElement(OfferConstants.Rooms)]
-        public string Rooms { get; set; }
+        public int Rooms { get; set; }
 
         [XmlElement(OfferConstants.Area)]
-        public string Area { get; set; }
+        public double Area { get; set; }
 
         [XmlElement(OfferConstants.DateOfPosting)]
         public string DateOfPosting { get; set; }
@@ -38,10 +38,10 @@ namespace MarklogicDataLayer.DataStructs
         public string DateOfScraping { get; set; }
 
         [XmlElement(OfferConstants.Latitude)]
-        public string Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [XmlElement(OfferConstants.Longitude)]
-        public string Longitude { get; set; }
+        public double Longitude { get; set; }
 
         [XmlElement(OfferConstants.Link)]
         public string Link { get; set; }
