@@ -33,7 +33,7 @@ class App extends Component {
             <Route exact path='/' component={() => <SimpleSearch startPrice={1100} startNumberOfRooms={2}/>} />
             <Route exact path='/simple' component={() => <SimpleSearch startPrice={800} startNumberOfRooms={2}/>} />
             <Route exact path='/advanced' component={AdvancedSearch}/>
-            <Route path='/searchResults' component={SearchResults}/>
+            <Route path='/searchResults/:maxCost/:numberOfRooms' component={SearchResults}/>
             <Route path='/reveseSearch' component={ReverseSearch}/>
             <Route path='/reveseSearchResults' component={ReverseSearchResults}/>
             <Route path='/login' component={Login}/>

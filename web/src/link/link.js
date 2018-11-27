@@ -7,7 +7,7 @@ class Link extends Component {
   render() {
       const { classes } = this.props;
     return (
-      <RouterLink to={this.props.to} className={classes.link}>
+      <RouterLink to={this.props.to} className={`${classes.link} ${this.props.className}`}>
         {this.props.children}
       </RouterLink>
     )

@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
-import { withRouter } from 'react-router-dom';
+import HttpService from './../services/httpService';
 
 class SearchResults extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      offers: this.props.location.state.offers,
+      maxCost: props.match.params.maxCost,
+      numberOfRooms: props.match.params.numberOfRooms,
+      offers: [],
     };
   }
+
+  async componentDidMount(){
+    const httpService = new HttpService();
+
+    const results = await httpService.getSerchResultsAsync(
+      this.state.maxCost, 
+      this.state.numberOfRooms
+    );
+
+    this.setState({offers: results});
+    console.log(this.state);
+  }
+
   render() {
     return (
       <Paper>
-        {this.state.offers}
+        <ul>
+          {this.state.offers.map((offer, i) => {
+            return (<li key={i}>{offer.title}</li>)
+          })}
+        </ul>
       </Paper>
     )
   }
