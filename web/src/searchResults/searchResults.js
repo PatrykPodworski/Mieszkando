@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import HttpService from './../services/httpService';
+import ResultMap from './../resultMap/resultMap'
+import ListOfOffers from './../listOfOffers/listOfOffers'
 
 class SearchResults extends Component {
   constructor(props) {
@@ -28,11 +30,8 @@ class SearchResults extends Component {
   render() {
     return (
       <Paper>
-        <ul>
-          {this.state.offers.map((offer, i) => {
-            return (<li key={i}>{offer.title}</li>)
-          })}
-        </ul>
+      <ResultMap/>
+      <ListOfOffers offers={this.state.offers}/>
       </Paper>
     )
   }
