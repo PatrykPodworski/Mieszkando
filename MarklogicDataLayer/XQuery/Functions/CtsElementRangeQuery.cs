@@ -25,7 +25,7 @@ namespace MarklogicDataLayer.XQuery.Functions
                     "cts:element-range-query",
                     new XsQName(_elementName).Query,
                     _operator,
-                    new Literal(_value).Query
+                    _value
                 );
             }
         }

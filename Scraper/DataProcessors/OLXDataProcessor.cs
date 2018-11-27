@@ -4,6 +4,7 @@ using MarklogicDataLayer.DataStructs;
 using OfferScraper.Utilities.DataProcessors;
 using ScrapySharp.Extensions;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace OfferScraper.DataProcessors
@@ -87,17 +88,17 @@ namespace OfferScraper.DataProcessors
             {
                 Id = id,
                 Title = title,
-                Cost = cost,
-                BonusCost = bonusCost,
-                Rooms = rooms,
-                Area = area,
+                Cost = double.Parse(cost.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture),
+                BonusCost = double.Parse(bonusCost.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture),
+                Rooms = int.Parse(rooms, NumberStyles.Any, CultureInfo.InvariantCulture),
+                Area = double.Parse(area.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture),
                 District = district,
                 DateOfPosting = dateOfPosting,
                 DateOfScraping = dateOfScraping,
-                Latitude = latitude,
-                Longitude = longitude,
+                Latitude = double.Parse(latitude.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture),
+                Longitude = double.Parse(longitude.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture),
                 Link = htmlData.Link,
-                TotalCost = (double.Parse(cost, System.Globalization.CultureInfo.InvariantCulture) + double.Parse(bonusCost, System.Globalization.CultureInfo.InvariantCulture)).ToString(),
+                TotalCost = (double.Parse(cost, NumberStyles.Any, CultureInfo.InvariantCulture) + double.Parse(bonusCost, NumberStyles.Any, CultureInfo.InvariantCulture)),
                 OfferType = OfferType.Olx
             };
         }

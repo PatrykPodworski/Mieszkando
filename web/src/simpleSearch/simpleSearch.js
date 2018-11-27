@@ -31,7 +31,7 @@ class SimpleSearch extends Component {
         const results = await this.HttpService.getSerchResultsAsync(this.state.maxCost, this.state.numberOfRooms);
         this.props.history.push({
             pathname: '/searchResults',
-            state: { offers: results }
+            state: { offers: JSON.stringify(results) }
         });
     }
 
