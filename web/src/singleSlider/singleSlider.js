@@ -5,6 +5,16 @@ import "./singleSlider.css";
 import wNumb from "wnumb";
 
 export default class SingleSlider extends Component {
+    constructor(props){
+        super(props);
+
+        this.handleUpdate = this.handleUpdate.bind(this);
+    }
+
+    handleUpdate(value){
+        this.props.onPriceChange(parseInt(value[0].split(' ')[0]));
+    }
+
     render(){
         return (
             <Nouislider 
@@ -17,6 +27,7 @@ export default class SingleSlider extends Component {
                 decimals: 0,
                 suffix: ' zł'
             })}
+            onUpdate = {this.handleUpdate}
             />
         );
     }

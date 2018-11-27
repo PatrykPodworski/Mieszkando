@@ -30,8 +30,8 @@ class App extends Component {
           <Navbar isLoggedIn={this.state.isLoggedIn}/>
           <div className='content'>
             <Logo show={!this.state.isLoggedIn} size={72} className='logo'/>
-            <Route exact path='/' component={SimpleSearch}/>
-            <Route exact path='/simple' component={SimpleSearch}/>
+            <Route exact path='/' component={() => <SimpleSearch startPrice={1100} startNumberOfRooms={2}/>} />
+            <Route exact path='/simple' component={() => <SimpleSearch startPrice={800} startNumberOfRooms={2}/>} />
             <Route exact path='/advanced' component={AdvancedSearch}/>
             <Route path='/searchResults' component={SearchResults}/>
             <Route path='/reveseSearch' component={ReverseSearch}/>
