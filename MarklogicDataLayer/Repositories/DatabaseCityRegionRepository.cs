@@ -49,17 +49,17 @@ namespace MarklogicDataLayer.Repositories
             return null;
         }
 
-        public CityRegion GetByCoordinates(string latitude, string longitude)
+        public CityRegion GetByCoordinates(double latitude, double longitude)
         {
             var coordinateJump = 0.01;
-            var latitudeCorrected = (double.Parse(latitude.Substring(0, 5)) - coordinateJump, CultureInfo.InvariantCulture).ToString();
-            var longitudeCorrected = (double.Parse(longitude.Substring(0, 5)) - coordinateJump, CultureInfo.InvariantCulture).ToString();
+            var latitudeCorrected = latitude - coordinateJump;
+            var longitudeCorrected = longitude - coordinateJump;
 
             var query = new CtsSearch("/", new CtsAndQuery(
-                new CtsElementRangeQuery(CityRegionConstants.Latitude, ComparisonOperators.LesserOrEqual, latitude),
-                new CtsElementRangeQuery(CityRegionConstants.Longitude, ComparisonOperators.LesserOrEqual, longitude),
-                new CtsElementRangeQuery(CityRegionConstants.Latitude, ComparisonOperators.GreaterThan, latitudeCorrected),
-                new CtsElementRangeQuery(CityRegionConstants.Longitude, ComparisonOperators.GreaterThan, longitudeCorrected),
+                new CtsElementRangeQuery(CityRegionConstants.Latitude, ComparisonOperators.LesserOrEqual, latitude.ToString()),
+                new CtsElementRangeQuery(CityRegionConstants.Longitude, ComparisonOperators.LesserOrEqual, longitude.ToString()),
+                new CtsElementRangeQuery(CityRegionConstants.Latitude, ComparisonOperators.GreaterThan, latitudeCorrected.ToString()),
+                new CtsElementRangeQuery(CityRegionConstants.Longitude, ComparisonOperators.GreaterThan, longitudeCorrected.ToString()),
                 new CtsCollectionQuery(CityRegionConstants.CollectionName)
                 )).Query;
             var response = RestConnector.Submit(query);
