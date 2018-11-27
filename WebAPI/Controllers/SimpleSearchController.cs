@@ -3,6 +3,8 @@ using MarklogicDataLayer.Repositories;
 using MarklogicDataLayer.SearchQuery.Providers;
 using MarklogicDataLayer.SearchQuery.SearchModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using WebAPI.Utils;
 
 namespace WebAPI.Controllers
 {
@@ -29,7 +31,11 @@ namespace WebAPI.Controllers
 
             var result = _repository.GetWithExpression(query, 1000, 1);
 
-            return Ok(result);
+            var offerModels = result
+                .Select(x => x.MapToOfferModel())
+                .ToList();
+
+            return Ok(offerModels);
         }
     }
 }
