@@ -1,18 +1,20 @@
 export default class HttpService{
     constructor(){
-        this.baseUrl = "http://vps561493.ovh.net:8008/api";
+        this.baseUrl = "http://localhost:62003/api";
         this.methods = {
             "offers" : "/offers"
         }
     }
 
-    getSerchResults(maxPrice, numberOfRooms) {
-        var url = this.getUrl("offers");
-        url = this.addParameter(url, "maxPrice", maxPrice);
+    async getSerchResultsAsync(maxCost, numberOfRooms) {
+        let url = this.getUrl("offers");
+        url = this.addParameter(url, "maxCost", maxCost);
         url = this.addParameter(url, "numberOfRooms", numberOfRooms);
 
-        console.log(url);
+        const response = await fetch(url);
+        const offers = await response.json();
 
+        return offers;
     }
 
     getUrl(method) {

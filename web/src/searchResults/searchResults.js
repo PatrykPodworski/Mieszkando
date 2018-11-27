@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
+import { withRouter } from 'react-router-dom';
 
-export default class SearchResults extends Component {
+class SearchResults extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      offers: this.props.location.state.offers,
+    };
+  }
   render() {
     return (
       <Paper>
-        Search results screen
+        {this.state.offers}
       </Paper>
     )
   }
 }
+
+export default SearchResults; 
