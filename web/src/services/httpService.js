@@ -1,6 +1,6 @@
 export default class HttpService{
     constructor(){
-        this.baseUrl = "http://localhost:62003/api";
+        this.baseUrl = "http://vps561493.ovh.net:8008/api";
         this.methods = {
             "offers" : "/offers"
         }
