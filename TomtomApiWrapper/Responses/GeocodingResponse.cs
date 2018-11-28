@@ -2,9 +2,9 @@
 
 namespace TomtomApiWrapper.Responses
 {
-    public class ReverseGeocodingResponse
+    public class GeocodingResponse
     {
         public Summary Summary { get; set; }
-        public List<AddressResponse> Addresses { get; set; }
+        public List<PositionResponse> Results { get; set; }
     }
 }
