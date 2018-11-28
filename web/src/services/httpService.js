@@ -31,10 +31,3 @@ export default class HttpService{
         return `${url}${name}=${value}`
     }
 }
-
-class HttpParameter{
-    constructor(name, value){
-        this.name = name;
-        this.value = value;
-    }
-}

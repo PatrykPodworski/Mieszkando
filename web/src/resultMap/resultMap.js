@@ -1,11 +1,47 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import config from './../config';
+import './../../node_modules/leaflet.heat/dist/leaflet-heat';
 
 export default class resultMap extends Component {
   render() {
+    if(this.loaded){
+      this.refreshMap();
+    }
     return (
-      <div>
-        Result map
-      </div>
+      <div id = 'map' className={this.props.className}></div>
     )
+  }
+
+  componentDidMount() {
+    this.loaded = true;
+    this.loadMap();
+  }
+
+  loadMap() {
+    const apiKey = config.tomtomApiKey;
+    this.map = window.tomtom.map('map', {
+        key: apiKey,
+        basePath: 'https://api.tomtom.com/maps-sdk-js/4.43.11/examples/sdk',
+        center: [54.3553994, 18.6422703],
+        zoom: 11
+    });
+  }
+
+  refreshMap(){
+    //this.getOffersCoordinates().map(x => this.addMarker(x[0], x[1]));
+    console.log(window.tomtom.L);
+    window.L.heatLayer(this.getOffersCoordinates(), {minOpacity: 0.4, radius: 40, blur: 60}).addTo(this.map);
+  }
+
+  addMarker(latitude, longitude){
+    window.tomtom.L.marker([latitude, longitude]).addTo(this.map);
+  }
+
+  getOffersCoordinates() {
+    return this.props.offers.map(x => this.getOfferCoordinates(x));
+  }
+
+  getOfferCoordinates(offer) {
+    return [offer.latitude, offer.longitude];
   }
 }
