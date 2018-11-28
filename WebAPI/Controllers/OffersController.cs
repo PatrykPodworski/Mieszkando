@@ -13,12 +13,10 @@ namespace WebAPI.Controllers
     public class OffersController : Controller
     {
         private readonly IDataRepository<Offer> _repository;
-        private ITomtomApi _tomtomApi;
 
-        public OffersController(IDataRepository<Offer> repository, ITomtomApi tomtomApi)
+        public OffersController(IDataRepository<Offer> repository)
         {
             _repository = repository;
-            _tomtomApi = tomtomApi;
         }
 
         [HttpGet()]

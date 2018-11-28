@@ -14,7 +14,7 @@
             get
             {
                 return FunctionToQuery(
-                    "xs:Double",
+                    "xs:double",
                     _value);
             }
         }

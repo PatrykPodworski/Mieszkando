@@ -24,7 +24,6 @@ namespace WebAPI
         {
             services.AddMvc();
             services.AddCors();
-            services.AddSingleton<ITomtomApi, TomtomApi>();
             services.AddSingleton<IDataRepository<CityRegion>, DatabaseCityRegionRepository>();
             services.AddSingleton<IDataRepository<Offer>, DatabaseOfferRepository>();
             services.AddSingleton<IDatabaseConnectionSettings, DatabaseConnectionSettings>(
