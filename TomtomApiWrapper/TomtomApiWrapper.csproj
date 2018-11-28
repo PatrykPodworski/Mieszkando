@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Responses\GeocodingResponse.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="RestSharp" Version="106.1.0" />
   </ItemGroup>
 
