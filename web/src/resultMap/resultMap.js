@@ -28,8 +28,6 @@ export default class resultMap extends Component {
   }
 
   refreshMap(){
-    //this.getOffersCoordinates().map(x => this.addMarker(x[0], x[1]));
-    console.log(window.tomtom.L);
     window.L.heatLayer(this.getOffersCoordinates(), {minOpacity: 0.4, radius: 40, blur: 60}).addTo(this.map);
   }
 
@@ -38,7 +36,7 @@ export default class resultMap extends Component {
   }
 
   getOffersCoordinates() {
-    return this.props.offers.map(x => this.getOfferCoordinates(x));
+    return this.props.offers.map(x=> x.offers).flat().map(x => this.getOfferCoordinates(x));
   }
 
   getOfferCoordinates(offer) {
