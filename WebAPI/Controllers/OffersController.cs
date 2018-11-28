@@ -3,7 +3,12 @@ using MarklogicDataLayer.Repositories;
 using MarklogicDataLayer.SearchQuery.Providers;
 using MarklogicDataLayer.SearchQuery.SearchModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TomtomApiWrapper.Interafaces;
 using WebAPI.Utils;
 
@@ -13,10 +18,12 @@ namespace WebAPI.Controllers
     public class OffersController : Controller
     {
         private readonly IDataRepository<Offer> _repository;
+        private readonly ITomtomApi _tomtomApi;
 
-        public OffersController(IDataRepository<Offer> repository)
+        public OffersController(IDataRepository<Offer> repository, ITomtomApi tomtomApi)
         {
             _repository = repository;
+            _tomtomApi = tomtomApi;
         }
 
         [HttpGet()]
@@ -39,12 +46,14 @@ namespace WebAPI.Controllers
             return Ok(offerModels);
         }
 
-        [HttpGet("advanced")]
-        public IActionResult GetAdvanced(SearchModel model)
+        [HttpPost("advanced")]
+        public async Task<IActionResult> GetAdvanced()
         {
-            if (!ModelState.IsValid)
+            var model = new SearchModel();
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
             {
-                return BadRequest();
+                var content = await reader.ReadToEndAsync();
+                model = JsonConvert.DeserializeObject<SearchModel>(content);
             }
 
             var queryProvider = new AdvancedSearchQueryProvider(model);
@@ -52,13 +61,22 @@ namespace WebAPI.Controllers
 
             var result = _repository.GetWithExpression(query, 1000, 1);
 
+            var pointsOfInterestWithCoords = new List<PointOfInterest>();
             foreach (var poi in model.PointsOfInterest)
             {
-                // TODO: add usage of tomtom api to add longitude to PoIs
+                var geocodingResult = _tomtomApi.Geocoding(poi.Address);
+                pointsOfInterestWithCoords.Add(new PointOfInterest()
+                {
+                    Address = poi.Address,
+                    MaxArrivalTime = poi.MaxArrivalTime,
+                    MaxDistanceTo = poi.MaxDistanceTo,
+                    Latitude = geocodingResult.Lat,
+                    Longitude = geocodingResult.Lon,
+                });
             }
 
             var offerModels = result
-                .Select(x => x.MapToOfferModel(model.PointsOfInterest))
+                .Select(x => x.MapToOfferModel(pointsOfInterestWithCoords))
                 .ToList();
 
             return Ok(offerModels);
