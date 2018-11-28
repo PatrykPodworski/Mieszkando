@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TomtomApiWrapper;
+using TomtomApiWrapper.Interafaces;
 
 namespace WebAPI
 {
@@ -22,6 +24,7 @@ namespace WebAPI
         {
             services.AddMvc();
             services.AddCors();
+            services.AddSingleton<ITomtomApi, TomtomApi>();
             services.AddSingleton<IDataRepository<CityRegion>, DatabaseCityRegionRepository>();
             services.AddSingleton<IDataRepository<Offer>, DatabaseOfferRepository>();
             services.AddSingleton<IDatabaseConnectionSettings, DatabaseConnectionSettings>(

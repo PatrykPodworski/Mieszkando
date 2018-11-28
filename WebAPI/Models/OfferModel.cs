@@ -1,4 +1,7 @@
-﻿namespace WebAPI.Models
+﻿using MarklogicDataLayer.DataStructs;
+using System.Collections.Generic;
+
+namespace WebAPI.Models
 {
     public class OfferModel
     {
@@ -8,5 +11,6 @@
         public double Area { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public List<PointOfInterest> PointsOfInterest { get; set; }
     }
 }

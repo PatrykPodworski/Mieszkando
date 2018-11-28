@@ -13,11 +13,11 @@ namespace Tests
         [TestMethod]
         public void GetSearchExpression_returns_correct_query_for_simple_search()
         {
-            var searchModel = new SimpleSearchModel { MaxCost = "1000", NumberOfRooms = "1" };
+            var searchModel = new SearchModel { MaxCost = "1000", NumberOfRooms = "1" };
 
             var sut = new SimpleSearchQueryProvider(searchModel);
             var expected = new CtsAndQuery(
-                new CtsElementRangeQuery(OfferConstants.TotalCost, "'<='", searchModel.MaxCost),
+                new CtsElementRangeQuery(OfferConstants.TotalCost, "'<='", new XsDouble(searchModel.MaxCost).Query),
                 new CtsElementValueQuery(OfferConstants.Rooms, searchModel.NumberOfRooms),
                 new CtsCollectionQuery(OfferConstants.CollectionName)).Query;
 

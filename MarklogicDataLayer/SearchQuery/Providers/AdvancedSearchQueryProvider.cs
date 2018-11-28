@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace MarklogicDataLayer.SearchQuery.Providers
 {
-    public class SimpleSearchQueryProvider
+    public class AdvancedSearchQueryProvider
     {
         private readonly SearchModel _searchModel;
 
-        public SimpleSearchQueryProvider(SearchModel searchModel)
+        public AdvancedSearchQueryProvider(SearchModel searchModel)
         {
             _searchModel = searchModel;
         }
@@ -21,6 +21,9 @@ namespace MarklogicDataLayer.SearchQuery.Providers
 
             double.TryParse(_searchModel.NumberOfRooms, out var rooms);
             subQueries.Add(new CtsElementRangeQuery(OfferConstants.TotalCost, "'<='", new XsDouble(_searchModel.MaxCost).Query));
+            subQueries.Add(new CtsElementRangeQuery(OfferConstants.TotalCost, "'>='", new XsDouble(_searchModel.MinCost).Query));
+            subQueries.Add(new CtsElementRangeQuery(OfferConstants.Area, "'<='", new XsDouble(_searchModel.MaxArea).Query));
+            subQueries.Add(new CtsElementRangeQuery(OfferConstants.Area, "'>='", new XsDouble(_searchModel.MinArea).Query));
             subQueries.Add(new CtsElementValueQuery(OfferConstants.Rooms, rooms));
             subQueries.Add(new CtsCollectionQuery(OfferConstants.CollectionName));
 
