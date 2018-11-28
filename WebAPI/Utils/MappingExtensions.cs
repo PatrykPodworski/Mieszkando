@@ -1,5 +1,6 @@
 ﻿using MarklogicDataLayer.DataStructs;
 using System.Collections.Generic;
+using System.Linq;
 using WebAPI.Models;
 
 namespace WebAPI.Utils
@@ -17,6 +18,15 @@ namespace WebAPI.Utils
                 Title = offer.Title,
                 TotalCost = offer.TotalCost,
                 PointsOfInterest = pointsOfInterest,
+            };
+        }
+
+        public static GroupedOffersModel MapToGroupedOffersModel(this IGrouping<string, OfferModel> group)
+        {
+            return new GroupedOffersModel
+            {
+                District = group.Key,
+                Offers = group.ToList()
             };
         }
     }

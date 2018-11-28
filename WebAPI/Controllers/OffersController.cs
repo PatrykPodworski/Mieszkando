@@ -4,7 +4,6 @@ using MarklogicDataLayer.SearchQuery.Providers;
 using MarklogicDataLayer.SearchQuery.SearchModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using TomtomApiWrapper.Interafaces;
 using WebAPI.Utils;
 
 namespace WebAPI.Controllers
@@ -34,6 +33,8 @@ namespace WebAPI.Controllers
 
             var offerModels = result
                 .Select(x => x.MapToOfferModel(model.PointsOfInterest))
+                .GroupBy(x => x.District)
+                .Select(x => x.MapToGroupedOffersModel())
                 .ToList();
 
             return Ok(offerModels);
