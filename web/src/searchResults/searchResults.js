@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import HttpService from './../services/httpService';
+import ResultMap from './../resultMap/resultMap'
+import ListOfOffers from './../listOfOffers/listOfOffers'
+import { withStyles } from '@material-ui/core';
+import styles from './styles';
 
 class SearchResults extends Component {
   constructor(props) {
@@ -22,20 +26,16 @@ class SearchResults extends Component {
     );
 
     this.setState({offers: results});
-    console.log(this.state);
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <Paper>
-        <ul>
-          {this.state.offers.map((offer, i) => {
-            return (<li key={i}>{offer.title}</li>)
-          })}
-        </ul>
+      <Paper className={classes.paper}>
+        <ResultMap offers={this.state.offers} className={classes.map}/>
+        <ListOfOffers offers={this.state.offers}/>
       </Paper>
     )
   }
 }
-
-export default SearchResults; 
+export default withStyles(styles)(SearchResults); 
