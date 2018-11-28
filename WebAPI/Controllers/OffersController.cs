@@ -4,6 +4,7 @@ using MarklogicDataLayer.SearchQuery.Providers;
 using MarklogicDataLayer.SearchQuery.SearchModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using TomtomApiWrapper.Interafaces;
 using WebAPI.Utils;
 
 namespace WebAPI.Controllers
@@ -19,7 +20,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet()]
-        public IActionResult Get(SimpleSearchModel model)
+        public IActionResult Get(SearchModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -32,7 +33,32 @@ namespace WebAPI.Controllers
             var result = _repository.GetWithExpression(query, 1000, 1);
 
             var offerModels = result
-                .Select(x => x.MapToOfferModel())
+                .Select(x => x.MapToOfferModel(model.PointsOfInterest))
+                .ToList();
+
+            return Ok(offerModels);
+        }
+
+        [HttpGet("advanced")]
+        public IActionResult GetAdvanced(SearchModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var queryProvider = new AdvancedSearchQueryProvider(model);
+            var query = queryProvider.GetSearchExpression();
+
+            var result = _repository.GetWithExpression(query, 1000, 1);
+
+            foreach (var poi in model.PointsOfInterest)
+            {
+                // TODO: add usage of tomtom api to add longitude to PoIs
+            }
+
+            var offerModels = result
+                .Select(x => x.MapToOfferModel(model.PointsOfInterest))
                 .ToList();
 
             return Ok(offerModels);
