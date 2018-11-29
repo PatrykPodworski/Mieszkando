@@ -6,6 +6,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styles from './styles';
+import OffersTable from '../offersTable/offersTable';
 
 class SearchResults extends Component {
     render() {
@@ -16,13 +17,7 @@ class SearchResults extends Component {
           <Typography className={classes.heading}>{this.props.group.district}, {this.getLenghtString(this.props.group.offers.length)}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <ul>
-            {this.props.group.offers
-                .map((offer) => {
-                return (
-                    <li>{offer.title}</li>
-            )})}
-          </ul>
+            <OffersTable offers={this.props.group.offers}/>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     )
