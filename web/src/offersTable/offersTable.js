@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import styles from './styles';
-import { withStyles, TableFooter, TablePagination } from "@material-ui/core";
-import PinDrop from '@material-ui/icons/PinDrop';
+import {TableFooter, TablePagination } from "@material-ui/core";
+import OfferTableRow from './offerTableRow';
 
- class OffersTable extends Component {
+ export default class OffersTable extends Component {
    constructor(props){
      super(props)
 
@@ -15,37 +13,16 @@ import PinDrop from '@material-ui/icons/PinDrop';
        page: 0,
        rowsPerPage: 5
      };
-
-     this.handlePinClick = this.handlePinClick.bind(this);
    }
+
   render() {
-    const { classes } = this.props;
     return (
       <Table>
         <TableBody>
           {this.props.offers.slice( this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-            .map((row, i) => {
+            .map((offer, i) => {
             return (
-              <TableRow key={i}>
-                <TableCell component="th" scope="row" className={classes.cell}>
-                  {row.title}
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  {row.totalCost} zł
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  {this.getRoomsString(row.rooms)}
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  {row.area} m2
-                </TableCell>
-                <TableCell className={classes.cell}>
-                    <PinDrop onClick={() => this.handlePinClick(row.latitude, row.longitude)} className={classes.pin}/>
-                </TableCell>
-                <TableCell className={classes.cell}>
-                <a href={row.link}>Oferta</a>
-                </TableCell>
-              </TableRow>
+              <OfferTableRow offer={offer} key={i} onPinClick={this.props.onPinClick}/>
             );
           })}
         </TableBody>
@@ -73,20 +50,4 @@ import PinDrop from '@material-ui/icons/PinDrop';
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
   };
-
-  handlePinClick(lat, lon){
-    console.log(lat);
-    console.log(lon);
-  }
-  getRoomsString(rooms){
-    if (rooms === 1){
-      return `${rooms} pokój`
-    }
-    if (rooms < 5){
-        return `${rooms} pokoje`
-    }
-    return `${rooms} pokojów`
-  }
 }
-
-export default withStyles(styles)(OffersTable); 

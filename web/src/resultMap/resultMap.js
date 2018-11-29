@@ -28,11 +28,17 @@ export default class resultMap extends Component {
   }
 
   refreshMap(){
-    window.L.heatLayer(this.getOffersCoordinates(), {minOpacity: 0.4, radius: 40, blur: 60}).addTo(this.map);
+    if(!this.heatLayer){
+      this.heatLayer = window.L.heatLayer(this.getOffersCoordinates(), {minOpacity: 0.4, radius: 40, blur: 60}).addTo(this.map);
+    }
+
+    if(this.props.marker){
+      this.markerLayer = this.addMarker(this.props.marker);
+    }
   }
 
-  addMarker(latitude, longitude){
-    window.tomtom.L.marker([latitude, longitude]).addTo(this.map);
+  addMarker(marker){
+    window.tomtom.L.marker(marker).addTo(this.map);
   }
 
   getOffersCoordinates() {

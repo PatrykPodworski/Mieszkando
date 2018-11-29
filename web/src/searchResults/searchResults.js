@@ -14,7 +14,10 @@ class SearchResults extends Component {
       maxCost: props.match.params.maxCost,
       numberOfRooms: props.match.params.numberOfRooms,
       offers: [],
+      marker: null,
     };
+
+    this.addMarker = this.addMarker.bind(this);
   }
 
   async componentDidMount(){
@@ -32,10 +35,14 @@ class SearchResults extends Component {
     const { classes } = this.props;
     return (
       <Paper className={classes.paper}>
-        <ResultMap offers={this.state.offers} className={classes.map}/>
-        <ListOfOffers offers={this.state.offers}/>
+        <ResultMap offers={this.state.offers} marker={this.state.marker} className={classes.map}/>
+        <ListOfOffers offers={this.state.offers} onPinClick={this.addMarker}/>
       </Paper>
     )
+  }
+
+  addMarker(lat, lon){
+    this.setState({marker: [lat, lon]});
   }
 }
 export default withStyles(styles)(SearchResults); 

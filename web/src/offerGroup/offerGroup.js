@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styles from './styles';
 import OffersTable from '../offersTable/offersTable';
 
-class SearchResults extends Component {
+class OfferGroup extends Component {
     render() {
     const { classes } = this.props;
     return (
@@ -17,7 +17,7 @@ class SearchResults extends Component {
           <Typography className={classes.heading}>{this.props.group.district}, {this.getLenghtString(this.props.group.offers.length)}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-            <OffersTable offers={this.props.group.offers}/>
+            <OffersTable offers={this.props.group.offers} onPinClick={this.props.onPinClick}/>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     )
@@ -33,4 +33,4 @@ class SearchResults extends Component {
     return `${length} ofert`
   }
 }
-export default withStyles(styles)(SearchResults); 
+export default withStyles(styles)(OfferGroup); 

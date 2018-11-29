@@ -9,7 +9,7 @@ export default class ListOfOffers extends Component {
             .sort((x,y) => y.offers.length - x.offers.length )
             .map((group, i) => {
             return (
-              <OfferGroup group={group} key={i}/>)
+              <OfferGroup group={group} key={i}  onPinClick={this.props.onPinClick}/>)
           })}
       </div>
     )
