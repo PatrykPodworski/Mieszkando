@@ -11,6 +11,8 @@ namespace WebAPI.Models
         public double Area { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string Link { get; set; }
+        public int Rooms { get; set; }
         public List<PointOfInterest> PointsOfInterest { get; set; }
     }
 }

@@ -17,6 +17,8 @@ namespace WebAPI.Utils
                 Longitude = offer.Longitude,
                 Title = offer.Title,
                 TotalCost = offer.TotalCost,
+                Link = offer.Link,
+                Rooms = offer.Rooms,
                 PointsOfInterest = pointsOfInterest,
             };
         }
