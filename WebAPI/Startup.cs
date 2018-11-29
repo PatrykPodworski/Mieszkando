@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RestSharp;
+using System.Configuration;
 using TomtomApiWrapper;
 using TomtomApiWrapper.Interafaces;
 
@@ -24,6 +26,7 @@ namespace WebAPI
         {
             services.AddMvc();
             services.AddCors();
+            services.AddSingleton<ITomtomApi, TomtomApi>((ctx) => new TomtomApi(ConfigurationManager.AppSettings["tomtom-api-key"], new RestClient(ConfigurationManager.AppSettings["tomtom-api-base-url"])));
             services.AddSingleton<IDataRepository<CityRegion>, DatabaseCityRegionRepository>();
             services.AddSingleton<IDataRepository<Offer>, DatabaseOfferRepository>();
             services.AddSingleton<IDatabaseConnectionSettings, DatabaseConnectionSettings>(
