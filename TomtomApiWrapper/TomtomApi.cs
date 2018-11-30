@@ -34,7 +34,7 @@ namespace TomtomApiWrapper
                 .FirstOrDefault();
         }
 
-        public Coordinates Geocoding(string address)
+        public CoordinatesResponse Geocoding(string address)
         {
             var apiMethod = "geocode";
             var limit = 1;

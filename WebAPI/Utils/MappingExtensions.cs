@@ -13,8 +13,7 @@ namespace WebAPI.Utils
             {
                 Area = offer.Area,
                 District = offer.District,
-                Latitude = offer.Latitude,
-                Longitude = offer.Longitude,
+                Coordinates = new Common.Models.Coordinates(offer.Latitude, offer.Longitude),
                 Title = offer.Title,
                 TotalCost = offer.TotalCost,
                 Link = offer.Link,

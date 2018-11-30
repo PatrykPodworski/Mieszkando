@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TomtomApiWrapper.Interafaces;
+using WebAPI.Models;
 using WebAPI.Utils;
 
 namespace WebAPI.Controllers
@@ -64,8 +65,8 @@ namespace WebAPI.Controllers
             var queryProvider = new AdvancedSearchQueryProvider(model);
             var query = queryProvider.GetSearchExpression();
 
-            var result = _repository.GetWithExpression(query, 1000, 1);
-
+            var databaseResult = _repository.GetWithExpression(query, 1000, 1);
+            
             var pointsOfInterestWithCoords = new List<PointOfInterest>();
             foreach (var poi in model.PointsOfInterest)
             {
@@ -75,16 +76,37 @@ namespace WebAPI.Controllers
                     Address = poi.Address,
                     MaxArrivalTime = poi.MaxArrivalTime,
                     MaxDistanceTo = poi.MaxDistanceTo,
-                    Latitude = geocodingResult.Latitude,
-                    Longitude = geocodingResult.Longitude,
+                    Coordinates = new Common.Models.Coordinates(geocodingResult.Lat, geocodingResult.Lon),
                 });
             }
 
-            var offerModels = result
+            var offerModels = databaseResult
                 .Select(x => x.MapToOfferModel(pointsOfInterestWithCoords))
                 .ToList();
 
-            return Ok(offerModels);
+            var resultOffers = new List<OfferModel>();
+            foreach (var offerModel in offerModels)
+            {
+                var meetsModelRequirements = true;
+                foreach (var poi in pointsOfInterestWithCoords)
+                {
+                    var route = _routeFinder.GetRoute(offerModel.Coordinates, poi.Coordinates, RouteFinders.Enums.MeanOfTransport.Car);
+
+                    if ((route.Distance / 1000.0) > poi.MaxDistanceTo && (route.TravelTime / 60.0) > poi.MaxArrivalTime)
+                    {
+                        meetsModelRequirements = false;
+                        break;
+                    }
+                }
+                if (meetsModelRequirements)
+                    resultOffers.Add(offerModel);
+            }
+
+            var results = resultOffers.GroupBy(x => x.District)
+                .Select(x => x.MapToGroupedOffersModel())
+                .ToList();
+
+            return Ok(results);
         }
     }
 }
