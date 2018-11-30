@@ -7,19 +7,13 @@ import styles from './styles';
 class Logo extends Component {
   render() {
     var { classes } = this.props;
-    if(this.props.show){
       return (
         <Link to='/'>
           <div className={classes.logo} style={{fontSize: this.props.size + 'px'}}>
             <Icon className={classes.icon}>home</Icon>
-            <div>Mieszkando</div>
-          </div>
-        </Link>
-      );
-    }
-
-    return (
-      <Fragment/>
+          <div>Mieszkando</div>
+        </div>
+      </Link>
     );
   }
 }

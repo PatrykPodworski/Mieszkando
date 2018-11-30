@@ -15,7 +15,6 @@ class App extends Component {
         <div className ="container">
           <Navbar/>
           <div className='content'>
-            <Logo show={!this.state.isLoggedIn} size={72} className='logo'/>
             <Route exact path='/' component={() => <SimpleSearch startPrice={1100} startNumberOfRooms={2}/>} />
             <Route exact path='/simple' component={() => <SimpleSearch startPrice={800} startNumberOfRooms={2}/>} />
             <Route exact path='/advanced' component={AdvancedSearch}/>
