@@ -7,6 +7,6 @@ namespace TomtomApiWrapper.Interafaces
     {
         Address ReverseGeocoding(string latitude, string longitude);
 
-        Coordinates Geocoding(string address);
+        CoordinatesResponse Geocoding(string address);
     }
 }
