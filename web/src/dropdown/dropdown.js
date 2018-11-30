@@ -39,12 +39,12 @@ class Dropdown extends Component {
           {this.props.label}
         </InputLabel>
         <Select
+          className={classes.select}
           label={this.props.label}
           value={this.state.value}
           onChange={this.handleChange}
           input={
               <OutlinedInput
-                className={classes.outlinedInput} 
                 labelWidth={this.state.labelWidth}
                 name="dropdown-simple"
                 id="dropdown-simple"

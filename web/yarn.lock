@@ -5154,6 +5154,10 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
+leaflet.heat@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/leaflet.heat/-/leaflet.heat-0.2.0.tgz#109d8cf586f0adee41f05aff031e27a77fecc229"
+
 left-pad@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"

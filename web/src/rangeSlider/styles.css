@@ -16,7 +16,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     content: none;
 }
 
-.simpleSearch .noUi-horizontal .noUi-tooltip {
+.noUi-horizontal .noUi-tooltip {
     border: none;
     border-radius: 0px;
     padding: 0px;
@@ -25,7 +25,14 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     color: rgba(0, 0, 0, 0.54);
 }
 
-.simpleSearch .noUi-horizontal {
-    margin-top: 20px;
+.advancedSearch .noUi-horizontal {
+    margin: 20px 14px;
     height: 10px;
+    width: 300px;
+    max-width: 100%;
 }
+
+.advancedSearch .noUi-horizontal .noUi-handle-lower .noUi-tooltip {
+    top: 24px;
+    bottom: initial;
+  }

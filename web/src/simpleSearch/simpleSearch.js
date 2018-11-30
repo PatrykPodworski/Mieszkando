@@ -50,20 +50,20 @@ class SimpleSearch extends Component {
                         onNumberOfRoomsChange={this.handleNumberOfRoomsChange}/>
                 </div>
                 <div className="input-field">
-                <Link to={`searchResults/${this.state.maxCost}/${this.state.numberOfRooms}`}
-                className={classes.button} 
-                maxCost={this.state.maxCost}
-                numberOfRooms={this.state.numberOfRooms}>
-                    Szukaj
-                </Link>
-                <Link to='/advanced'>
-                    <div className={classes.link}>
-                        <FormLabel>Więcej opcji</FormLabel>
-                        <Icon className={classes.icon}>
-                            arrow_drop_down
-                        </Icon> 
-                    </div>
-                </Link>
+                    <Link to={`searchResults/${this.state.maxCost}/${this.state.numberOfRooms}`}
+                    className={classes.button} 
+                    maxCost={this.state.maxCost}
+                    numberOfRooms={this.state.numberOfRooms}>
+                        Szukaj
+                    </Link>
+                    <Link to='/advanced'>
+                        <div className={classes.link}>
+                            <FormLabel>Więcej opcji</FormLabel>
+                            <Icon className={classes.icon}>
+                                arrow_drop_down
+                            </Icon> 
+                        </div>
+                    </Link>
                 </div>
             </Paper>
         );

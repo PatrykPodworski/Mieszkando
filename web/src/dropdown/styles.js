@@ -3,8 +3,8 @@ const styles = theme => ({
       margin: theme.spacing.unit,
       minWidth: 90,
     },
-    centered: {
-        textAlign: 'center'
+    select: {
+        color: "rgba(0, 0, 0, 0.54)"
     }
 });
   
