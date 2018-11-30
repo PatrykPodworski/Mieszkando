@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfferScraper", "Scraper\OfferScraper.csproj", "{0B82D519-EC8E-49DD-BDF7-56E2AA5CF8E4}"
 EndProject
@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TomtomApiWrapper", "TomtomA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityRegionsGenerator", "CityRegionsGenerator\CityRegionsGenerator.csproj", "{4C1899F6-BF0E-4070-A742-ACCD120A88A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarbageCollector", "GarbageCollector\GarbageCollector.csproj", "{7020838F-825D-4EA9-B4D3-7B2FA307A854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarbageCollector", "GarbageCollector\GarbageCollector.csproj", "{7020838F-825D-4EA9-B4D3-7B2FA307A854}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RouteFinders", "RouteFinders\RouteFinders.csproj", "{879807EB-33B8-4F13-A6A0-5BD56309C611}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +140,18 @@ Global
 		{7020838F-825D-4EA9-B4D3-7B2FA307A854}.Release|x64.Build.0 = Release|Any CPU
 		{7020838F-825D-4EA9-B4D3-7B2FA307A854}.Release|x86.ActiveCfg = Release|Any CPU
 		{7020838F-825D-4EA9-B4D3-7B2FA307A854}.Release|x86.Build.0 = Release|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Debug|x64.Build.0 = Debug|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Debug|x86.Build.0 = Debug|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Release|x64.ActiveCfg = Release|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Release|x64.Build.0 = Release|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Release|x86.ActiveCfg = Release|Any CPU
+		{879807EB-33B8-4F13-A6A0-5BD56309C611}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
-﻿using MarklogicDataLayer.DataStructs;
-using TomtomApiWrapper.Responses;
+﻿using Common.Models;
+using MarklogicDataLayer.DataStructs;
 
 namespace TomtomApiWrapper.Interafaces
 {

@@ -1,4 +1,6 @@
-﻿namespace TomtomApiWrapper.Responses
+﻿using Common.Models;
+
+namespace TomtomApiWrapper.Responses
 {
     public class PositionResponse
     {

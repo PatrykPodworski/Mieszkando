@@ -2,18 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>RouteFinders</AssemblyName>
+    <RootNamespace>RouteFinders</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Responses\GeocodingResponse.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="RestSharp" Version="106.5.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MarklogicDataLayer\MarklogicDataLayer.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>

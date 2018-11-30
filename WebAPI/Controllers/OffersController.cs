@@ -4,6 +4,7 @@ using MarklogicDataLayer.SearchQuery.Providers;
 using MarklogicDataLayer.SearchQuery.SearchModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RouteFinders.Interfaces;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,11 +20,13 @@ namespace WebAPI.Controllers
     {
         private readonly IDataRepository<Offer> _repository;
         private readonly ITomtomApi _tomtomApi;
+        private readonly IRouteFinder _routeFinder;
 
-        public OffersController(IDataRepository<Offer> repository, ITomtomApi tomtomApi)
+        public OffersController(IDataRepository<Offer> repository, ITomtomApi tomtomApi, IRouteFinder routeFinder)
         {
             _repository = repository;
             _tomtomApi = tomtomApi;
+            _routeFinder = routeFinder;
         }
 
         [HttpGet()]
@@ -72,8 +75,8 @@ namespace WebAPI.Controllers
                     Address = poi.Address,
                     MaxArrivalTime = poi.MaxArrivalTime,
                     MaxDistanceTo = poi.MaxDistanceTo,
-                    Latitude = geocodingResult.Lat,
-                    Longitude = geocodingResult.Lon,
+                    Latitude = geocodingResult.Latitude,
+                    Longitude = geocodingResult.Longitude,
                 });
             }
 

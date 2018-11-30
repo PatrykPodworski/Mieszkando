@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MarklogicDataLayer\MarklogicDataLayer.csproj" />
+    <ProjectReference Include="..\RouteFinders\RouteFinders.csproj" />
     <ProjectReference Include="..\TomtomApiWrapper\TomtomApiWrapper.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using MarklogicDataLayer.DataStructs;
+﻿using Common.Models;
+using MarklogicDataLayer.DataStructs;
 using RestSharp;
 using System.Linq;
 using TomtomApiWrapper.Interafaces;
