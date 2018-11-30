@@ -12,7 +12,7 @@ class Navbar extends Component {
        return (
         <AppBar position="static" className={classes.navbar}>
           <Toolbar>
-            <Logo show={this.props.isLoggedIn} size={32}/>
+            <Logo size={32}/>
           </Toolbar>
         </AppBar>
         );

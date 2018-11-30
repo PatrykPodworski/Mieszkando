@@ -12,7 +12,7 @@ class Logo extends Component {
         <Link to='/'>
           <div className={classes.logo} style={{fontSize: this.props.size + 'px'}}>
             <Icon className={classes.icon}>home</Icon>
-            <div >Mieszkando</div>
+            <div>Mieszkando</div>
           </div>
         </Link>
       );
