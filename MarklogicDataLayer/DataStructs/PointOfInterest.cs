@@ -6,7 +6,7 @@ namespace MarklogicDataLayer.DataStructs
     {
         public string Address { get; set; }
         public double MaxDistanceTo { get; set; }
-        public double MaxArrivalTime { get; set; }
+        public double MaxTravelTime { get; set; }
         public Coordinates Coordinates { get; set; }
     }
 }

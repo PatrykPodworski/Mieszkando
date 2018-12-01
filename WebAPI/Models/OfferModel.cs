@@ -1,5 +1,5 @@
 ﻿using Common.Models;
-using MarklogicDataLayer.DataStructs;
+using RouteFinders.Models;
 using System.Collections.Generic;
 
 namespace WebAPI.Models
@@ -13,6 +13,11 @@ namespace WebAPI.Models
         public Coordinates Coordinates { get; set; }
         public string Link { get; set; }
         public int Rooms { get; set; }
-        public List<PointOfInterest> PointsOfInterest { get; set; }
+        public ICollection<Route> Routes { get; set; }
+
+        public OfferModel()
+        {
+            Routes = new List<Route>();
+        }
     }
 }

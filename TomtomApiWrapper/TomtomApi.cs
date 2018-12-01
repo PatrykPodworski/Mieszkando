@@ -44,8 +44,16 @@ namespace TomtomApiWrapper
 
             var request = new RestRequest
             {
-                Resource = $"{apiMethod}/{address}.json?limit={limit}&countrySet={countrySet}&topLeft={topLeft}&btmRight={bottomRight}&key={_apiKey}"
+                Resource = "{apiMethod}/{address}.json"
             };
+
+            request.AddUrlSegment("apiMethod", apiMethod);
+            request.AddUrlSegment("address", address);
+            request.AddQueryParameter("limit", limit.ToString());
+            request.AddQueryParameter("countrySet", countrySet);
+            request.AddQueryParameter("topLeft", topLeft);
+            request.AddQueryParameter("bottomRight", bottomRight);
+            request.AddQueryParameter("key", _apiKey);
 
             var response = _restClient.Execute<GeocodingResponse>(request);
 

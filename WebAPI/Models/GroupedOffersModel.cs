@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MarklogicDataLayer.DataStructs;
+using System.Collections.Generic;
 
 namespace WebAPI.Models
 {
@@ -6,5 +7,7 @@ namespace WebAPI.Models
     {
         public string District { get; set; }
         public ICollection<OfferModel> Offers { get; set; }
+
+        public ICollection<PointOfInterest> PointsOfInterest { get; set; }
     }
 }
