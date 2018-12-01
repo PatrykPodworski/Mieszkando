@@ -14,20 +14,34 @@ class AdvancedSearch extends Component {
         super(props);
 
         this.state = {
-            maxCost: props.startPrice,
-            numberOfRooms: props.startNumberOfRooms,
+            minCost: props.minCost,
+            maxCost: props.maxCost,
+            minArea: props.minArea,
+            maxArea: props.maxArea,
+            numberOfRooms: props.numberOfRooms,
             pointsOfInterest: []
         }
 
-        this.handleMaxCostChange = this.handleMaxCostChange.bind(this);
+        this.handleCostChange = this.handleCostChange.bind(this);
+        this.handleAreaChange = this.handleAreaChange.bind(this);
         this.handleNumberOfRoomsChange = this.handleNumberOfRoomsChange.bind(this);
         this.handlePointOfInterestChange = this.handlePointOfInterestChange.bind(this);
         this.addPointOfInterest = this.addPointOfInterest.bind(this);
         this.removePointOfInterest = this.removePointOfInterest.bind(this);
     }
 
-    handleMaxCostChange(maxCost){
-        this.setState({maxCost: maxCost});
+    handleCostChange(costs){
+        this.setState({
+            minCost: costs[0],
+            maxCost: costs[1]
+        });
+    }
+
+    handleAreaChange(areas){
+        this.setState({
+            minArea: areas[0],
+            maxArea: areas[1]
+        });
     }
 
     handleNumberOfRoomsChange(numberOfRooms){
@@ -42,7 +56,7 @@ class AdvancedSearch extends Component {
         this.setState({
             pointsOfInterest: update(
                 this.state.pointsOfInterest, 
-                {$push: [{address: '', distance:  0, travelTime: 0}]}
+                {$push: [{address: '', maxDistanceTo:  0, maxTravelTime: 0}]}
             )
         });
     }
@@ -73,7 +87,7 @@ class AdvancedSearch extends Component {
                     <FormLabel className={classes.sliderLabel}>Liczba pokoi</FormLabel>
                     <div className={classes.dropdown}>
                         <Dropdown 
-                            value={2} 
+                            value={this.state.numberOfRooms} 
                             options={[1,2,3,4,5,6,7,8,9]}
                             onNumberOfRoomsChange={this.handleNumberOfRoomsChange}/>   
                     </div>
@@ -88,22 +102,22 @@ class AdvancedSearch extends Component {
                 <div className={classes.formRow}>
                     <FormLabel className={classes.sliderLabel}>Cena</FormLabel>
                     <RangeSlider className = {classes.slider}
-                        start={[900, 1700]} 
-                        min={500} 
+                        start={[this.props.minCost, this.props.maxCost]} 
+                        min={0} 
                         max={3000}
                         step={100}
                         unit={"zł"} 
-                        onPriceChange={this.handleMaxCostChange}/>
+                        onValueChange={this.handleCostChange}/>
                 </div>
                 <div className={classes.formRow}>
                     <FormLabel className={classes.sliderLabel}>Powierzchnia</FormLabel>
                     <RangeSlider className = {classes.slider}
-                        start={[24, 68]} 
-                        min={18} 
+                        start={[this.props.minArea, this.props.maxArea]} 
+                        min={0} 
                         max={120} 
                         step={1}
                         unit={"m²"}
-                        onPriceChange={this.handleMaxCostChange}/>
+                        onValueChange={this.handleAreaChange}/>
                 </div>
                 <div className={classes.formRow}>
                     <FormLabel onClick={this.addPointOfInterest} className={classes.pointOfInterest}>
@@ -117,8 +131,8 @@ class AdvancedSearch extends Component {
                     key={i}
                     id = {i}
                     address = {x.address}
-                    distance = {x.distance}
-                    travelTime = {x.travelTime}
+                    distance = {x.maxDistanceTo}
+                    travelTime = {x.maxTravelTime}
                     handleChange ={this.handlePointOfInterestChange} 
                     handleRemove = {this.removePointOfInterest}
                     className={classes.formRow}/>

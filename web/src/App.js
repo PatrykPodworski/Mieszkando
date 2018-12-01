@@ -16,7 +16,8 @@ class App extends Component {
           <div className='content'>
             <Route exact path='/' component={() => <SimpleSearch startPrice={1500} startNumberOfRooms={2}/>} />
             <Route exact path='/simple' component={() => <SimpleSearch startPrice={1500} startNumberOfRooms={2}/>} />
-            <Route exact path='/advanced' component={() => <AdvancedSearch/>} />
+            <Route exact path='/advanced' component={() => 
+              <AdvancedSearch minCost={900} maxCost={1600} minArea={28} maxArea={64} numberOfRooms={2}/>} />
             <Route path='/searchResults/:maxCost/:numberOfRooms' component={SearchResults}/>
           </div>
           <Footer/>

@@ -34,7 +34,7 @@ class AdvancedSearch extends Component {
                     type="number"
                     className={classes.shortTextField}
                     value={this.props.distance}
-                    onChange={(e) => this.handleChange('distance', e.target.value)}
+                    onChange={(e) => this.handleChange('maxDistanceTo', e.target.value)}
                     margin="normal"
                     variant="outlined"
                     InputProps={{
@@ -46,7 +46,7 @@ class AdvancedSearch extends Component {
                     type="number"
                     className={classes.shortTextField}
                     value={this.props.travelTime}
-                    onChange={(e) => this.handleChange('travelTime', e.target.value)}
+                    onChange={(e) => this.handleChange('maxTravelTime', e.target.value)}
                     margin="normal"
                     variant="outlined"
                     InputProps={{
