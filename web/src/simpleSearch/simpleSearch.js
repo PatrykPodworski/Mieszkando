@@ -10,26 +10,6 @@ import Link from './../link/link';
 
 
 class SimpleSearch extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            maxCost: props.startPrice,
-            numberOfRooms: props.startNumberOfRooms
-        }
-
-        this.handleMaxCostChange = this.handleMaxCostChange.bind(this);
-        this.handleNumberOfRoomsChange = this.handleNumberOfRoomsChange.bind(this);
-    }
-
-    handleMaxCostChange(maxCost){
-        this.setState({maxCost: maxCost});
-    }
-
-    handleNumberOfRoomsChange(numberOfRooms){
-        this.setState({numberOfRooms:numberOfRooms});
-    }
-
     render(){
         const {classes} = this.props;
         return (
@@ -37,23 +17,21 @@ class SimpleSearch extends Component {
                 <div className="input-field slider">
                     <FormLabel>Cena</FormLabel>
                     <SingleSlider 
-                        start={this.props.startPrice} 
-                        min={500} 
-                        max={2000} 
-                        onPriceChange={this.handleMaxCostChange}/>
+                        start={this.props.criteria.maxCost} 
+                        min={this.props.ranges.minCost} 
+                        max={this.props.ranges.maxCost} 
+                        onValueChange={this.props.costChange}/>
                 </div>
                 <div className="input-field">
                     <Dropdown 
                         label={'Liczba pokoi'} 
-                        value={this.props.startNumberOfRooms} 
-                        options={[1,2,3,4,5,6,7,8,9]}
-                        onNumberOfRoomsChange={this.handleNumberOfRoomsChange}/>
+                        value={this.props.criteria.numberOfRooms} 
+                        options={this.props.ranges.rooms}
+                        onNumberOfRoomsChange={this.props.numberOfRoomsChange}/>
                 </div>
                 <div className="input-field">
-                    <Link to={`searchResults/${this.state.maxCost}/${this.state.numberOfRooms}`}
-                    className={classes.button} 
-                    maxCost={this.state.maxCost}
-                    numberOfRooms={this.state.numberOfRooms}>
+                    <Link to={'/searchResults/simple'}
+                    className={classes.button}>
                         Szukaj
                     </Link>
                     <Link to='/advanced'>

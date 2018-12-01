@@ -28,7 +28,7 @@ import { withStyles } from "@material-ui/core";
                 {this.props.offer.area} m²
             </TableCell>
             <TableCell className={classes.cell}>
-                <PinDrop onClick={() => this.handlePinClick(this.props.offer.latitude, this.props.offer.longitude)} className={classes.pin}/>
+                <PinDrop onClick={this.handlePinClick} className={classes.pin}/>
             </TableCell>
             <TableCell classes={{root: classes.cell, lastChild: classes.CellLast}}>
                 <a href={this.props.offer.link} className={classes.link}>Ogłoszenie</a>
@@ -37,8 +37,8 @@ import { withStyles } from "@material-ui/core";
       );
   }
 
-  handlePinClick(lat, lon){
-    this.props.onPinClick(lat, lon);
+  handlePinClick(){
+    this.props.onPinClick(this.props.offer);
   }
   getRoomsString(rooms){
     if (rooms === 1){

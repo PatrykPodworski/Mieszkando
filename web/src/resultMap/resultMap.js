@@ -3,6 +3,28 @@ import config from './../config';
 import './../../node_modules/leaflet.heat/dist/leaflet-heat';
 
 export default class resultMap extends Component {
+  constructor(props){
+    super(props)
+
+    this.redIcon = new window.L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
+    this.blueIcon = new window.L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+    
+  }
   render() {
     if(this.loaded){
       this.refreshMap();
@@ -30,15 +52,48 @@ export default class resultMap extends Component {
   refreshMap(){
     if(!this.heatLayer){
       this.heatLayer = window.L.heatLayer(this.getOffersCoordinates(), {minOpacity: 0.4, radius: 40, blur: 60}).addTo(this.map);
+      this.markPointsOfInterest();
     }
 
     if(this.props.marker){
-      this.markerLayer = this.addMarker(this.props.marker);
+      this.addMarker(this.props.marker.coordinates);
+      this.addRoutes(this.props.marker.routes);
     }
   }
 
-  addMarker(marker){
-    window.tomtom.L.marker(marker).addTo(this.map);
+  markPointsOfInterest(){
+    this.props.offers[0].pointsOfInterest.map(x => {
+      window.tomtom.L.marker([x.coordinates.latitude, x.coordinates.longitude], {icon: this.redIcon}).addTo(this.map);
+    })
+  }
+
+  addMarker(coordinates){
+    if(this.markerLayer){
+      this.map.removeLayer(this.markerLayer);
+      this.markPointsOfInterest();
+    }
+    this.markerLayer = window.tomtom.L.marker([coordinates.latitude, coordinates.longitude], {icon: this.blueIcon}).addTo(this.map);
+  }
+
+  addRoutes(routes) {
+    if(this.routesLayer){
+      this.map.removeLayer(this.routesLayer);
+    }
+
+    var geoJson = routes.map(x =>{
+      return {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "MultiLineString",
+          "coordinates": [
+            x.geoJson.map(y => [y.latitude, y.longitude])
+          ]
+        }
+      }
+    })
+
+    this.routesLayer = window.tomtom.L.geoJson(geoJson).addTo(this.map);
   }
 
   getOffersCoordinates() {
@@ -46,6 +101,6 @@ export default class resultMap extends Component {
   }
 
   getOfferCoordinates(offer) {
-    return [offer.latitude, offer.longitude];
+    return [offer.coordinates.latitude, offer.coordinates.longitude];
   }
 }

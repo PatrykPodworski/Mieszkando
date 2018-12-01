@@ -2,12 +2,13 @@ export default class HttpService{
     constructor(){
         this.baseUrl = "http://vps561493.ovh.net:8008/api";
         this.methods = {
-            "offers" : "/offers"
+            "simpleSearch" : "/offers",
+            "advancedSearch": "/offers/advanced"
         }
     }
 
     async getSerchResultsAsync(maxCost, numberOfRooms) {
-        let url = this.getUrl("offers");
+        let url = this.getUrl("simpleSearch");
         url = this.addParameter(url, "maxCost", maxCost);
         url = this.addParameter(url, "numberOfRooms", numberOfRooms);
 
@@ -15,6 +16,21 @@ export default class HttpService{
         const offers = await response.json();
 
         return offers;
+    }
+
+    async getAdvancedSearchResultsAsync(criteria) {
+        const url = this.getUrl("advancedSearch");
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            body: JSON.stringify(criteria)
+        });
+
+        const result = await response.json();
+
+        return result;
     }
 
     getUrl(method) {

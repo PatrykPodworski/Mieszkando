@@ -12,7 +12,7 @@ export default class SingleSlider extends Component {
     }
 
     handleUpdate(value){
-        this.props.onPriceChange(parseInt(value[0].split(' ')[0]));
+        this.props.onValueChange(value.map(x => parseInt(x.split(' ')[0])));
     }
 
     render(){
@@ -27,7 +27,7 @@ export default class SingleSlider extends Component {
                 decimals: 0,
                 suffix: ' zł'
             })}
-            onUpdate = {this.handleUpdate}
+            onChange = {this.handleUpdate}
             />
         );
     }

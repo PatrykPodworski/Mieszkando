@@ -11,8 +11,6 @@ class SearchResults extends Component {
     super(props);
 
     this.state = {
-      maxCost: props.match.params.maxCost,
-      numberOfRooms: props.match.params.numberOfRooms,
       offers: [],
       marker: null,
     };
@@ -23,12 +21,20 @@ class SearchResults extends Component {
   async componentDidMount(){
     const httpService = new HttpService();
 
-    const results = await httpService.getSerchResultsAsync(
-      this.state.maxCost, 
-      this.state.numberOfRooms
-    );
+    if(this.props.type === "simple"){
+      const results = await httpService.getSerchResultsAsync(
+        this.props.criteria.maxCost, 
+        this.props.criteria.numberOfRooms
+      );
+      this.setState({offers: results});
+    }
+    else {
+      const results = await httpService.getAdvancedSearchResultsAsync(
+        this.props.criteria
+      );
+      this.setState({offers: results});
+    }
 
-    this.setState({offers: results});
   }
 
   render() {
@@ -41,8 +47,8 @@ class SearchResults extends Component {
     )
   }
 
-  addMarker(lat, lon){
-    this.setState({marker: [lat, lon]});
+  addMarker(offer){
+    this.setState({marker: offer});
   }
 }
 export default withStyles(styles)(SearchResults); 
