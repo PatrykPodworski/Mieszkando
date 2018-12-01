@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Dropdown from '../dropdown/dropdown';
 import FormLabel from '@material-ui/core/FormLabel';
-import { withStyles, Icon, Button } from '@material-ui/core';
+import { withStyles, Icon } from '@material-ui/core';
 import styles from './styles';
 import Link from './../link/link';
 import RangeSlider from './../rangeSlider/rangeSlider';
+import PointOfInterest from './../pointOfInterest/pointOfInterest';
+import update from 'immutability-helper';
 
 class AdvancedSearch extends Component {
     constructor(props) {
@@ -13,12 +15,15 @@ class AdvancedSearch extends Component {
 
         this.state = {
             maxCost: props.startPrice,
-            numberOfRooms: props.startNumberOfRooms
+            numberOfRooms: props.startNumberOfRooms,
+            pointsOfInterest: []
         }
 
         this.handleMaxCostChange = this.handleMaxCostChange.bind(this);
         this.handleNumberOfRoomsChange = this.handleNumberOfRoomsChange.bind(this);
+        this.handlePointOfInterestChange = this.handlePointOfInterestChange.bind(this);
         this.addPointOfInterest = this.addPointOfInterest.bind(this);
+        this.removePointOfInterest = this.removePointOfInterest.bind(this);
     }
 
     handleMaxCostChange(maxCost){
@@ -30,7 +35,34 @@ class AdvancedSearch extends Component {
     }
 
     addPointOfInterest(){
-        console.log("qwe");
+        if(this.state.pointsOfInterest.length > 2){
+            return;
+        }
+
+        this.setState({
+            pointsOfInterest: update(
+                this.state.pointsOfInterest, 
+                {$push: [{address: '', distance:  0, travelTime: 0}]}
+            )
+        });
+    }
+
+    removePointOfInterest(id){
+        this.setState({
+            pointsOfInterest: update(
+                this.state.pointsOfInterest,
+                {$splice: [[id, 1]]}
+            )
+        });
+    }
+
+    handlePointOfInterestChange(id, name, value){
+
+        this.setState({
+            pointsOfInterest: update(
+                this.state.pointsOfInterest,
+                {[id]: {[name]: {$set: value}}})
+        });
     }
 
     render(){
@@ -79,6 +111,19 @@ class AdvancedSearch extends Component {
                         Dodaj punkt zainteresowania
                     </FormLabel>
                 </div>
+                {this.state.pointsOfInterest.map((x, i) => {
+                    return(
+                    <PointOfInterest 
+                    key={i}
+                    id = {i}
+                    address = {x.address}
+                    distance = {x.distance}
+                    travelTime = {x.travelTime}
+                    handleChange ={this.handlePointOfInterestChange} 
+                    handleRemove = {this.removePointOfInterest}
+                    className={classes.formRow}/>
+                    )
+                })}
                 <div className={classes.formRow}>
                     <Link to={`searchResults/${this.state.maxCost}/${this.state.numberOfRooms}`}
                         className={classes.button} 

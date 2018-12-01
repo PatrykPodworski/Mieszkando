@@ -11,7 +11,7 @@ const styles = theme => ({
         width: "100%"
     },
     searchForm: {
-        flexBasis: 440,
+        flexBasis: 520,
         padding: "16px 14px",
         display: "flex",
         flexDirection: "column",
@@ -35,7 +35,7 @@ const styles = theme => ({
     },
     iconPoi: {
         fontSize: 32,
-        color: 'rgba(0, 0, 0, 0.54);',
+        color: '#3FB8AF',
         marginRight: 15
     },
     link: {
@@ -51,9 +51,10 @@ const styles = theme => ({
     pointOfInterest: {
         display: "flex",
         alignItems: "center",
+        cursor: "pointer"
     },
     dropdown: {
-            width: 210,
+            width: 290,
             maxWidth: "100%"
     }
 });

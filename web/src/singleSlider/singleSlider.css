@@ -22,7 +22,6 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     padding: 0px;
     background: none;
     bottom: 100%;
-    color: rgba(0, 0, 0, 0.54);
 }
 
 .simpleSearch .noUi-horizontal {
