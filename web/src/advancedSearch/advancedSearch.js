@@ -58,7 +58,7 @@ class AdvancedSearch extends Component {
                 {this.props.criteria.pointsOfInterest.map((x, i) => {
                     return(
                     <PointOfInterest 
-                    key={`poi{i}`}
+                    key={`poi${i}`}
                     id = {i}
                     address = {x.address}
                     distance = {x.maxDistanceTo}

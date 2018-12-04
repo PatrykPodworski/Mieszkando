@@ -61,7 +61,7 @@ constructor(props){
                 removePointOfInterest = {this.removePointOfInterest}
                 pointOfInterestChange = {this.handlePointOfInterestChange}/>
             } />
-            <Route path='/searchResults/:type' render={(props) => 
+            <Route path='/searchResults/:type' component={(props) => 
               <SearchResults criteria = {this.state} type = {props.match.params.type}/>
             }/>
           </div>
