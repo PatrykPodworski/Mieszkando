@@ -30,7 +30,7 @@ class SimpleSearch extends Component {
                         onNumberOfRoomsChange={this.props.numberOfRoomsChange}/>
                 </div>
                 <div className="input-field">
-                    <Link to={'/searchResults/simple'}
+                    <Link to={`/searchResults/simple/${JSON.stringify(this.props.criteria)}`}
                     className={classes.button}>
                         Szukaj
                     </Link>

@@ -69,7 +69,7 @@ class AdvancedSearch extends Component {
                     )
                 })}
                 <div className={classes.formRow}>
-                    <Link to={'/searchResults/advanced'}
+                    <Link to={`/searchResults/advanced/${JSON.stringify(this.props.criteria)}`}
                         className={classes.button}>
                             Szukaj
                     </Link>
