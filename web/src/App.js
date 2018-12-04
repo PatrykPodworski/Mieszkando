@@ -43,14 +43,14 @@ constructor(props){
         <div className ="container">
           <Navbar/>
           <div className='content'>
-            <Route exact path='\/(simple)?' component={() => 
+            <Route exact path='\/(simple)?' render={() => 
               <SimpleSearch 
                 criteria = {this.state}
                 ranges = {this.ranges}
                 numberOfRoomsChange = {this.handleNumberOfRoomsChange}
                 costChange = {this.handleCostChange}/>
             } />
-            <Route exact path='/advanced' component={() => 
+            <Route exact path='/advanced' render={() => 
               <AdvancedSearch 
                 criteria = {this.state}
                 ranges = {this.ranges}
@@ -61,7 +61,7 @@ constructor(props){
                 removePointOfInterest = {this.removePointOfInterest}
                 pointOfInterestChange = {this.handlePointOfInterestChange}/>
             } />
-            <Route path='/searchResults/:type' component={(props) => 
+            <Route path='/searchResults/:type' render={(props) => 
               <SearchResults criteria = {this.state} type = {props.match.params.type}/>
             }/>
           </div>
