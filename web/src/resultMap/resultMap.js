@@ -62,6 +62,10 @@ export default class resultMap extends Component {
   }
 
   markPointsOfInterest(){
+    if(this.props.offers[0].pointsOfInterest === null) {
+      return;
+    }
+    
     this.props.offers[0].pointsOfInterest.map(x => {
       window.tomtom.L.marker([x.coordinates.latitude, x.coordinates.longitude], {icon: this.redIcon}).addTo(this.map);
     })
