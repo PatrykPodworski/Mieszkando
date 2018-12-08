@@ -1,6 +1,6 @@
 export default class HttpService{
     constructor(){
-        this.baseUrl = "http://vps561493.ovh.net:8008/api";
+        this.baseUrl = "http://localhost:62003/api";
         this.methods = {
             "simpleSearch" : "/offers",
             "advancedSearch": "/offers/advanced"
@@ -12,7 +12,9 @@ export default class HttpService{
         url = this.addParameter(url, "maxCost", maxCost);
         url = this.addParameter(url, "numberOfRooms", numberOfRooms);
 
-        const response = await fetch(url);
+        const response = await fetch(url)
+            .then(this.handleErrors);
+
         const offers = await response.json();
 
         return offers;
@@ -26,7 +28,8 @@ export default class HttpService{
                 "Content-Type": "application/json; charset=utf-8"
             },
             body: JSON.stringify(criteria)
-        });
+        })
+        .then(this.handleErrors);
 
         const result = await response.json();
 
@@ -45,5 +48,12 @@ export default class HttpService{
         }
 
         return `${url}${name}=${value}`
+    }
+
+    handleErrors(response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
     }
 }

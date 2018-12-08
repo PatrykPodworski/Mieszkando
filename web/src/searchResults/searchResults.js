@@ -13,7 +13,9 @@ class SearchResults extends Component {
     this.state = {
       offers: [],
       marker: null,
+      error: null
     };
+
 
     this.addMarker = this.addMarker.bind(this);
   }
@@ -21,25 +23,54 @@ class SearchResults extends Component {
   async componentDidMount(){
     const httpService = new HttpService();
 
-    if(this.props.type === "simple"){
-      const results = await httpService.getSerchResultsAsync(
-        this.props.criteria.maxCost, 
-        this.props.criteria.numberOfRooms
-      );
-      this.setState({offers: results});
+    try {
+      if(this.props.type === "simple"){
+        const results = await httpService.getSerchResultsAsync(
+          this.props.criteria.maxCost, 
+          this.props.criteria.numberOfRooms
+        );
+        this.setState({offers: results, error: false});
+      }
+      else {
+        const results = await httpService.getAdvancedSearchResultsAsync(
+          this.props.criteria
+        );
+        this.setState({offers: results, error: false});
+      }
     }
-    else {
-      const results = await httpService.getAdvancedSearchResultsAsync(
-        this.props.criteria
-      );
-      this.setState({offers: results});
+    catch {
+      this.setState({error: true});
     }
+
 
   }
 
   render() {
     const { classes } = this.props;
-    return (
+
+    console.log(this.state);
+
+    if(this.state.error === true){
+      return(
+        <Paper className={classes.paper}>
+          <p className={classes.info}>
+            Coś poszło nie tak. Spróbuj ponownie za kilka minut lub zmień kryteria wyszukiwania.
+          </p>
+        </Paper>
+      )
+    }
+
+    if(this.state.error === null){
+      return(
+        <Paper className={classes.paper}>
+          <p className={classes.info}>
+            Trwa wyszukiwanie. Prosimy o cierpliwość.
+          </p>
+        </Paper>
+      )
+    }
+
+    return(
       <Paper className={classes.paper}>
         <ResultMap offers={this.state.offers} marker={this.state.marker} className={classes.map}/>
         <ListOfOffers offers={this.state.offers} onPinClick={this.addMarker}/>
