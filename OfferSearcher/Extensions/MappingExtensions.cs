@@ -1,8 +1,10 @@
-﻿using MarklogicDataLayer.DataStructs;
+﻿using Common.Models;
+using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.SearchQuery.SearchModels;
 using OfferSearcher.Models;
 using OfferSearcher.SearchCriteria;
 using System.Globalization;
+using TomtomApiWrapper.Responses;
 
 namespace OfferSearcher.Extensions
 {
@@ -40,6 +42,15 @@ namespace OfferSearcher.Extensions
                 TotalCost = offer.TotalCost,
                 Link = offer.Link,
                 Rooms = offer.Rooms
+            };
+        }
+
+        public static Coordinates MapToCoordinates(this CoordinatesResponse response)
+        {
+            return new Coordinates
+            {
+                Latitude = response.Lat,
+                Longitude = response.Lon
             };
         }
     }

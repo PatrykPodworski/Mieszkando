@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OfferSearcher.Interfaces;
 using OfferSearcher.Services;
+using OfferSearcher.Validators;
 using RestSharp;
 using RouteFinders.Implementations;
 using RouteFinders.Interfaces;
@@ -41,6 +42,7 @@ namespace WebAPI
                 new RestClient(ConfigurationManager.AppSettings["tomtom-api-base-url"])));
 
             services.AddSingleton<IOfferSearchService, OfferSearchService>();
+            services.AddSingleton<IRouteValidator, RouteValidator>();
             services.AddSingleton<IRouteFinder, RouteFinder>();
             services.AddSingleton<IRouteFinderServiceFactory, RouteFinderServiceFactory>();
             services.AddSingleton<IRouteFinderService, OsrmRouteFinderService>(

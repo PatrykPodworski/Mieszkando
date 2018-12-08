@@ -6,6 +6,6 @@ namespace RouteFinders.Interfaces
 {
     public interface IRouteFinder
     {
-        Route GetRoute(Coordinates from, Coordinates to, MeanOfTransport meanOfTransport);
+        Route GetRoute(Coordinates from, Coordinates to, MeanOfTransport meanOfTransport = MeanOfTransport.Car);
     }
 }

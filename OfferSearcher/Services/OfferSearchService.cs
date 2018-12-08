@@ -1,13 +1,12 @@
-﻿using Common.Models;
-using MarklogicDataLayer.DataStructs;
+﻿using MarklogicDataLayer.DataStructs;
 using MarklogicDataLayer.Repositories;
 using MarklogicDataLayer.SearchQuery.Providers;
 using OfferSearcher.Extensions;
 using OfferSearcher.Interfaces;
 using OfferSearcher.Models;
 using OfferSearcher.SearchCriteria;
-using RouteFinders.Enums;
 using RouteFinders.Interfaces;
+using RouteFinders.Models;
 using System.Collections.Generic;
 using System.Linq;
 using TomtomApiWrapper.Interafaces;
@@ -19,16 +18,18 @@ namespace OfferSearcher.Services
         private readonly IDataRepository<Offer> _repository;
         private readonly ITomtomApi _tomtomApi;
         private readonly IRouteFinder _routeFinder;
+        private readonly IRouteValidator _routeValidator;
 
         public OfferSearchService(IDataRepository<Offer> repository, ITomtomApi tomtomApi,
-            IRouteFinder routeFinder)
+            IRouteFinder routeFinder, IRouteValidator routeValidator)
         {
             _repository = repository;
             _tomtomApi = tomtomApi;
             _routeFinder = routeFinder;
+            _routeValidator = routeValidator;
         }
 
-        public ICollection<OfferModel> AdvancedSearch(AdvancedSearchCriteria criteria)
+        public (ICollection<OfferModel>, ICollection<PointOfInterest>) AdvancedSearch(AdvancedSearchCriteria criteria)
         {
             var searchModel = criteria.MapToSearchModel();
 
@@ -36,41 +37,58 @@ namespace OfferSearcher.Services
             var query = queryProvider.GetSearchExpression();
             var databaseResult = _repository.GetWithExpression(query, 1000, 1);
 
-            foreach (var poi in criteria.PointsOfInterest)
-            {
-                var geocodingResult = _tomtomApi.Geocoding("Gdańsk, " + poi.Address);
-                poi.Coordinates = new Coordinates(geocodingResult.Lat, geocodingResult.Lon);
-            }
-
             var offerModels = databaseResult
                 .Select(x => x.MapToOfferModel())
                 .ToList();
 
-            var resultOffers = new List<OfferModel>();
+            var pointsOfInterest = GeocodePointsOfInterest(criteria.PointsOfInterest);
 
-            foreach (var offer in offerModels)
-            {
-                foreach (var poi in criteria.PointsOfInterest)
-                {
-                    var route = _routeFinder.GetRoute(offer.Coordinates, poi.Coordinates, MeanOfTransport.Car);
+            var resultOffers = FilterByDistanceAndTime(offerModels, pointsOfInterest);
 
-                    if ((route.Distance / 1000.0) > poi.MaxDistanceTo && (route.TravelTime / 60.0) > poi.MaxTravelTime)
+            return (resultOffers, pointsOfInterest);
+        }
+
+        private ICollection<PointOfInterest> GeocodePointsOfInterest(ICollection<PointOfInterest> pointsOfInterest)
+        {
+            return pointsOfInterest
+                .Select(x =>
                     {
-                        break;
-                    }
+                        x.Coordinates = _tomtomApi.Geocoding("Gdańsk, " + x.Address).MapToCoordinates();
+                        return x;
+                    })
+                .ToList();
+        }
 
-                    offer.Routes.Add(route);
-                }
+        private ICollection<OfferModel> FilterByDistanceAndTime(List<OfferModel> offerModels, ICollection<PointOfInterest> pointsOfInterest)
+        {
+            return offerModels
+                .Select(x =>
+                    {
+                        var routes = GetOfferRoutes(x, pointsOfInterest);
+                        x.Routes = routes;
+                        return x;
+                    })
+                .Where(x => !x.Routes.Contains(null))
+                .ToList();
+        }
 
-                if (offer.Routes.Count != criteria.PointsOfInterest.Count)
-                {
-                    continue;
-                }
+        private ICollection<Route> GetOfferRoutes(OfferModel offer, ICollection<PointOfInterest> pointsOfInterest)
+        {
+            return pointsOfInterest
+                .Select(x => GetOfferRoute(offer, x))
+                .ToList();
+        }
 
-                resultOffers.Add(offer);
+        private Route GetOfferRoute(OfferModel offer, PointOfInterest pointOfInterest)
+        {
+            var route = _routeFinder.GetRoute(offer.Coordinates, pointOfInterest.Coordinates);
+
+            if (_routeValidator.IsNotAcceptable(route, pointOfInterest))
+            {
+                return null;
             }
 
-            return resultOffers;
+            return route;
         }
 
         public ICollection<OfferModel> SimpleSearch(SimpleSearchCriteria criteria)

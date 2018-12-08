@@ -41,17 +41,18 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            var result = _offerSearchService.AdvancedSearch(criteria);
+            var (result, pointsOfInterest) = _offerSearchService.AdvancedSearch(criteria);
 
-            var offers = GetGrouppedOffers(result);
+            var offers = GetGrouppedOffers(result, pointsOfInterest);
             return Ok(offers);
         }
 
-        private ICollection<GroupedOffersModel> GetGrouppedOffers(ICollection<OfferModel> offers)
+        private ICollection<GroupedOffersModel> GetGrouppedOffers(ICollection<OfferModel> offers,
+            ICollection<PointOfInterest> pointsOfInterest = null)
         {
             return offers
                 .GroupBy(x => x.District)
-                .Select(x => x.MapToGroupedOffersModel())
+                .Select(x => x.MapToGroupedOffersModel(pointsOfInterest))
                 .ToList();
         }
     }

@@ -8,6 +8,6 @@ namespace OfferSearcher.Interfaces
     {
         ICollection<OfferModel> SimpleSearch(SimpleSearchCriteria model);
 
-        ICollection<OfferModel> AdvancedSearch(AdvancedSearchCriteria model);
+        (ICollection<OfferModel>, ICollection<PointOfInterest>) AdvancedSearch(AdvancedSearchCriteria model);
     }
 }

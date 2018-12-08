@@ -8,7 +8,7 @@ namespace WebAPI.Utils
 {
     public static class MappingExtensions
     {
-        public static GroupedOffersModel MapToGroupedOffersModel(this IGrouping<string, OfferModel> group, ICollection<PointOfInterest> pointsOfInterest = null)
+        public static GroupedOffersModel MapToGroupedOffersModel(this IGrouping<string, OfferModel> group, ICollection<PointOfInterest> pointsOfInterest)
         {
             return new GroupedOffersModel
             {
