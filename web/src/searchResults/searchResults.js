@@ -70,6 +70,17 @@ class SearchResults extends Component {
       )
     }
 
+    if(this.state.offers.length == 0) {
+      return(
+        <Paper className={classes.paper}>
+          <ResultMap offers={this.state.offers} marker={this.state.marker} className={classes.map}/>
+          <p className={classes.info}>
+            Brak pasujących wyników, spróbuj zmienić kryteria wyszukiwania.
+          </p>
+        </Paper>
+      )
+    }
+
     return(
       <Paper className={classes.paper}>
         <ResultMap offers={this.state.offers} marker={this.state.marker} className={classes.map}/>
