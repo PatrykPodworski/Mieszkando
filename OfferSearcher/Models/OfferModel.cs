@@ -2,7 +2,7 @@
 using RouteFinders.Models;
 using System.Collections.Generic;
 
-namespace WebAPI.Models
+namespace OfferSearcher.Models
 {
     public class OfferModel
     {

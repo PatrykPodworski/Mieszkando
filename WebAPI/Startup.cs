@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OfferSearcher.Interfaces;
+using OfferSearcher.Services;
 using RestSharp;
 using RouteFinders.Implementations;
 using RouteFinders.Interfaces;
@@ -38,6 +40,7 @@ namespace WebAPI
                 (ctx) => new TomtomApi(ConfigurationManager.AppSettings["tomtom-api-key"],
                 new RestClient(ConfigurationManager.AppSettings["tomtom-api-base-url"])));
 
+            services.AddSingleton<IOfferSearchService, OfferSearchService>();
             services.AddSingleton<IRouteFinder, RouteFinder>();
             services.AddSingleton<IRouteFinderServiceFactory, RouteFinderServiceFactory>();
             services.AddSingleton<IRouteFinderService, OsrmRouteFinderService>(
