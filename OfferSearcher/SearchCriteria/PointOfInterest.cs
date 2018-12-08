@@ -1,6 +1,6 @@
 ﻿using Common.Models;
 
-namespace MarklogicDataLayer.DataStructs
+namespace OfferSearcher.SearchCriteria
 {
     public class PointOfInterest
     {

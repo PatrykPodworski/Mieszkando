@@ -1,6 +1,4 @@
-﻿using MarklogicDataLayer.DataStructs;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MarklogicDataLayer.SearchQuery.SearchModels
 {
@@ -17,7 +15,5 @@ namespace MarklogicDataLayer.SearchQuery.SearchModels
         public string MinArea { get; set; }
 
         public string MaxArea { get; set; }
-
-        public List<PointOfInterest> PointsOfInterest { get; set; }
     }
 }

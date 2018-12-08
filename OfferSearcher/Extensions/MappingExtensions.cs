@@ -17,6 +17,18 @@ namespace OfferSearcher.Extensions
             };
         }
 
+        public static SearchModel MapToSearchModel(this AdvancedSearchCriteria criteria)
+        {
+            return new SearchModel
+            {
+                NumberOfRooms = criteria.NumberOfRooms.ToString(CultureInfo.InvariantCulture),
+                MinCost = criteria.MinCost.ToString(CultureInfo.InvariantCulture),
+                MaxCost = criteria.MaxCost.ToString(CultureInfo.InvariantCulture),
+                MinArea = criteria.MinArea.ToString(CultureInfo.InvariantCulture),
+                MaxArea = criteria.MaxArea.ToString(CultureInfo.InvariantCulture)
+            };
+        }
+
         public static OfferModel MapToOfferModel(this Offer offer)
         {
             return new OfferModel

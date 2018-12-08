@@ -1,5 +1,5 @@
-﻿using MarklogicDataLayer.DataStructs;
-using OfferSearcher.Models;
+﻿using OfferSearcher.Models;
+using OfferSearcher.SearchCriteria;
 using System.Collections.Generic;
 
 namespace WebAPI.Models
