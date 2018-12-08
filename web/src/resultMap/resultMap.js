@@ -66,7 +66,7 @@ export default class resultMap extends Component {
       return;
     }
     
-    this.props.offers[0].pointsOfInterest.map(x => {
+    this.props.offers[0].pointsOfInterest.forEach(x => {
       window.tomtom.L.marker([x.coordinates.latitude, x.coordinates.longitude], {icon: this.redIcon}).addTo(this.map);
     })
   }
