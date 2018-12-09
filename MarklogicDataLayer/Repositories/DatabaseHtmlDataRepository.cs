@@ -105,5 +105,10 @@ namespace MarklogicDataLayer.Repositories
                 Link = htmlDataLink,
             };
         }
+
+        public override HtmlData GetById(string id)
+        {
+            return int.TryParse(id, out var identifier) ? GetById(identifier) : throw new ArgumentException();
+        }
     }
 }

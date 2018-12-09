@@ -50,6 +50,11 @@ namespace MarklogicDataLayer.Repositories
             return null;
         }
 
+        public override Link GetById(string id)
+        {
+            return int.TryParse(id, out var identifier) ? GetById(identifier) : throw new ArgumentException();
+        }
+
         public override void Insert(Link entity, ITransaction transaction)
         {
             entity.LastUpdate = DateTime.Now;

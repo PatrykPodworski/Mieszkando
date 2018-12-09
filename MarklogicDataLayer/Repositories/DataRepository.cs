@@ -50,6 +50,8 @@ namespace MarklogicDataLayer.Repositories
 
         public abstract T GetById(int id);
 
+        public abstract T GetById(string id);
+
         public ITransaction GetTransaction()
         {
             return new DatabaseTransaction(RestConnector);

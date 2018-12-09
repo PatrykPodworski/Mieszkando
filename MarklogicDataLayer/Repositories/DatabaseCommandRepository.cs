@@ -144,5 +144,10 @@ namespace MarklogicDataLayer.Repositories
                     throw new ArgumentException("Invalid status");
             }
         }
+
+        public override ICommand GetById(string id)
+        {
+            return int.TryParse(id, out var identifier) ? GetById(identifier) : throw new ArgumentException();
+        }
     }
 }
