@@ -30,6 +30,11 @@ namespace MarklogicDataLayer.Repositories
             throw new System.NotImplementedException();
         }
 
+        public override DataStructs.Utility GetById(string id)
+        {
+            throw new NotImplementedException();
+        }
+
         public MarklogicDataLayer.DataStructs.Utility GetByKind(OfferType kind)
         {
             var utilityKind = kind == OfferType.Olx ? OfferTypeConstants.Olx : OfferTypeConstants.OtoDom;

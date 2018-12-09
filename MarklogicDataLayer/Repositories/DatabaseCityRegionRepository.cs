@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using System.Net.Http;
 using MarklogicDataLayer.XQuery.Constants;
 using System.Globalization;
+using System;
 
 namespace MarklogicDataLayer.Repositories
 {
@@ -111,6 +112,11 @@ namespace MarklogicDataLayer.Repositories
                 Longitude = cityLongitude,
                 LongitudeSize = cityLongitudeSize,
             };
+        }
+
+        public override CityRegion GetById(string id)
+        {
+            return int.TryParse(id, out var identifier) ? GetById(identifier) : throw new ArgumentException();
         }
     }
 }
