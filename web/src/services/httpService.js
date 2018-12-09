@@ -1,6 +1,6 @@
 export default class HttpService{
     constructor(){
-        this.baseUrl = "http://localhost:62003/api";
+        this.baseUrl = "http://mieszkando.pl:8008/api";
         this.methods = {
             "simpleSearch" : "/offers",
             "advancedSearch": "/offers/advanced"
