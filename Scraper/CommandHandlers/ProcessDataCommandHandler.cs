@@ -90,8 +90,7 @@ namespace OfferScraper.CommandHandlers
 
                 _logger.Log(LogType.Info, $"Started to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
                 var offer = processor.Process(htmlData);
-                var regionId = _regionRepository.GetByCoordinates(offer.Latitude, offer.Longitude)?.Id;
-                offer.RegionId = regionId;
+
                 _logger.Log(LogType.Info, $"Finished to extract data from {htmlData.GetClassName()} with Id: {htmlData.Id}");
 
                 _htmlDataRepository.Delete(htmlData);
