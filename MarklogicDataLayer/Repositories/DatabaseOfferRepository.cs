@@ -49,6 +49,11 @@ namespace MarklogicDataLayer.Repositories
             return null;
         }
 
+        public override Offer GetById(string id)
+        {
+            return int.TryParse(id, out var identifier) ? GetById(identifier) : throw new ArgumentException();
+        }
+
         public override void Insert(Offer entity, ITransaction transaction)
         {
             entity.DateOfScraping = DateTime.Now.ToShortDateString();
