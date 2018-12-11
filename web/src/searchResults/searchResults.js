@@ -48,8 +48,6 @@ class SearchResults extends Component {
   render() {
     const { classes } = this.props;
 
-    console.log(this.state);
-
     if(this.state.error === true){
       return(
         <Paper className={classes.paper}>
@@ -70,7 +68,7 @@ class SearchResults extends Component {
       )
     }
 
-    if(this.state.offers.length == 0) {
+    if(this.state.offers.length === 0) {
       return(
         <Paper className={classes.paper}>
           <ResultMap offers={this.state.offers} marker={this.state.marker} className={classes.map}/>

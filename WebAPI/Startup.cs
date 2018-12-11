@@ -32,7 +32,6 @@ namespace WebAPI
             services.AddMvc();
             services.AddCors();
 
-            services.AddSingleton<IDataRepository<CityRegion>, DatabaseCityRegionRepository>();
             services.AddSingleton<IDataRepository<Offer>, DatabaseOfferRepository>();
             services.AddSingleton<IDatabaseConnectionSettings, DatabaseConnectionSettings>(
                 (ctx) => new DatabaseConnectionSettings("mieszkando-db"));
