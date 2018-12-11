@@ -88,7 +88,6 @@ namespace MarklogicDataLayer.Repositories
             double.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.Longitude).Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var offerLongitude);
             var offerLink = xml.Descendants().First(x => x.Name == OfferConstants.Link).Value;
             double.TryParse(xml.Descendants().First(x => x.Name == OfferConstants.TotalCost).Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var offerTotalCost);
-            var offerRegionId = xml.Descendants().FirstOrDefault(x => x.Name == OfferConstants.RegionId)?.Value;
             var offerType = OfferType.Olx;
             switch (xml.Descendants().First(x => x.Name == OfferConstants.OfferType).Value)
             {
@@ -120,7 +119,6 @@ namespace MarklogicDataLayer.Repositories
                 Longitude = offerLongitude,
                 Link = offerLink,
                 TotalCost = offerTotalCost,
-                RegionId = offerRegionId,
                 OfferType = offerType,
             };
         }

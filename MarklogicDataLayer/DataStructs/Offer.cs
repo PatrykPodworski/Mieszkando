@@ -46,9 +46,6 @@ namespace MarklogicDataLayer.DataStructs
         [XmlElement(OfferConstants.Link)]
         public string Link { get; set; }
 
-        [XmlElement(OfferConstants.RegionId)]
-        public string RegionId { get; set; }
-
         [XmlElement(OfferConstants.OfferType)]
         public OfferType OfferType { get; set; }
 
