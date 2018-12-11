@@ -6,6 +6,8 @@ export default class resultMap extends Component {
   constructor(props){
     super(props)
 
+    this.state = {loaded: false};
+
     this.redIcon = new window.L.Icon({
       iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -23,10 +25,10 @@ export default class resultMap extends Component {
       popupAnchor: [1, -34],
       shadowSize: [41, 41]
     });
-    
   }
+
   render() {
-    if(this.loaded){
+    if(this.state.loaded){
       this.refreshMap();
     }
     return (
@@ -35,9 +37,9 @@ export default class resultMap extends Component {
   }
 
   componentDidMount() {
-    this.loaded = true;
     this.loadMap();
-  }
+    this.setState({loaded: true});
+    }
 
   loadMap() {
     const apiKey = config.tomtomApiKey;
