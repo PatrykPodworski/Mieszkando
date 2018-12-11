@@ -43,23 +43,28 @@ namespace GarbageCollector.Activities
                     {
                         _logger.Log(LogType.Info, $"Checking Offer with id: {offer.Id}");
                         var link = offer.Link;
+
+                        if (string.IsNullOrWhiteSpace(link))
+                        {
+                            MarkAsInactive(offer);
+                            result = GCActivityStatus.Performed;
+                            continue;
+                        }
+
                         var offerPage = _browser.GetPage(new Uri(link));
+
                         if (IsInactive(offerPage))
                         {
-                            var updatedOffer = offer;
-                            updatedOffer.Link = string.Empty;
-                            updatedOffer.OfferType = OfferType.Outdated;
-                            _logger.Log(LogType.Info, $"Offer with id: {offer.Id} is inactive");
-                            _databaseOfferRepository.Update(updatedOffer);
-
+                            MarkAsInactive(offer);
                             result = GCActivityStatus.Performed;
                         }
                     }
                     startFrom += _batchSize;
                 } while (offers.Count != 0);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.Log(LogType.Error, $"Exception thrown: {e.Message}");
                 result = GCActivityStatus.Error;
             }
 
@@ -70,6 +75,15 @@ namespace GarbageCollector.Activities
         {
             return offerPage.InnerHtml.Contains("To ogłoszenie jest nieaktualne")
                 || offerPage.InnerHtml.Contains("To ogłoszenie nie jest już dostępne");
+        }
+
+        private void MarkAsInactive(Offer offer)
+        {
+            var updatedOffer = offer;
+            updatedOffer.Link = string.Empty;
+            updatedOffer.OfferType = OfferType.Outdated;
+            _logger.Log(LogType.Info, $"Offer with id: {offer.Id} was makred as inactive");
+            _databaseOfferRepository.Update(updatedOffer);
         }
     }
 }
