@@ -19,7 +19,8 @@ namespace Tests
             var expected = new CtsAndQuery(
                 new CtsElementRangeQuery(OfferConstants.TotalCost, "'<='", new XsDouble(searchModel.MaxCost).Query),
                 new CtsElementRangeQuery(OfferConstants.Rooms, "'>='", new XsInteger(searchModel.NumberOfRooms).Query),
-                new CtsCollectionQuery(OfferConstants.CollectionName)).Query;
+                new CtsNotQuery(new CtsElementValueQuery(OfferConstants.OfferType, OfferTypeConstants.Outdated)),
+            new CtsCollectionQuery(OfferConstants.CollectionName)).Query;
 
             var result = sut.GetSearchExpression().Query;
 
